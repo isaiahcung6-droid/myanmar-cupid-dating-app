@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Myanmar Dating App - Created by Isaiah Cung</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Padauk:wght@400;700&family=Poppins:wght@300;400;600;700&display=swap');
+        body {
+            font-family: 'Poppins', 'Padauk', sans-serif;
+            background-color: #0f172a;
+            color: #f8fafc;
+        }
+        .glass-card {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .gradient-text {
+            background: linear-gradient(135deg, #ec4899, #8b5cf6, #3b82f6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between">
+
+    <!-- Navigation Bar -->
+    <nav class="glass-card sticky top-0 z-50 px-4 py-3 flex justify-between items-center shadow-lg">
+        <div class="flex items-center space-x-2">
+            <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-pink-500 to-purple-600 flex items-center justify-center text-white font-bold text-xl shadow-md">
+                ❤️
+            </div>
+            <div>
+                <h1 class="font-bold text-lg leading-tight gradient-text">Myanmar Dating App</h1>
+                <p class="text-xs text-gray-400">By Isaiah Cung</p>
+            </div>
+        </div>
+
+        <!-- Language Selector Dropdown -->
+        <div class="relative">
+            <select id="languageSelect" onchange="changeLanguage(this.value)" class="bg-slate-800 text-pink-400 text-sm font-semibold border border-pink-500/30 rounded-lg px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-pink-500 cursor-pointer">
+                <option value="my">🇲🇲 မြန်မာ (Myanmar)</option>
+                <option value="tapong">🇲🇲 Tapong</option>
+                <option value="mizo">🇲🇲 Mizo</option>
+                <option value="falam">🇲🇲 Falam</option>
+                <option value="hakha">🇲🇲 Hakha</option>
+                <option value="tidim">🇲🇲 Tidim</option>
+                <option value="zaniat">🇲🇲 Zaniat</option>
+                <option value="karen">🇲🇲 Karen</option>
+                <option value="shan">🇲🇲 Shan</option>
+                <option value="en">🇺🇸 English</option>
+            </select>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-6 max-w-md flex-grow">
+        
+        <!-- Hero Section -->
+        <div class="text-center mb-6">
+            <h2 id="heroTitle" class="text-2xl font-bold mb-2">သင့်ဖူးစာရှင်ကို ရှာဖွေပါ</h2>
+            <p id="heroDesc" class="text-sm text-gray-300">တိုင်းရင်းသား လူမျိုးစုပေါင်းစုံအတွက် လေးစားမှုရှိပြီး လုံခြုံသော Dating Platform</p>
+        </div>
+
+        <!-- Strict Rules Banner -->
+        <div class="glass-card border-l-4 border-rose-500 p-4 rounded-r-xl mb-6 shadow-md">
+            <div class="flex items-start space-x-3">
+                <i class="fa-solid fa-shield-halved text-rose-500 text-xl mt-0.5"></i>
+                <div>
+                    <h3 id="rulesTitle" class="font-semibold text-rose-400 text-sm">အသိုင်းအဝိုင်း စည်းမျဉ်းစည်းကမ်းများ</h3>
+                    <p id="rulesText" class="text-xs text-gray-300 mt-1">
+                        ညစ်ပတ်သော စာ/စကားများ ရေးသားခြင်း၊ ရိုင်းစိုင်းစွာ ပြောဆိုခြင်းနှင့် အနှောင့်အယှက်ပေးခြင်းများကို လုံးဝ ခွင့်မပြုပါ။ စည်းကမ်းဖောက်ဖျက်ပါက အကောင့်အား အပြီးပိတ်သိမ်းမည်။
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sample Matching Profile Card -->
+        <div class="glass-card rounded-2xl overflow-hidden shadow-2xl relative mb-6">
+            <div class="relative h-80 bg-slate-700">
+                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=600" alt="Profile" class="w-full h-full object-cover">
+                <div class="absolute bottom-0 inset-x-0 bg-gradient-to-t from-slate-950 via-slate-950/60 to-transparent p-4">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h3 class="text-xl font-bold text-white">Lian, 24</h3>
+                            <p class="text-xs text-pink-400 font-medium"><i class="fa-solid fa-location-dot mr-1"></i> Yangon • Falam / Myanmar</p>
+                        </div>
+                        <span class="bg-pink-500/20 text-pink-300 text-xs px-2.5 py-1 rounded-full border border-pink-500/30">Verified</span>
+                    </div>
+                    <p class="text-xs text-gray-300 mt-2 line-clamp-2">သီချင်းနားထောင်ရတာ ကြိုက်တယ်။ မိတ်ဆွေအသစ်များနဲ့ ချစ်ခင်စွာ ခင်မင်ချင်ပါတယ်။</p>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="p-4 flex justify-around items-center bg-slate-900/80">
+                <button onclick="handleAction('pass')" class="w-12 h-12 rounded-full bg-slate-800 text-gray-400 border border-slate-700 flex items-center justify-center hover:bg-rose-500 hover:text-white transition duration-200">
+                    <i class="fa-solid fa-xmark text-xl"></i>
+                </button>
+                <button onclick="handleAction('like')" class="w-14 h-14 rounded-full bg-gradient-to-r from-pink-500 to-rose-500 text-white shadow-lg flex items-center justify-center hover:scale-105 transition duration-200">
+                    <i class="fa-solid fa-heart text-2xl"></i>
+                </button>
+                <button onclick="handleAction('star')" class="w-12 h-12 rounded-full bg-slate-800 text-amber-400 border border-slate-700 flex items-center justify-center hover:bg-amber-500 hover:text-white transition duration-200">
+                    <i class="fa-solid fa-star text-lg"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Language Preference Filters -->
+        <div class="glass-card p-4 rounded-xl mb-6">
+            <h4 id="filterTitle" class="text-xs font-semibold uppercase text-gray-400 mb-3">တိုင်းရင်းသား ဘာသာစကားအလိုက် စစ်ထုတ်ရန်</h4>
+            <div class="flex flex-wrap gap-2">
+                <span class="bg-pink-600 text-white text-xs px-3 py-1 rounded-full cursor-pointer">Myanmar</span>
+                <span class="bg-slate-800 text-gray-300 text-xs px-3 py-1 rounded-full border border-slate-700 cursor-pointer hover:border-pink-500">Tapong</span>
+                <span class="bg-slate-800 text-gray-300 text-xs px-3 py-1 rounded-full border border-slate-700 cursor-pointer hover:border-pink-500">Mizo</span>
+                <span class="bg-slate-800 text-gray-300 text-xs px-3 py-1 rounded-full border border-slate-700 cursor-pointer hover:border-pink-500">Falam</span>
+                <span class="bg-slate-800 text-gray-300 text-xs px-3 py-1 rounded-full border border-slate-700 cursor-pointer hover:border-pink-500">Hakha</span>
+                <span class="bg-slate-800 text-gray-300 text-xs px-3 py-1 rounded-full border border-slate-700 cursor-pointer hover:border-pink-500">Tidim</span>
+                <span class="bg-slate-800 text-gray-300 text-xs px-3 py-1 rounded-full border border-slate-700 cursor-pointer hover:border-pink-500">Zaniat</span>
+                <span class="bg-slate-800 text-gray-300 text-xs px-3 py-1 rounded-full border border-slate-700 cursor-pointer hover:border-pink-500">Karen</span>
+                <span class="bg-slate-800 text-gray-300 text-xs px-3 py-1 rounded-full border border-slate-700 cursor-pointer hover:border-pink-500">Shan</span>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="text-center py-4 border-t border-slate-800 text-xs text-gray-500">
+        <p>© 2026 <strong>Myanmar Dating App</strong>. All rights reserved.</p>
+        <p class="mt-1 text-gray-400">Created with ❤️ by <span class="text-pink-400 font-medium">Isaiah Cung</span></p>
+    </footer>
+
+    <!-- JavaScript for Dynamic Language Switching -->
+    <script>
+        const translations = {
+            my: {
+                heroTitle: "သင့်ဖူးစာရှင်ကို ရှာဖွေပါ",
+                heroDesc: "တိုင်းရင်းသား လူမျိုးစုပေါင်းစုံအတွက် လေးစားမှုရှိပြီး လုံခြုံသော Dating Platform",
+                rulesTitle: "အသိုင်းအဝိုင်း စည်းမျဉ်းစည်းကမ်းများ",
+                rulesText: "ညစ်ပတ်သော စာ/စကားများ ရေးသားခြင်း၊ ရိုင်းစိုင်းစွာ ပြောဆိုခြင်းနှင့် အနှောင့်အယှက်ပေးခြင်းများကို လုံးဝ ခွင့်မပြုပါ။ စည်းကမ်းဖောက်ဖျက်ပါက အကောင့်အား အပြီးပိတ်သိမ်းမည်။",
+                filterTitle: "တိုင်းရင်းသား ဘာသာစကားအလိုက် စစ်ထုတ်ရန်"
+            },
+            en: {
+                heroTitle: "Find Your Perfect Match",
+                heroDesc: "A respectful and secure dating platform for all ethnic communities.",
+                rulesTitle: "Community Guidelines",
+                rulesText: "No inappropriate language, toxic behavior, or harassment allowed. Violators will be banned permanently.",
+                filterTitle: "Filter by Native Language"
+            },
+            falam: {
+                heroTitle: "Na riangrun thim aw",
+                heroDesc: "A zahum le a humhimmi dating platform.",
+                rulesTitle: "Dan le Dun te",
+                rulesText: "Thangsiatnak, mualphonak ca le holh hmannak pawန်း ih phal a si lo. A thazang lo cu permanent-in ban a si ding.",
+                filterTitle: "Mawng holh in hril aw"
+            },
+            mizo: {
+                heroTitle: "I nunna kawppui zawng rawh",
+                heroDesc: "Hnam hrang hrang tana thianghlim leh him zawka inbiakna platform.",
+                rulesTitle: "Thil Omdante leh Dan",
+                rulesText: "Tawngkam bawlhhlawh leh inbawlhhlawhna hman phal a ni lo. Thuawih lo chu ban hlen an ni ang.",
+                filterTitle: "Hnam tawng hmanga zawnna"
+            },
+            tidim: {
+                heroTitle: "Na lunggulh teng tawh kitawng in",
+                heroDesc: "Gamchih minamte ading muanhuai leh zahhuai dating platform.",
+                rulesTitle: "Gamdante leh Thukhun",
+                rulesText: "Kamsiat, kampawp leh gualawpna kam zat phal hi lo. A azui lote ki-sual sak ding hi.",
+                filterTitle: "Minam kam tawh khenna"
+            },
+            zaniat: {
+                heroTitle: "Na riangrun kawl aw",
+                heroDesc: "A zahumih humhim dating platform.",
+                rulesTitle: "Dan pawl",
+                rulesText: "Holh sia le mualphonak holhte hmannak phal a si lo.",
+                filterTitle: "Holh in thim aw"
+            },
+            hakha: {
+                heroTitle: "Na dawtmi kawl tthan ko",
+                heroDesc: "Zahumnak le humhimnak a ummi dating platform.",
+                rulesTitle: "Phung le Lam pawl",
+                rulesText: "Holh thalo le mualphonak pawl hmannak a ngah lo. Tuah ahcun acount kham a si teing.",
+                filterTitle: "Holh hmangin kawlna"
+            },
+            tapong: {
+                heroTitle: "Tapong Dating Platform",
+                heroDesc: "Respectful and safe platform for Tapong community.",
+                rulesTitle: "Tapong Rules",
+                rulesText: "No bad language or disrespectful messages allowed.",
+                filterTitle: "Filter by Languages"
+            },
+            karen: {
+                heroTitle: "ကၠိးထံးနၢ်တၢ်အဲးတၢ်ကွိး",
+                heroDesc: "တၢ်ဒိကနၣ်ဒ်သိးကၢးအၢးတၢ်မၤလိာ် dating platform.",
+                rulesTitle: "တၢ်ဘျၢသဲးကၠိး",
+                rulesText: "တၢ်ကတိၤအၢတၢ်ကတိၤသီတဂ့ၤဟ့ၣ်ကတိၤဘread.",
+                filterTitle: "ဃုထၢဒ်တၢ်ကတိၤအသိး"
+            },
+            shan: {
+                heroTitle: "ႁႃထူပ်းၵူႈဖႃႈ",
+                heroDesc: "တီႈယူႇလီ လႄႈ ႁူမ်ႇလူမ်ႈ တွၼ်ႈတႃႇၵူၼ်းတႆး လႄႈ တၢင်းသဵင်ႈ.",
+                rulesTitle: "ၵၢၼ်ၵုမ်းၵမ် ၸူPair",
+                rulesText: "ႁၢမ်ႈသေႃႈ ၵႂၢမ်းဢမ်ႇလီ လႄႈ ၵႂၢမ်းလိူင်း.",
+                filterTitle: "လိူၵ်ႈသဵၼ်ႈတၢင်း ၵႂၢမ်းတႆး"
+            }
+        };
+
+        function changeLanguage(lang) {
+            const data = translations[lang] || translations['my'];
+            document.getElementById('heroTitle').innerText = data.heroTitle;
+            document.getElementById('heroDesc').innerText = data.heroDesc;
+            document.getElementById('rulesTitle').innerText = data.rulesTitle;
+            document.getElementById('rulesText').innerText = data.rulesText;
+            document.getElementById('filterTitle').innerText = data.filterTitle;
+        }
+
+        function handleAction(type) {
+            if(type === 'like') {
+                alert('❤️ Liked profile!');
+            } else if(type === 'pass') {
+                alert('✖️ Passed profile.');
+            } else {
+                alert('⭐ Super Liked!');
+            }
+        }
+    </script>
+</body>
+</html>
