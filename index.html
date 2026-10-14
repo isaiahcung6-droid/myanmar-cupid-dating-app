@@ -8,7 +8,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Firebase SDK (Real-time Database & Auth) -->
+    <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
     <style>
@@ -45,9 +45,11 @@
         </div>
 
         <div class="flex items-center space-x-2">
-            <button onclick="switchTab('discover')" id="btnDiscover" class="bg-pink-600 text-white text-xs px-3 py-1.5 rounded-lg font-semibold transition">Discover</button>
-            <button onclick="switchTab('chat')" id="btnChat" class="bg-slate-800 text-gray-300 text-xs px-3 py-1.5 rounded-lg font-semibold border border-slate-700 transition">Chat</button>
-            <button onclick="switchTab('admin')" id="btnAdmin" class="bg-slate-800 text-amber-400 text-xs px-3 py-1.5 rounded-lg font-semibold border border-slate-700 transition"><i class="fa-solid fa-lock mr-1"></i>Admin</button>
+            <div id="mainNavButtons" class="hidden flex space-x-1">
+                <button onclick="switchTab('discover')" id="btnDiscover" class="bg-pink-600 text-white text-xs px-2.5 py-1.5 rounded-lg font-semibold transition">Discover</button>
+                <button onclick="switchTab('chat')" id="btnChat" class="bg-slate-800 text-gray-300 text-xs px-2.5 py-1.5 rounded-lg font-semibold border border-slate-700 transition">Chat</button>
+                <button onclick="switchTab('admin')" id="btnAdmin" class="bg-slate-800 text-amber-400 text-xs px-2.5 py-1.5 rounded-lg font-semibold border border-slate-700 transition"><i class="fa-solid fa-lock mr-1"></i>Admin</button>
+            </div>
 
             <!-- Language Selector -->
             <select id="languageSelect" onchange="changeLanguage(this.value)" class="bg-slate-800 text-pink-400 text-xs font-semibold border border-pink-500/30 rounded-lg px-2 py-1.5 focus:outline-none cursor-pointer">
@@ -68,106 +70,130 @@
     <!-- Main Content Area -->
     <main class="container mx-auto px-4 py-6 max-w-md flex-grow">
         
-        <!-- DISCOVER TAB -->
-        <div id="discoverTab">
+        <!-- LOGIN / SIGN UP SECTION -->
+        <div id="authSection" class="glass-card p-6 rounded-2xl shadow-2xl">
             <div class="text-center mb-6">
-                <h2 id="heroTitle" class="text-2xl font-bold mb-2">သင့်ဖူးစာရှင်ကို ရှာဖွေပါ</h2>
-                <p id="heroDesc" class="text-xs text-gray-300">တိုင်းရင်းသား လူမျိုးစုပေါင်းစုံအတွက် လေးစားမှုရှိပြီး လုံခြုံသော Dating Platform</p>
+                <h2 class="text-2xl font-bold gradient-text mb-1">မင်္ဂလာပါရှင်</h2>
+                <p class="text-xs text-gray-300">အကောင့်ဝင်ပါ သို့မဟုတ် အကောင့်သစ်ပြုလုပ်ပါ</p>
             </div>
 
-            <!-- Rules Banner -->
-            <div class="glass-card border-l-4 border-rose-500 p-4 rounded-r-xl mb-6 shadow-md">
-                <div class="flex items-start space-x-3">
-                    <i class="fa-solid fa-shield-halved text-rose-500 text-xl mt-0.5"></i>
-                    <div>
-                        <h3 id="rulesTitle" class="font-semibold text-rose-400 text-sm">အသိုင်းအဝိုင်း စည်းမျဉ်းစည်းကမ်းများ</h3>
-                        <p id="rulesText" class="text-xs text-gray-300 mt-1">
-                            ညစ်ပတ်သော စာ/စကားများ ရေးသားခြင်း၊ ရိုင်းစိုင်းစွာ ပြောဆိုခြင်းနှင့် အနှောင့်အယှက်ပေးခြင်းများကို လုံးဝ ခွင့်မပြုပါ။
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Profile Card -->
-            <div class="glass-card rounded-2xl overflow-hidden shadow-2xl relative mb-6">
-                <div class="relative h-80 bg-slate-700">
-                    <img id="profileImg" src="" alt="Profile" class="w-full h-full object-cover">
-                    <div class="absolute bottom-0 inset-x-0 bg-gradient-to-t from-slate-950 via-slate-950/60 to-transparent p-4">
-                        <div class="flex items-center justify-between">
-                            <div>
-                                <h3 id="profileName" class="text-xl font-bold text-white"></h3>
-                                <p id="profileLocation" class="text-xs text-pink-400 font-medium"><i class="fa-solid fa-location-dot mr-1"></i></p>
-                            </div>
-                            <span class="bg-pink-500/20 text-pink-300 text-xs px-2.5 py-1 rounded-full border border-pink-500/30">Verified</span>
-                        </div>
-                        <p id="profileBio" class="text-xs text-gray-300 mt-2"></p>
-                    </div>
-                </div>
-
-                <!-- Action Buttons -->
-                <div class="p-4 flex justify-around items-center bg-slate-900/80">
-                    <button onclick="nextProfile('pass')" class="w-12 h-12 rounded-full bg-slate-800 text-gray-400 border border-slate-700 flex items-center justify-center hover:bg-rose-500 hover:text-white transition">
-                        <i class="fa-solid fa-xmark text-xl"></i>
-                    </button>
-                    <button onclick="nextProfile('like')" class="w-14 h-14 rounded-full bg-gradient-to-r from-pink-500 to-rose-500 text-white shadow-lg flex items-center justify-center hover:scale-105 transition">
-                        <i class="fa-solid fa-heart text-2xl"></i>
-                    </button>
-                    <button onclick="nextProfile('star')" class="w-12 h-12 rounded-full bg-slate-800 text-amber-400 border border-slate-700 flex items-center justify-center hover:bg-amber-500 hover:text-white transition">
-                        <i class="fa-solid fa-star text-lg"></i>
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <!-- CHAT TAB (REAL-TIME DATABASE CHAT) -->
-        <div id="chatTab" class="hidden flex flex-col h-[75vh]">
-            <div class="glass-card p-3 rounded-t-xl flex items-center space-x-3 mb-2">
-                <img id="chatAvatar" src="" class="w-10 h-10 rounded-full object-cover">
+            <form onsubmit="handleAuth(event)" class="space-y-4">
                 <div>
-                    <h3 id="chatName" class="font-bold text-sm text-white"></h3>
-                    <p class="text-[10px] text-emerald-400"><i class="fa-solid fa-circle text-[8px] mr-1"></i> Real-time Chat Active</p>
+                    <label class="block text-xs font-medium text-gray-300 mb-1">နာမည် (Name)</label>
+                    <input type="text" id="authName" required placeholder="သင့်နာမည်ရိုက်ပါ" class="w-full bg-slate-800 text-white text-xs px-4 py-3 rounded-xl border border-slate-700 focus:outline-none focus:border-pink-500">
                 </div>
-            </div>
-
-            <!-- Message History Container -->
-            <div id="chatMessages" class="glass-card flex-grow p-4 rounded-xl overflow-y-auto space-y-3 mb-3 flex flex-col">
-                <div class="self-start bg-slate-800 text-gray-200 text-xs px-3 py-2 rounded-2xl max-w-[75%] border border-slate-700">
-                    မင်္ဂလာပါ! ဒီ Chat ထဲမှာ ပို့လိုက်တဲ့ စာတွေဟာ အပြင်လူတွေနဲ့ တကယ် အပြန်အလှန် ပို့လို့ရပါပြီ[span_2](start_span)[span_2](end_span)。
+                <div>
+                    <label class="block text-xs font-medium text-gray-300 mb-1">ဖုန်း သို့မဟုတ် အီးမေးလ်</label>
+                    <input type="text" id="authEmail" required placeholder="09xxxxxxxxx" class="w-full bg-slate-800 text-white text-xs px-4 py-3 rounded-xl border border-slate-700 focus:outline-none focus:border-pink-500">
                 </div>
-            </div>
+                <div>
+                    <label class="block text-xs font-medium text-gray-300 mb-1">စကားဝှက် (Password)</label>
+                    <input type="password" id="authPassword" required placeholder="******" class="w-full bg-slate-800 text-white text-xs px-4 py-3 rounded-xl border border-slate-700 focus:outline-none focus:border-pink-500">
+                </div>
 
-            <!-- Text Input Box Form -->
-            <form onsubmit="sendRealtimeMessage(event)" class="flex items-center space-x-2">
-                <input type="text" id="messageInput" placeholder="စာတို ရိုက်ရန်..." class="flex-grow bg-slate-800 text-white text-xs px-4 py-3 rounded-xl border border-slate-700 focus:outline-none focus:border-pink-500">
-                <button type="submit" class="bg-gradient-to-r from-pink-500 to-purple-600 text-white px-4 py-3 rounded-xl text-xs font-semibold shadow-md hover:opacity-90 transition">
-                    <i class="fa-solid fa-paper-plane"></i>
+                <button type="submit" class="w-full bg-gradient-to-r from-pink-500 to-rose-500 text-white py-3 rounded-xl text-xs font-bold shadow-lg hover:opacity-90 transition mt-2">
+                    အကောင့်ဝင်မည် / Register
                 </button>
             </form>
         </div>
 
-        <!-- ADMIN TAB (LIVE STATS & DATABASE LOGS) -->
-        <div id="adminTab" class="hidden">
-            <div class="glass-card p-5 rounded-2xl shadow-xl">
-                <div class="flex items-center justify-between mb-4">
-                    <h3 class="font-bold text-base text-amber-400"><i class="fa-solid fa-gauge mr-2"></i>Admin Dashboard</h3>
-                    <span class="bg-emerald-500/20 text-emerald-300 text-[10px] px-2 py-0.5 rounded-full border border-emerald-500/30">Live Database</span>
+        <!-- APP CONTENT (HIDDEN UNTIL LOGIN) -->
+        <div id="appSection" class="hidden">
+            <!-- DISCOVER TAB -->
+            <div id="discoverTab">
+                <div class="text-center mb-6">
+                    <h2 id="heroTitle" class="text-2xl font-bold mb-2">သင့်ဖူးစာရှင်ကို ရှာဖွေပါ</h2>
+                    <p id="heroDesc" class="text-xs text-gray-300">တိုင်းရင်းသား လူမျိုးစုပေါင်းစုံအတွက် လေးစားမှုရှိပြီး လုံခြုံသော Dating Platform</p>
                 </div>
 
-                <div class="grid grid-cols-2 gap-3 mb-4">
-                    <div class="bg-slate-800/80 p-3 rounded-xl border border-slate-700 text-center">
-                        <p class="text-xs text-gray-400">Total Users</p>
-                        <h4 id="statUsers" class="text-xl font-bold text-white mt-1">1</h4>
-                    </div>
-                    <div class="bg-slate-800/80 p-3 rounded-xl border border-slate-700 text-center">
-                        <p class="text-xs text-gray-400">Total Messages</p>
-                        <h4 id="statMessages" class="text-xl font-bold text-pink-400 mt-1">0</h4>
+                <!-- Rules Banner -->
+                <div class="glass-card border-l-4 border-rose-500 p-4 rounded-r-xl mb-6 shadow-md">
+                    <div class="flex items-start space-x-3">
+                        <i class="fa-solid fa-shield-halved text-rose-500 text-xl mt-0.5"></i>
+                        <div>
+                            <h3 id="rulesTitle" class="font-semibold text-rose-400 text-sm">အသိုင်းအဝိုင်း စည်းမျဉ်းစည်းကမ်းများ</h3>
+                            <p id="rulesText" class="text-xs text-gray-300 mt-1">
+                                ညစ်ပတ်သော စာ/စကားများ ရေးသားခြင်း၊ ရိုင်းစိုင်းစွာ ပြောဆိုခြင်းနှင့် အနှောင့်အယှက်ပေးခြင်းများကို လုံးဝ ခွင့်မပြုပါ။
+                            </p>
+                        </div>
                     </div>
                 </div>
 
-                <div class="space-y-2">
-                    <h4 class="text-xs font-semibold text-gray-400 uppercase">Live Chat Logs</h4>
-                    <div id="adminActivityList" class="bg-slate-900/60 p-3 rounded-xl text-xs space-y-2 border border-slate-800 max-h-48 overflow-y-auto">
-                        <p class="text-gray-300">• System connected to Firebase successfully.</p>
+                <!-- Profile Card -->
+                <div class="glass-card rounded-2xl overflow-hidden shadow-2xl relative mb-6">
+                    <div class="relative h-80 bg-slate-700">
+                        <img id="profileImg" src="" alt="Profile" class="w-full h-full object-cover">
+                        <div class="absolute bottom-0 inset-x-0 bg-gradient-to-t from-slate-950 via-slate-950/60 to-transparent p-4">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <h3 id="profileName" class="text-xl font-bold text-white"></h3>
+                                    <p id="profileLocation" class="text-xs text-pink-400 font-medium"><i class="fa-solid fa-location-dot mr-1"></i></p>
+                                </div>
+                                <span class="bg-pink-500/20 text-pink-300 text-xs px-2.5 py-1 rounded-full border border-pink-500/30">Verified</span>
+                            </div>
+                            <p id="profileBio" class="text-xs text-gray-300 mt-2"></p>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="p-4 flex justify-around items-center bg-slate-900/80">
+                        <button onclick="nextProfile('pass')" class="w-12 h-12 rounded-full bg-slate-800 text-gray-400 border border-slate-700 flex items-center justify-center hover:bg-rose-500 hover:text-white transition">
+                            <i class="fa-solid fa-xmark text-xl"></i>
+                        </button>
+                        <button onclick="nextProfile('like')" class="w-14 h-14 rounded-full bg-gradient-to-r from-pink-500 to-rose-500 text-white shadow-lg flex items-center justify-center hover:scale-105 transition">
+                            <i class="fa-solid fa-heart text-2xl"></i>
+                        </button>
+                        <button onclick="nextProfile('star')" class="w-12 h-12 rounded-full bg-slate-800 text-amber-400 border border-slate-700 flex items-center justify-center hover:bg-amber-500 hover:text-white transition">
+                            <i class="fa-solid fa-star text-lg"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CHAT TAB -->
+            <div id="chatTab" class="hidden flex flex-col h-[75vh]">
+                <div class="glass-card p-3 rounded-t-xl flex items-center space-x-3 mb-2">
+                    <img id="chatAvatar" src="" class="w-10 h-10 rounded-full object-cover">
+                    <div>
+                        <h3 id="chatName" class="font-bold text-sm text-white"></h3>
+                        <p class="text-[10px] text-emerald-400"><i class="fa-solid fa-circle text-[8px] mr-1"></i> Real-time Chat Active</p>
+                    </div>
+                </div>
+
+                <div id="chatMessages" class="glass-card flex-grow p-4 rounded-xl overflow-y-auto space-y-3 mb-3 flex flex-col">
+                </div>
+
+                <form onsubmit="sendRealtimeMessage(event)" class="flex items-center space-x-2">
+                    <input type="text" id="messageInput" placeholder="စာတို ရိုက်ရန်..." class="flex-grow bg-slate-800 text-white text-xs px-4 py-3 rounded-xl border border-slate-700 focus:outline-none focus:border-pink-500">
+                    <button type="submit" class="bg-gradient-to-r from-pink-500 to-purple-600 text-white px-4 py-3 rounded-xl text-xs font-semibold shadow-md hover:opacity-90 transition">
+                        <i class="fa-solid fa-paper-plane"></i>
+                    </button>
+                </form>
+            </div>
+
+            <!-- ADMIN TAB -->
+            <div id="adminTab" class="hidden">
+                <div class="glass-card p-5 rounded-2xl shadow-xl">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="font-bold text-base text-amber-400"><i class="fa-solid fa-gauge mr-2"></i>Admin Dashboard</h3>
+                        <span class="bg-emerald-500/20 text-emerald-300 text-[10px] px-2 py-0.5 rounded-full border border-emerald-500/30">Live Database</span>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-3 mb-4">
+                        <div class="bg-slate-800/80 p-3 rounded-xl border border-slate-700 text-center">
+                            <p class="text-xs text-gray-400">Total Users</p>
+                            <h4 id="statUsers" class="text-xl font-bold text-white mt-1">0</h4>
+                        </div>
+                        <div class="bg-slate-800/80 p-3 rounded-xl border border-slate-700 text-center">
+                            <p class="text-xs text-gray-400">Total Messages</p>
+                            <h4 id="statMessages" class="text-xl font-bold text-pink-400 mt-1">0</h4>
+                        </div>
+                    </div>
+
+                    <div class="space-y-2">
+                        <h4 class="text-xs font-semibold text-gray-400 uppercase">Live Chat Logs</h4>
+                        <div id="adminActivityList" class="bg-slate-900/60 p-3 rounded-xl text-xs space-y-2 border border-slate-800 max-h-48 overflow-y-auto">
+                        </div>
                     </div>
                 </div>
             </div>
@@ -181,24 +207,44 @@
         <p class="mt-1 text-gray-400">Created with ❤️ by <span class="text-pink-400 font-medium">Isaiah Cung</span></p>
     </footer>
 
-    <!-- JavaScript & Firebase Real-time Logic -->
+    <!-- JavaScript & Firebase -->
     <script>
-        // Firebase Free Public Test Configuration (Real-time DB)
         const firebaseConfig = {
             databaseURL: "https://myanmar-dating-app-default-rtdb.firebaseio.com/"
         };
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
+        let currentUser = null;
+
+        function handleAuth(event) {
+            event.preventDefault();
+            const name = document.getElementById('authName').value;
+            currentUser = {
+                id: 'user_' + Math.floor(Math.random() * 100000),
+                name: name
+            };
+
+            // Register User in Firebase
+            db.ref('users/' + currentUser.id).set({
+                name: currentUser.name,
+                joinedAt: Date.now()
+            });
+
+            document.getElementById('authSection').classList.add('hidden');
+            document.getElementById('appSection').classList.remove('hidden');
+            document.getElementById('mainNavButtons').classList.remove('hidden');
+
+            loadProfile();
+        }
+
         const profiles = [
             { name: "Lian, 24", location: "Yangon • Falam / Myanmar", bio: "သီချင်းနားထောင်ရတာ ကြိုက်တယ်။ မိတ်ဆွေအသစ်များနဲ့ ခင်မင်ချင်ပါတယ်။", image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=600" },
             { name: "Nuam, 22", location: "Mandalay • Mizo / Myanmar", bio: "ဝါသနာကတော့ ခရီးသွားတာနဲ့ စာဖတ်တာပါ။", image: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&q=80&w=600" },
-            { name: "Hmuaki, 25", location: "Aizawl • Mizo", bio: "တေးဂီတကို ချစ်မြတ်နိုးသူတစ်ဦးဖြစ်ပါတယ်။", image: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&q=80&w=600" },
-            { name: "Nang Dim, 23", location: "Tedim • Chin", bio: "ရိုးသားပြီး ပျော်ပျော်နေတတ်ပါတယ်။", image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=600" }
+            { name: "Hmuaki, 25", location: "Aizawl • Mizo", bio: "တေးဂီတကို ချစ်မြတ်နိုးသူတစ်ဦးဖြစ်ပါတယ်။", image: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&q=80&w=600" }
         ];
 
         let currentIndex = 0;
-        let currentUserId = 'user_' + Math.floor(Math.random() * 100000);
 
         function loadProfile() {
             const p = profiles[currentIndex];
@@ -232,92 +278,63 @@
             discoverTab.classList.add('hidden');
             chatTab.classList.add('hidden');
             adminTab.classList.add('hidden');
-            btnDiscover.className = "bg-slate-800 text-gray-300 text-xs px-3 py-1.5 rounded-lg font-semibold border border-slate-700 transition";
-            btnChat.className = "bg-slate-800 text-gray-300 text-xs px-3 py-1.5 rounded-lg font-semibold border border-slate-700 transition";
-            btnAdmin.className = "bg-slate-800 text-amber-400 text-xs px-3 py-1.5 rounded-lg font-semibold border border-slate-700 transition";
+            btnDiscover.className = "bg-slate-800 text-gray-300 text-xs px-2.5 py-1.5 rounded-lg font-semibold border border-slate-700 transition";
+            btnChat.className = "bg-slate-800 text-gray-300 text-xs px-2.5 py-1.5 rounded-lg font-semibold border border-slate-700 transition";
+            btnAdmin.className = "bg-slate-800 text-amber-400 text-xs px-2.5 py-1.5 rounded-lg font-semibold border border-slate-700 transition";
 
             if(tab === 'discover') {
                 discoverTab.classList.remove('hidden');
-                btnDiscover.className = "bg-pink-600 text-white text-xs px-3 py-1.5 rounded-lg font-semibold transition";
+                btnDiscover.className = "bg-pink-600 text-white text-xs px-2.5 py-1.5 rounded-lg font-semibold transition";
             } else if(tab === 'chat') {
                 chatTab.classList.remove('hidden');
-                btnChat.className = "bg-pink-600 text-white text-xs px-3 py-1.5 rounded-lg font-semibold transition";
+                btnChat.className = "bg-pink-600 text-white text-xs px-2.5 py-1.5 rounded-lg font-semibold transition";
             } else {
                 adminTab.classList.remove('hidden');
-                btnAdmin.className = "bg-amber-600 text-white text-xs px-3 py-1.5 rounded-lg font-semibold transition";
+                btnAdmin.className = "bg-amber-600 text-white text-xs px-2.5 py-1.5 rounded-lg font-semibold transition";
             }
         }
 
-        // Real-time Chat Sending to Firebase Database
         function sendRealtimeMessage(event) {
             event.preventDefault();
             const input = document.getElementById('messageInput');
             const text = input.value.trim();
-            if(!text) return;
+            if(!text || !currentUser) return;
 
-            const messageData = {
-                sender: currentUserId,
+            db.ref('messages').push({
+                senderId: currentUser.id,
+                senderName: currentUser.name,
                 text: text,
                 timestamp: Date.now()
-            };
-
-            // Push to Firebase Realtime Database
-            db.ref('messages').push(messageData);
+            });
             input.value = '';
         }
 
-        // Listen to Real-time Messages from Database
         db.ref('messages').on('child_added', (snapshot) => {
             const msg = snapshot.val();
             const chatMessages = document.getElementById('chatMessages');
 
             const msgDiv = document.createElement('div');
-            if(msg.sender === currentUserId) {
+            if(currentUser && msg.senderId === currentUser.id) {
                 msgDiv.className = "self-end bg-pink-600 text-white text-xs px-3 py-2 rounded-2xl max-w-[75%]";
+                msgDiv.innerText = msg.text;
             } else {
                 msgDiv.className = "self-start bg-slate-800 text-gray-200 text-xs px-3 py-2 rounded-2xl max-w-[75%] border border-slate-700";
-                msgDiv.innerHTML = `<span class="text-[9px] text-pink-400 block mb-0.5">Other User</span>${msg.text}`;
-            }
-            if(msg.sender === currentUserId) {
-                msgDiv.innerText = msg.text;
+                msgDiv.innerHTML = `<span class="text-[9px] text-pink-400 block mb-0.5">${msg.senderName || 'User'}</span>${msg.text}`;
             }
 
             chatMessages.appendChild(msgDiv);
             chatMessages.scrollTop = chatMessages.scrollHeight;
         });
 
-        // Track Total Messages in Admin Dashboard
-        db.ref('messages').on('value', (snapshot) => {
-            const data = snapshot.val();
-            const count = data ? Object.keys(data).length : 0;
-            document.getElementById('statMessages').innerText = count;
-
-            const activityList = document.getElementById('adminActivityList');
-            if(data) {
-                const keys = Object.keys(data);
-                const lastKey = keys[keys.length - 1];
-                const lastMsg = data[lastKey];
-                const p = document.createElement('p');
-                p.className = "text-gray-300";
-                p.innerText = `• New message: "${lastMsg.text}"`;
-                activityList.appendChild(p);
-            }
+        db.ref('users').on('value', (snapshot) => {
+            const users = snapshot.val();
+            document.getElementById('statUsers').innerText = users ? Object.keys(users).length : 0;
         });
 
-        const translations = {
-            my: { heroTitle: "သင့်ဖူးစာရှင်ကို ရှာဖွေပါ", heroDesc: "တိုင်းရင်းသား လူမျိုးစုပေါင်းစုံအတွက် လေးစားမှုရှိပြီး လုံခြုံသော Dating Platform" },
-            en: { heroTitle: "Find Your Perfect Match", heroDesc: "A respectful and secure dating platform for all ethnic communities." }
-        };
-
-        function changeLanguage(lang) {
-            const data = translations[lang] || translations['my'];
-            if(data) {
-                document.getElementById('heroTitle').innerText = data.heroTitle;
-                document.getElementById('heroDesc').innerText = data.heroDesc;
-            }
-        }
-
-        window.onload = loadProfile;
+        db.ref('messages').on('value', (snapshot) => {
+            const data = snapshot.val();
+            document.getElementById('statMessages').innerText = data ? Object.keys(data).length : 0;
+        });
     </script>
 </body>
 </html>
