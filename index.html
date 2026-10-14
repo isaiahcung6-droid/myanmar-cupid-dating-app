@@ -89,7 +89,7 @@
                 </div>
 
                 <!-- Language Selection at Registration/Login -->
-                <div>
+                <div id="langJoinContainer">
                     <label id="labelLangJoin" class="block text-xs font-medium text-pink-400 mb-1"><i class="fa-solid fa-earth-americas mr-1"></i>Join ချင်သော ဘာသာစကား ရွေးပါ</label>
                     <select id="authLanguage" class="w-full bg-slate-800 text-pink-300 text-xs px-4 py-3 rounded-xl border border-pink-500/40 focus:outline-none focus:border-pink-500 cursor-pointer">
                         <option value="falam">🇲🇲 Falam</option>
@@ -163,6 +163,18 @@
 
             <!-- LANGUAGE COMMUNITY CHAT TAB -->
             <div id="chatTab" class="hidden flex flex-col h-[75vh]">
+                <!-- Admin Only All Rooms Switcher Bar -->
+                <div id="adminRoomBar" class="hidden glass-card p-2 rounded-xl mb-2 overflow-x-auto flex space-x-2 scrollbar-none border border-amber-500/40">
+                    <span class="text-[10px] text-amber-400 font-bold self-center px-1"><i class="fa-solid fa-crown mr-1"></i>Admin Access:</span>
+                    <button onclick="adminSwitchRoom('falam')" class="bg-slate-800 text-pink-300 text-[10px] px-2 py-1 rounded-lg border border-slate-700 whitespace-nowrap">Falam</button>
+                    <button onclick="adminSwitchRoom('hakha')" class="bg-slate-800 text-pink-300 text-[10px] px-2 py-1 rounded-lg border border-slate-700 whitespace-nowrap">Hakha</button>
+                    <button onclick="adminSwitchRoom('tapong')" class="bg-slate-800 text-pink-300 text-[10px] px-2 py-1 rounded-lg border border-slate-700 whitespace-nowrap">Tapong</button>
+                    <button onclick="adminSwitchRoom('mizo')" class="bg-slate-800 text-pink-300 text-[10px] px-2 py-1 rounded-lg border border-slate-700 whitespace-nowrap">Mizo</button>
+                    <button onclick="adminSwitchRoom('tidim')" class="bg-slate-800 text-pink-300 text-[10px] px-2 py-1 rounded-lg border border-slate-700 whitespace-nowrap">Tidim</button>
+                    <button onclick="adminSwitchRoom('my')" class="bg-slate-800 text-pink-300 text-[10px] px-2 py-1 rounded-lg border border-slate-700 whitespace-nowrap">မြန်မာ</button>
+                    <button onclick="adminSwitchRoom('en')" class="bg-slate-800 text-pink-300 text-[10px] px-2 py-1 rounded-lg border border-slate-700 whitespace-nowrap">English</button>
+                </div>
+
                 <div class="glass-card p-3 rounded-t-xl flex items-center space-x-3 mb-2">
                     <div class="w-10 h-10 rounded-full bg-pink-500/20 text-pink-400 flex items-center justify-center font-bold">
                         <i class="fa-solid fa-users"></i>
@@ -230,6 +242,7 @@
 
         let currentUser = null;
         let chatListenerRef = null;
+        let activeAdminRoom = null;
 
         const profiles = [
             { id: 'profile_1', name: "Lian, 24", location: "Yangon • Falam / Myanmar", bio: "သီချင်းနားထောင်ရတာ ကြိုက်တယ်။ မိတ်ဆွေအသစ်များနဲ့ ခင်မင်ချင်ပါတယ်။", image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=600" },
@@ -450,12 +463,19 @@
 
             if (currentUser.isAdmin) {
                 document.getElementById('btnAdmin').classList.remove('hidden');
+                document.getElementById('adminRoomBar').classList.remove('hidden');
                 switchTab('admin');
                 initAdminDashboard();
             } else {
                 switchTab('discover');
                 loadProfile();
             }
+        }
+
+        function adminSwitchRoom(lang) {
+            activeAdminRoom = lang;
+            changeLanguage(lang);
+            loadCommunityChatMessages();
         }
 
         function loadProfile() {
@@ -512,8 +532,8 @@
                 chatListenerRef.off();
             }
 
-            const selectedLang = document.getElementById('languageSelect').value;
-            const currentRoomId = 'community_room_' + selectedLang;
+            const targetLang = (currentUser && currentUser.isAdmin && activeAdminRoom) ? activeAdminRoom : document.getElementById('languageSelect').value;
+            const currentRoomId = 'community_room_' + targetLang;
 
             chatListenerRef = db.ref('rooms/' + currentRoomId + '/messages');
             chatListenerRef.on('child_added', (snapshot) => {
@@ -539,12 +559,12 @@
             const text = input.value.trim();
             if(!text || !currentUser) return;
 
-            const selectedLang = document.getElementById('languageSelect').value;
-            const currentRoomId = 'community_room_' + selectedLang;
+            const targetLang = (currentUser && currentUser.isAdmin && activeAdminRoom) ? activeAdminRoom : document.getElementById('languageSelect').value;
+            const currentRoomId = 'community_room_' + targetLang;
 
             db.ref('rooms/' + currentRoomId + '/messages').push({
                 senderId: currentUser.id,
-                senderName: currentUser.name,
+                senderName: currentUser.name + (currentUser.isAdmin ? ' (Admin)' : ''),
                 text: text,
                 timestamp: Date.now()
             });
@@ -573,7 +593,7 @@
                                 const msg = room.messages[msgKey];
                                 const p = document.createElement('p');
                                 p.className = "text-gray-300 border-b border-slate-800 pb-1 mb-1";
-                                p.innerHTML = `<span class="text-amber-400 font-semibold">[Room: ${roomId}]</span> <span class="text-pink-400">${msg.senderName}:</span> ${msg.text}`;
+                                p.innerHTML = `<span class="text-amber-400 font-semibold">[${roomId.replace('community_room_', '').toUpperCase()}]</span> <span class="text-pink-400">${msg.senderName}:</span> ${msg.text}`;
                                 activityList.appendChild(p);
                             });
                         }
