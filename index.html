@@ -51,7 +51,7 @@
                 <button onclick="switchTab('admin')" id="btnAdmin" class="bg-slate-800 text-amber-400 text-xs px-2.5 py-1.5 rounded-lg font-semibold border border-slate-700 transition hidden"><i class="fa-solid fa-lock mr-1"></i>Admin</button>
             </div>
 
-            <!-- Language Selector -->
+            <!-- Language Selector (Zaniat, Karen, Shan ဖြုတ်ပြီးသား) -->
             <select id="languageSelect" onchange="changeLanguage(this.value)" class="bg-slate-800 text-pink-400 text-xs font-semibold border border-pink-500/30 rounded-lg px-2 py-1.5 focus:outline-none cursor-pointer">
                 <option value="falam">🇲🇲 Falam</option>
                 <option value="hakha">🇲🇲 Hakha</option>
@@ -84,7 +84,7 @@
                     <input type="text" id="authEmail" required placeholder="09xxxxxxxxx" class="w-full bg-slate-800 text-white text-xs px-4 py-3 rounded-xl border border-slate-700 focus:outline-none focus:border-pink-500">
                 </div>
                 <div>
-                    <label id="labelPass" class="block text-xs font-medium text-gray-300 mb-1">Ca thup mi</label>
+                    <label id="labelPass" class="block text-xs font-medium text-gray-300 mb-1">Ca thupmi</label>
                     <input type="password" id="authPassword" required placeholder="******" class="w-full bg-slate-800 text-white text-xs px-4 py-3 rounded-xl border border-slate-700 focus:outline-none focus:border-pink-500">
                 </div>
 
@@ -100,7 +100,7 @@
             <div id="discoverTab">
                 <div class="text-center mb-4">
                     <h2 id="heroTitle" class="text-2xl font-bold mb-1">Na Duhdawtmi Hawl Aw</h2>
-                    <p id="heroDesc" class="text-xs text-gray-200 font-medium px-2">Miphun Dan le Midang hrang ah a him a thabik mi cupid platform</p>
+                    <p id="heroDesc" class="text-xs text-gray-200 font-medium px-2">Miphun dang le Midang hrang ah a him a thabik mi Cupid platform</p>
                 </div>
 
                 <!-- SEARCH & FILTER BOX -->
@@ -124,7 +124,7 @@
                         <div>
                             <h3 id="rulesTitle" class="font-semibold text-rose-400 text-xs">Thlunding mi le Zawmdingmi pawl</h3>
                             <p id="rulesText" class="text-[11px] text-gray-200 mt-0.5 font-medium leading-relaxed">
-                                Tawngthalo le midang hnaihnawk zawng in le Cozah duh lo zawng thil/zuk tar lo tuah lo ding
+                                Tawngthalo le midang hnaihnawk zawng in le Cozah duh lo zawng thil tuah lo ding. zuk tar lo ding.
                             </p>
                         </div>
                     </div>
@@ -167,7 +167,7 @@
                 </div>
             </div>
 
-            <!-- RESTRUCTURED & IMPROVED CHAT TAB -->
+            <!-- CHAT TAB -->
             <div id="chatTab" class="hidden flex flex-col h-[70vh]">
                 <!-- Chat Header -->
                 <div class="glass-card p-3 rounded-2xl flex items-center justify-between mb-3 shadow-md flex-shrink-0">
@@ -186,7 +186,7 @@
                     </button>
                 </div>
 
-                <!-- Chat Messages Body (Fixed height & scrolling) -->
+                <!-- Chat Messages Body -->
                 <div id="chatMessages" class="glass-card flex-grow p-4 rounded-2xl overflow-y-auto space-y-3 mb-3 flex flex-col border border-slate-800/80">
                     <p class="text-gray-400 text-center text-xs my-auto">Connecting chat room...</p>
                 </div>
@@ -263,16 +263,16 @@
         const translations = {
             falam: {
                 heroTitle: "Na Duhdawtmi Hawl Aw",
-                heroDesc: "Miphun Dan le Midang hrang ah a him a thabik mi cupid platform",
+                heroDesc: "Miphun dang le Midang hrang ah a him a thabik mi Cupid platform",
                 rulesTitle: "Thlunding mi le Zawmdingmi pawl",
-                rulesText: "Tawngthalo le midang hnaihnawk zawng in le Cozah duh lo zawng thil/zuk tar lo tuah lo ding",
+                rulesText: "Tawngthalo le midang hnaihnawk zawng in le Cozah duh lo zawng thil tuah lo ding. zuk tar lo ding.",
                 authTitle: "Na Dam Maw",
                 authDesc: "Account lut aw / Account thar tuah aw",
                 labelName: "Hming (Name)",
                 phName: "Na hming ngan aw",
                 labelContact: "Phone or Email",
                 phEmail: "09xxxxxxxxx",
-                labelPass: "Ca thup mi",
+                labelPass: "Ca thupmi",
                 phPass: "******",
                 btnAuth: "Lut aw",
                 phChatInput: "Ca kuat ngan nak",
@@ -282,14 +282,14 @@
             },
             hakha: {
                 heroTitle: "Na Duhmi Zawn Ruah Hna",
-                heroDesc: "Miphun violate ca ningcang le thliarhrang lo tein hman khawhmi cupid platform",
+                heroDesc: "Miphun vialte ca ningcang le thliarhrang lo tein hman khawhmi cupid platform",
                 rulesTitle: "Hrinhrang le phung",
                 rulesText: "Cazin tha lo le mi hrokhrawl ti awk si lo",
                 authTitle: "Kan I Lawm",
                 authDesc: "Account thutnak/ Register",
                 labelName: "Hmin (Name)",
-                phName: "Na hming tial ngat",
-                labelContact: "Phone Email",
+                phName: "Na hmin tial",
+                labelContact: "Phone or Email",
                 phEmail: "09xxxxxxxxx",
                 labelPass: "Biathup",
                 phPass: "******",
@@ -301,14 +301,14 @@
             },
             tapong: {
                 heroTitle: "Na Hnakruh Le Lu Tuhah Thuai In",
-                heroDesc: "Mite ca le hnamdang te ca a him le planet ah Cupid platform",
+                heroDesc: "Mite ca le hnamdang te ca a him le phaber ah Cupid platform",
                 rulesTitle: "Hluntuh le Zawmtuh",
                 rulesText: "Uan pha ngua ai tuh ngua. Mi hnaihnawk zuang lai ngan tuh ngua. Cozah deih ngua zuk dah tuh ngua.",
                 authTitle: "Na Hmuak Ing",
                 authDesc: "Account lut in / Account Thiar Vauh in",
                 labelName: "Hming (Name)",
                 phName: "Na hming ngan in",
-                labelContact: "Phone Email",
+                labelContact: "Phone or Email",
                 phEmail: "09xxxxxxxxx",
                 labelPass: "Na laithup",
                 phPass: "******",
@@ -320,16 +320,16 @@
             },
             mizo: {
                 heroTitle: "I Duhtak Zawng Rawh",
-                heroDesc: "Hnam hrang hrang tana a him le zahawm Cupid platform",
+                heroDesc: "Hnam hrang hrang te tana a him le zahawm Cupid platform",
                 rulesTitle: "Dan le Dun",
-                rulesText: "Thumal bawlhhlawh le and inhnial buaina a awm tur ani lo. En Mawi lo thlalak dah tur ani lo",
+                rulesText: "Thumal bawlhhlawh le inhnial buaina a awm tur ani lo. En mawi lo zawng thlalak te dah tur ani lo",
                 authTitle: "Chibai / Wecome",
                 authDesc: "Account lut rawh / A thar siam rawh",
                 labelName: "Hming (Name)",
                 phName: "I hming ziak rawh",
-                labelContact: "Phone Email",
+                labelContact: "Phone or Email",
                 phEmail: "09xxxxxxxxx",
-                labelPass: "Thukhawchang",
+                labelPass: "Lehkhathup",
                 phPass: "******",
                 btnAuth: "Lut rawh",
                 phChatInput: "Thuchah ziak rawh",
@@ -338,15 +338,15 @@
                 noProfileText: "Profile hmuh tur a awm lo."
             },
             tidim: {
-                heroTitle: "Nadeih pen zawng in",
-                heroDesc: "Mi khempeuh te a ding a Ki lawm le a pha Cupid platform",
+                heroTitle: "Nadeih Pen Zawng In",
+                heroDesc: "Mi khempeuh te a ding a ki lawm le a pha Cupid platform",
                 rulesTitle: "Thu ki zaksakna",
                 rulesText: "Kampau sia zang lo ding. Mite a ding buaina bawl lo ding. Kumpi phal lo mante tak lo ding",
                 authTitle: "Hong Dawn Ing / Hello",
                 authDesc: "Account lutin / Account thak bawl in",
                 labelName: "Ming (Name)",
                 phName: "Na Ming gelh in",
-                labelContact: "Phone Email",
+                labelContact: "Phone or Email",
                 phEmail: "09xxxxxxxxx",
                 labelPass: "Thuthup",
                 phPass: "******",
