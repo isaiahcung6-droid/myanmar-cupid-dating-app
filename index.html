@@ -51,11 +51,11 @@
                 <button onclick="switchTab('admin')" id="btnAdmin" class="bg-slate-800 text-amber-400 text-xs px-2.5 py-1.5 rounded-lg font-semibold border border-slate-700 transition hidden"><i class="fa-solid fa-lock mr-1"></i>Admin</button>
             </div>
 
-            <!-- Language Selector (10 Languages Fully Supported) -->
+            <!-- Language Selector -->
             <select id="languageSelect" onchange="changeLanguage(this.value)" class="bg-slate-800 text-pink-400 text-xs font-semibold border border-pink-500/30 rounded-lg px-2 py-1.5 focus:outline-none cursor-pointer">
-                <option value="tapong">🇲🇲 Tapong</option>
                 <option value="falam">🇲🇲 Falam</option>
                 <option value="hakha">🇲🇲 Hakha</option>
+                <option value="tapong">🇲🇲 Tapong</option>
                 <option value="mizo">🇲🇲 Mizo</option>
                 <option value="tidim">🇲🇲 Tidim</option>
                 <option value="zaniat">🇲🇲 Zaniat</option>
@@ -73,26 +73,26 @@
         <!-- LOGIN / SIGN UP SECTION -->
         <div id="authSection" class="glass-card p-6 rounded-2xl shadow-2xl">
             <div class="text-center mb-6">
-                <h2 id="authTitle" class="text-2xl font-bold gradient-text mb-1">Hello Na Hmuak Ing</h2>
-                <p id="authDesc" class="text-xs text-gray-300">Account lut in Account Thiar Vuah In</p>
+                <h2 id="authTitle" class="text-2xl font-bold gradient-text mb-1">Kan I Lawm</h2>
+                <p id="authDesc" class="text-xs text-gray-300">Account lut cang</p>
             </div>
 
             <form onsubmit="handleAuth(event)" class="space-y-4">
                 <div>
-                    <label id="labelName" class="block text-xs font-medium text-gray-300 mb-1">Hming (Name)</label>
-                    <input type="text" id="authName" required placeholder="na hming ngan in" class="w-full bg-slate-800 text-white text-xs px-4 py-3 rounded-xl border border-slate-700 focus:outline-none focus:border-pink-500">
+                    <label id="labelName" class="block text-xs font-medium text-gray-300 mb-1">Hmin (Name)</label>
+                    <input type="text" id="authName" required placeholder="Na hmin ṭiang aw" class="w-full bg-slate-800 text-white text-xs px-4 py-3 rounded-xl border border-slate-700 focus:outline-none focus:border-pink-500">
                 </div>
                 <div>
-                    <label id="labelContact" class="block text-xs font-medium text-gray-300 mb-1">Phong ngua le email</label>
+                    <label id="labelContact" class="block text-xs font-medium text-gray-300 mb-1">Phone asilole Email</label>
                     <input type="text" id="authEmail" required placeholder="09xxxxxxxxx" class="w-full bg-slate-800 text-white text-xs px-4 py-3 rounded-xl border border-slate-700 focus:outline-none focus:border-pink-500">
                 </div>
                 <div>
-                    <label id="labelPass" class="block text-xs font-medium text-gray-300 mb-1">na lai thup</label>
+                    <label id="labelPass" class="block text-xs font-medium text-gray-300 mb-1">Thuhup (Password)</label>
                     <input type="password" id="authPassword" required placeholder="******" class="w-full bg-slate-800 text-white text-xs px-4 py-3 rounded-xl border border-slate-700 focus:outline-none focus:border-pink-500">
                 </div>
 
                 <button type="submit" id="btnSubmitAuth" class="w-full bg-gradient-to-r from-pink-500 to-rose-500 text-white py-3 rounded-xl text-xs font-bold shadow-lg hover:opacity-90 transition mt-2">
-                    Account lut tuh
+                    Lut aw / Register
                 </button>
             </form>
         </div>
@@ -102,18 +102,18 @@
             <!-- DISCOVER TAB -->
             <div id="discoverTab">
                 <div class="text-center mb-4">
-                    <h2 id="heroTitle" class="text-2xl font-bold mb-1">Na Hnakruh Le Lu Tuh Ah Thuai In</h2>
-                    <p id="heroDesc" class="text-xs text-gray-200 font-medium px-2">mi te ca le hnam dang te ca a him le a pha ber ah hi cupid platform</p>
+                    <h2 id="heroTitle" class="text-2xl font-bold mb-1">Na Duhmi Zawn Ruah</h2>
+                    <p id="heroDesc" class="text-xs text-gray-200 font-medium px-2">Miphun vialte caah ningcang le thliarhrang lo tein hman khawh mi Cupid Platform</p>
                 </div>
 
                 <!-- SEARCH & FILTER BOX -->
                 <div class="glass-card p-3 rounded-xl mb-4 shadow-md flex items-center space-x-2">
                     <div class="relative flex-grow">
                         <i class="fa-solid fa-magnifying-glass absolute left-3 top-3 text-gray-400 text-xs"></i>
-                        <input type="text" id="searchInput" oninput="filterProfiles()" placeholder="Hming in thuai hmun." class="w-full bg-slate-800 text-white text-xs pl-8 pr-3 py-2 rounded-lg border border-slate-700 focus:outline-none focus:border-pink-500">
+                        <input type="text" id="searchInput" oninput="filterProfiles()" placeholder="Hmin zawnin..." class="w-full bg-slate-800 text-white text-xs pl-8 pr-3 py-2 rounded-lg border border-slate-700 focus:outline-none focus:border-pink-500">
                     </div>
                     <select id="ethnicityFilter" onchange="filterProfiles()" class="bg-slate-800 text-pink-400 text-xs font-semibold border border-slate-700 rounded-lg px-2 py-2 focus:outline-none">
-                        <option id="optAll" value="all">A vesek in</option>
+                        <option id="optAll" value="all">Vialte</option>
                         <option value="falam">Falam</option>
                         <option value="mizo">Mizo</option>
                         <option value="myanmar">Myanmar</option>
@@ -125,9 +125,9 @@
                     <div class="flex items-start space-x-3">
                         <i class="fa-solid fa-shield-halved text-rose-500 text-lg mt-0.5"></i>
                         <div>
-                            <h3 id="rulesTitle" class="font-semibold text-rose-400 text-xs">Hluntuh le zuamtuh thu teh</h3>
+                            <h3 id="rulesTitle" class="font-semibold text-rose-400 text-xs">Hrihrang Le Phung</h3>
                             <p id="rulesText" class="text-[11px] text-gray-200 mt-0.5 font-medium leading-relaxed">
-                                Uan pah ngua ai tuh ngua, mi hnai hnawk zuang lai uan hmang tuh ngua, cozah deih zuang ngua zuk te dah tuh ngua
+                                Cazin ṭhalo le mi hrokhrawl ti awk a si lo.
                             </p>
                         </div>
                     </div>
@@ -166,7 +166,7 @@
                 <!-- No Profile Found State -->
                 <div id="noProfileMsg" class="hidden glass-card p-6 rounded-2xl text-center text-gray-400 text-xs">
                     <i class="fa-solid fa-user-slash text-3xl mb-2 text-pink-500/60"></i>
-                    <p id="noProfileText">Profile hmu tuh om ngua</p>
+                    <p id="noProfileText">Zawn hmuh khawh a si lo.</p>
                 </div>
             </div>
 
@@ -184,7 +184,7 @@
                 </div>
 
                 <form onsubmit="sendPrivateMessage(event)" class="flex items-center space-x-2">
-                    <input type="text" id="messageInput" placeholder="lai ngan hmun tuh..." class="flex-grow bg-slate-800 text-white text-xs px-4 py-3 rounded-xl border border-slate-700 focus:outline-none focus:border-pink-500">
+                    <input type="text" id="messageInput" placeholder="Cazin ngan na duh..." class="flex-grow bg-slate-800 text-white text-xs px-4 py-3 rounded-xl border border-slate-700 focus:outline-none focus:border-pink-500">
                     <button type="submit" class="bg-gradient-to-r from-pink-500 to-purple-600 text-white px-4 py-3 rounded-xl text-xs font-semibold shadow-md hover:opacity-90 transition">
                         <i class="fa-solid fa-paper-plane"></i>
                     </button>
@@ -227,7 +227,7 @@
         <p class="mt-1 text-gray-400">Created with ❤️ by <span class="text-pink-400 font-medium">Isaiah Cung</span></p>
     </footer>
 
-    <!-- Firebase Realtime Logic & Comprehensive Translations Sync -->
+    <!-- Firebase Realtime Logic & Corrected Translation Sync -->
     <script>
         const firebaseConfig = {
             databaseURL: "https://myanmar-dating-app-default-rtdb.firebaseio.com/"
@@ -244,25 +244,6 @@
         let currentIndex = 0;
 
         const translations = {
-            tapong: {
-                heroTitle: "Na Hnakruh Le Lu Tuh Ah Thuai In",
-                heroDesc: "mi te ca le hnam dang te ca a him le a pha ber ah hi cupid platform",
-                rulesTitle: "Hluntuh le zuamtuh thu teh",
-                rulesText: "Uan pah ngua ai tuh ngua, mi hnai hnawk zuang lai uan hmang tuh ngua, cozah deih zuang ngua zuk te dah tuh ngua",
-                authTitle: "Hello Na Hmuak Ing",
-                authDesc: "Account lut in Account Thiar Vuah In",
-                labelName: "Hming (Name)",
-                phName: "na hming ngan in",
-                labelContact: "Phong ngua le email",
-                phEmail: "09xxxxxxxxx",
-                labelPass: "na lai thup",
-                phPass: "******",
-                btnAuth: "Account lut tuh",
-                phChatInput: "lai ngan hmun tuh...",
-                phSearch: "Hming in thuai hmun.",
-                optAll: "A vesek in",
-                noProfileText: "Profile hmu tuh om ngua"
-            },
             falam: {
                 heroTitle: "Na Duhmi Zawn Ruah",
                 heroDesc: "Miphun vialte caah ningcang le thliarhrang lo tein hman khawh mi Cupid Platform",
@@ -300,6 +281,25 @@
                 phSearch: "Min kawlnak...",
                 optAll: "Duhdim",
                 noProfileText: "Profile kawlmi a um lo."
+            },
+            tapong: {
+                heroTitle: "Na Hnakruh Le Lu Tuh Ah Thuai In",
+                heroDesc: "mi te ca le hnam dang te ca a him le a pha ber ah hi cupid platform",
+                rulesTitle: "Hluntuh le zuamtuh thu teh",
+                rulesText: "Uan pah ngua ai tuh ngua, mi hnai hnawk zuang lai uan hmang tuh ngua, cozah deih zuang ngua zuk te dah tuh ngua",
+                authTitle: "Hello Na Hmuak Ing",
+                authDesc: "Account lut in Account Thiar Vuah In",
+                labelName: "Hming (Name)",
+                phName: "na hming ngan in",
+                labelContact: "Phong ngua le email",
+                phEmail: "09xxxxxxxxx",
+                labelPass: "na lai thup",
+                phPass: "******",
+                btnAuth: "Account lut tuh",
+                phChatInput: "lai ngan hmun tuh...",
+                phSearch: "Hming in thuai hmun.",
+                optAll: "A vesek in",
+                noProfileText: "Profile hmu tuh om ngua"
             },
             mizo: {
                 heroTitle: "I Duhtak Zawng Rawh",
@@ -437,7 +437,7 @@
         };
 
         function changeLanguage(lang) {
-            const data = translations[lang] || translations['tapong'];
+            const data = translations[lang] || translations['falam'];
             
             const heroTitle = document.getElementById('heroTitle');
             const heroDesc = document.getElementById('heroDesc');
