@@ -51,7 +51,7 @@
                 <button onclick="switchTab('admin')" id="btnAdmin" class="bg-slate-800 text-amber-400 text-xs px-2.5 py-1.5 rounded-lg font-semibold border border-slate-700 transition hidden"><i class="fa-solid fa-lock mr-1"></i>Admin</button>
             </div>
 
-            <!-- Language Selector (All Languages) -->
+            <!-- Language Selector -->
             <select id="languageSelect" onchange="changeLanguage(this.value)" class="bg-slate-800 text-pink-400 text-xs font-semibold border border-pink-500/30 rounded-lg px-2 py-1.5 focus:outline-none cursor-pointer">
                 <option value="my">🇲🇲 မြန်မာ</option>
                 <option value="tapong">🇲🇲 Tapong</option>
@@ -97,7 +97,7 @@
             </form>
         </div>
 
-        <!-- APP CONTENT (HIDDEN UNTIL LOGIN) -->
+        <!-- APP CONTENT -->
         <div id="appSection" class="hidden">
             <!-- DISCOVER TAB -->
             <div id="discoverTab">
@@ -110,7 +110,7 @@
                 <div class="glass-card p-3 rounded-xl mb-4 shadow-md flex items-center space-x-2">
                     <div class="relative flex-grow">
                         <i class="fa-solid fa-magnifying-glass absolute left-3 top-3 text-gray-400 text-xs"></i>
-                        <input type="text" id="searchInput" oninput="filterProfiles()" placeholder="နာမည် သို့မဟုတ် မြို့/ဒေသဖြင့် ရှာရန်..." class="w-full bg-slate-800 text-white text-xs pl-8 pr-3 py-2 rounded-lg border border-slate-700 focus:outline-none focus:border-pink-500">
+                        <input type="text" id="searchInput" oninput="filterProfiles()" placeholder="နာမည်ဖြင့် ရှာရန်..." class="w-full bg-slate-800 text-white text-xs pl-8 pr-3 py-2 rounded-lg border border-slate-700 focus:outline-none focus:border-pink-500">
                     </div>
                     <select id="ethnicityFilter" onchange="filterProfiles()" class="bg-slate-800 text-pink-400 text-xs font-semibold border border-slate-700 rounded-lg px-2 py-2 focus:outline-none">
                         <option id="optAll" value="all">အားလုံး</option>
@@ -141,7 +141,7 @@
                             <div class="flex items-center justify-between">
                                 <div>
                                     <h3 id="profileName" class="text-xl font-bold text-white"></h3>
-                                    <p id="profileLocation" class="text-xs text-pink-400 font-medium"><i class="fa-solid fa-location-dot mr-1"></i></p>
+                                    <p id="profileLocation" class="text-xs text-pink-400 font-medium"><i class="fa-solid fa-user-check mr-1"></i>Active Member</p>
                                 </div>
                                 <span class="bg-pink-500/20 text-pink-300 text-xs px-2.5 py-1 rounded-full border border-pink-500/30">Verified</span>
                             </div>
@@ -229,7 +229,6 @@
 
     <!-- Firebase Realtime Logic -->
     <script>
-        // Firebase Config
         const firebaseConfig = {
             databaseURL: "https://myanmar-dating-app-default-rtdb.firebaseio.com/"
         };
@@ -260,7 +259,7 @@
                 phPass: "******",
                 btnAuth: "အကောင့်ဝင်မည် / Register",
                 phChatInput: "စာတို ရိုက်ရန်...",
-                phSearch: "နာမည် သို့မဟုတ် မြို့/ဒေသဖြင့် ရှာရန်...",
+                phSearch: "နာမည်ဖြင့် ရှာရန်...",
                 optAll: "အားလုံး",
                 noProfileText: "ရှာဖွေမှုနှင့် ကိုက်ညီသော Profile မတွေ့ရှိပါ။"
             },
@@ -279,7 +278,7 @@
                 phPass: "******",
                 btnAuth: "Sign In / Register",
                 phChatInput: "Type a message...",
-                phSearch: "Search by name or location...",
+                phSearch: "Search by name...",
                 optAll: "All",
                 noProfileText: "No matching profiles found."
             },
@@ -317,7 +316,7 @@
                 phPass: "******",
                 btnAuth: "Lut aw / Register",
                 phChatInput: "Cazin ngan na duh...",
-                phSearch: "Hmin asiloah khua zawnin...",
+                phSearch: "Hmin zawnin...",
                 optAll: "Vialte",
                 noProfileText: "Zawn hmuh khawh a si lo."
             },
@@ -336,7 +335,7 @@
                 phPass: "******",
                 btnAuth: "Lut rawh / Register",
                 phChatInput: "Thuchah ziak rawh...",
-                phSearch: "Hming emaw hmunhma zawng rawh...",
+                phSearch: "Hming zawng rawh...",
                 optAll: "A ve ve in",
                 noProfileText: "Profile hmuh tur a awm lo."
             },
@@ -355,7 +354,7 @@
                 phPass: "******",
                 btnAuth: "Lut / Register",
                 phChatInput: "Catuak tial...",
-                phSearch: "Min le Khua kawlnak...",
+                phSearch: "Min kawlnak...",
                 optAll: "Duhdim",
                 noProfileText: "Profile kawlmi a um lo."
             },
@@ -374,7 +373,7 @@
                 phPass: "******",
                 btnAuth: "Lut in / Register",
                 phChatInput: "Lai gelh in...",
-                phSearch: "Min le Kho zawn in...",
+                phSearch: "Min zawn in...",
                 optAll: "Khempeuh",
                 noProfileText: "Profile muzolo."
             },
@@ -480,7 +479,7 @@
             if (noProfileText && data.noProfileText) noProfileText.innerText = data.noProfileText;
         }
 
-        // Fetch Realtime Profiles from Firebase
+        // Fetch Realtime Profiles from Firebase Database
         function listenToProfiles() {
             db.ref('users').on('value', (snapshot) => {
                 const usersData = snapshot.val();
@@ -493,7 +492,6 @@
                             allProfilesList.push({
                                 id: key,
                                 name: u.name || "Anonymous",
-                                location: u.location || "Myanmar",
                                 ethnicity: u.ethnicity || "myanmar",
                                 bio: u.bio || "Cupid Platform မိတ်ဆွေအသစ်များနဲ့ ခင်မင်လိုပါသည်။",
                                 image: u.image || "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=600"
@@ -510,7 +508,7 @@
             const selectedEth = document.getElementById('ethnicityFilter').value;
 
             filteredProfiles = allProfilesList.filter(p => {
-                const matchesQuery = p.name.toLowerCase().includes(query) || p.location.toLowerCase().includes(query);
+                const matchesQuery = p.name.toLowerCase().includes(query);
                 const matchesEth = (selectedEth === 'all') || (p.ethnicity === selectedEth);
                 const isNotSelf = currentUser ? p.id !== currentUser.id : true;
                 return matchesQuery && matchesEth && isNotSelf;
@@ -539,22 +537,18 @@
                 return;
             }
 
-            const cleanId = name.replace(/[^a-zA-Z0-9]/g, "_").toLowerCase();
-            const userId = isAdmin ? 'admin_owner' : 'user_' + cleanId;
-            
+            const cleanId = 'user_' + Date.now();
             currentUser = {
-                id: userId,
+                id: cleanId,
                 name: name,
                 isAdmin: isAdmin
             };
 
-            // Save user to Firebase Database so others can see in real-time
             if (!isAdmin) {
-                db.ref('users/' + userId).set({
+                db.ref('users/' + cleanId).set({
                     name: name,
                     joinedAt: Date.now(),
                     isAdmin: false,
-                    location: "Myanmar",
                     ethnicity: "myanmar",
                     bio: "Cupid Platform မိတ်ဆွေအသစ်များနဲ့ ခင်မင်လိုပါသည်။",
                     image: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=600"
@@ -566,6 +560,9 @@
             document.getElementById('mainNavButtons').classList.remove('hidden');
 
             listenToProfiles();
+
+            const selectedLang = document.getElementById('languageSelect').value;
+            changeLanguage(selectedLang);
 
             if (currentUser.isAdmin) {
                 document.getElementById('btnAdmin').classList.remove('hidden');
@@ -582,7 +579,6 @@
             currentActiveProfile = p;
             document.getElementById('profileImg').src = p.image;
             document.getElementById('profileName').innerText = p.name;
-            document.getElementById('profileLocation').innerHTML = `<i class="fa-solid fa-location-dot mr-1"></i> ${p.location}`;
             document.getElementById('profileBio').innerText = p.bio;
 
             document.getElementById('chatAvatar').src = p.image;
@@ -701,7 +697,7 @@
                         div.innerHTML = `
                             <div>
                                 <p class="text-pink-400 font-bold">${u.name}</p>
-                                <p class="text-[10px] text-gray-400"><i class="fa-solid fa-location-dot mr-1"></i>${u.location || 'Myanmar'}</p>
+                                <p class="text-[10px] text-gray-400"><i class="fa-solid fa-user-check mr-1"></i>Active Account</p>
                             </div>
                             <span class="bg-emerald-500/20 text-emerald-300 text-[9px] px-2 py-0.5 rounded-full border border-emerald-500/30">Active</span>
                         `;
