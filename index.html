@@ -51,7 +51,7 @@
                 <button onclick="switchTab('admin')" id="btnAdmin" class="bg-slate-800 text-amber-400 text-xs px-2.5 py-1.5 rounded-lg font-semibold border border-slate-700 transition hidden"><i class="fa-solid fa-lock mr-1"></i>Admin</button>
             </div>
 
-            <!-- Language Selector -->
+            <!-- Language Selector (Header) -->
             <select id="languageSelect" onchange="changeLanguage(this.value)" class="bg-slate-800 text-pink-400 text-xs font-semibold border border-pink-500/30 rounded-lg px-2 py-1.5 focus:outline-none cursor-pointer">
                 <option value="my">🇲🇲 မြန်မာ</option>
                 <option value="falam">🇲🇲 Falam</option>
@@ -86,6 +86,20 @@
                 <div>
                     <label id="labelPass" class="block text-xs font-medium text-gray-300 mb-1">Ca thupmi</label>
                     <input type="password" id="authPassword" required placeholder="******" class="w-full bg-slate-800 text-white text-xs px-4 py-3 rounded-xl border border-slate-700 focus:outline-none focus:border-pink-500">
+                </div>
+
+                <!-- Language Selection at Registration/Login -->
+                <div>
+                    <label id="labelLangJoin" class="block text-xs font-medium text-pink-400 mb-1"><i class="fa-solid fa-earth-americas mr-1"></i>Join ချင်သော ဘာသာစကား ရွေးပါ</label>
+                    <select id="authLanguage" class="w-full bg-slate-800 text-pink-300 text-xs px-4 py-3 rounded-xl border border-pink-500/40 focus:outline-none focus:border-pink-500 cursor-pointer">
+                        <option value="falam">🇲🇲 Falam</option>
+                        <option value="hakha">🇲🇲 Hakha</option>
+                        <option value="tapong">🇲🇲 Tapong</option>
+                        <option value="mizo">🇲🇲 Mizo</option>
+                        <option value="tidim">🇲🇲 Tidim</option>
+                        <option value="my">🇲🇲 မြန်မာ</option>
+                        <option value="en">🇺🇸 English</option>
+                    </select>
                 </div>
 
                 <button type="submit" id="btnSubmitAuth" class="w-full bg-gradient-to-r from-pink-500 to-rose-500 text-white py-3 rounded-xl text-xs font-bold shadow-lg hover:opacity-90 transition mt-2">
@@ -224,7 +238,6 @@
         ];
         let currentIndex = 0;
 
-        // ဘာသာစကားအလိုက် အချက်အလက်များနှင့် သီးသန့် Chat Room အမည်များ
         const translations = {
             my: {
                 authTitle: "အကောင့်ဝင်ရန်",
@@ -241,7 +254,8 @@
                 rulesTitle: "အသိုင်းအဝိုင်း စည်းမျဉ်းစည်းကမ်းများ",
                 rulesText: "ညစ်ပတ်သော စာ/စကားများ ရေးသားခြင်း၊ ရိုင်းစိုင်းစွာ ပြောဆိုခြင်းနှင့် အနှောင့်အယှက်ပေးခြင်းများကို လုံးဝ ခွင့်မပြုပါ။",
                 chatInputPh: "စာတို ရိုက်ရန်...",
-                roomName: "မြန်မာ Community Room"
+                roomName: "မြန်မာ Community Room",
+                labelLangJoin: "Join ချင်သော ဘာသာစကား ရွေးပါ"
             },
             falam: {
                 authTitle: "Na Dam Maw",
@@ -258,7 +272,8 @@
                 rulesTitle: "Thlunding mi le Zawmdingmi pawl",
                 rulesText: "Tawngthalo le midang hnaihnawk zawng in le Cozah duh lo zawng thil tuah lo ding. zuk tar lo ding.",
                 chatInputPh: "Ca kuat ngan nak",
-                roomName: "Falam Community Room"
+                roomName: "Falam Community Room",
+                labelLangJoin: "Join duh mi ṭawng hril aw"
             },
             hakha: {
                 authTitle: "Kan I Lawm",
@@ -275,7 +290,8 @@
                 rulesTitle: "Hrinhrang le phung",
                 rulesText: "Cazin tha lo le mi hrokhrawl ti awk si lo",
                 chatInputPh: "Cakuat tial",
-                roomName: "Hakha Community Room"
+                roomName: "Hakha Community Room",
+                labelLangJoin: "Join duh mi holh thim"
             },
             tapong: {
                 authTitle: "Na Hmuak Ing",
@@ -292,7 +308,8 @@
                 rulesTitle: "Hluntuh le Zawmtuh",
                 rulesText: "Uan pha ngua ai tuh ngua. Mi hnaihnawk zuang lai ngan tuh ngua. Cozah deih ngua zuk dah tuh ngua.",
                 chatInputPh: "Lai kuat ngan hmun",
-                roomName: "Tapong Community Room"
+                roomName: "Tapong Community Room",
+                labelLangJoin: "Join tuh lai thuai hmun"
             },
             mizo: {
                 authTitle: "Chibai / Welcome",
@@ -309,7 +326,8 @@
                 rulesTitle: "Dan le Dun",
                 rulesText: "Thumal bawlhhlawh le inhnial buaina a awm tur ani lo. En mawi lo zawng thlalak te dah tur ani lo",
                 chatInputPh: "Thuchah ziak rawh",
-                roomName: "Mizo Community Room"
+                roomName: "Mizo Community Room",
+                labelLangJoin: "Join duh mi tawng thlang rawh"
             },
             tidim: {
                 authTitle: "Hong Dawn Ing / Hello",
@@ -326,7 +344,8 @@
                 rulesTitle: "Thu ki zaksakna",
                 rulesText: "Kampau sia zang lo ding. Mite a ding buaina bawl lo ding. Kumpi phal lo mante tak lo ding",
                 chatInputPh: "Lai gelh in",
-                roomName: "Tidim Community Room"
+                roomName: "Tidim Community Room",
+                labelLangJoin: "Join nopna pau teel in"
             },
             en: {
                 authTitle: "Welcome",
@@ -343,13 +362,18 @@
                 rulesTitle: "Community Guidelines",
                 rulesText: "Inappropriate language and behavior are strictly prohibited.",
                 chatInputPh: "Type a message...",
-                roomName: "English Community Room"
+                roomName: "English Community Room",
+                labelLangJoin: "Select Language to Join"
             }
         };
 
         function changeLanguage(lang) {
             const data = translations[lang] || translations['my'];
             
+            document.getElementById('languageSelect').value = lang;
+            const authLanguage = document.getElementById('authLanguage');
+            if (authLanguage) authLanguage.value = lang;
+
             const heroTitle = document.getElementById('heroTitle');
             const heroDesc = document.getElementById('heroDesc');
             const rulesTitle = document.getElementById('rulesTitle');
@@ -366,6 +390,7 @@
             const btnSubmitAuth = document.getElementById('btnSubmitAuth');
             const messageInput = document.getElementById('messageInput');
             const roomTitleDisplay = document.getElementById('roomTitleDisplay');
+            const labelLangJoin = document.getElementById('labelLangJoin');
 
             if (heroTitle) heroTitle.innerText = data.heroTitle;
             if (heroDesc) heroDesc.innerText = data.heroDesc;
@@ -383,8 +408,8 @@
             if (btnSubmitAuth) btnSubmitAuth.innerText = data.btnAuth;
             if (messageInput && data.chatInputPh) messageInput.placeholder = data.chatInputPh;
             if (roomTitleDisplay && data.roomName) roomTitleDisplay.innerText = data.roomName;
+            if (labelLangJoin && data.labelLangJoin) labelLangJoin.innerHTML = `<i class="fa-solid fa-earth-americas mr-1"></i>${data.labelLangJoin}`;
 
-            // ဘာသာစကားပြောင်းလိုက်သည်နှင့် လက်ရှိဖွင့်ထားသော Chat Room ကိုပါ အလိုအလျောက် သက်ဆိုင်ရာအခန်းသို့ ပြောင်းပေးမည်
             if (currentUser && !currentUser.isAdmin) {
                 loadCommunityChatMessages();
             }
@@ -394,6 +419,7 @@
             event.preventDefault();
             const name = document.getElementById('authName').value.trim();
             const password = document.getElementById('authPassword').value.trim();
+            const selectedLang = document.getElementById('authLanguage').value;
 
             const isAdmin = (name.toLowerCase() === 'admin' && (password.toLowerCase() === 'sawhai11'));
 
@@ -405,11 +431,16 @@
             currentUser = {
                 id: isAdmin ? 'admin_owner' : 'user_' + Math.floor(Math.random() * 100000),
                 name: name,
-                isAdmin: isAdmin
+                isAdmin: isAdmin,
+                language: selectedLang
             };
+
+            // ရွေးချယ်လိုက်သော ဘာသာစကားအတိုင်း App ရဲ့ UI နဲ့ Header Select ကို တန်းပြောင်းမည်
+            changeLanguage(selectedLang);
 
             db.ref('users/' + currentUser.id).set({
                 name: currentUser.name,
+                language: selectedLang,
                 joinedAt: Date.now(),
                 isAdmin: currentUser.isAdmin
             });
@@ -438,7 +469,7 @@
 
         function nextProfile(action) {
             if(action === 'like' || action === 'star') {
-                alert('❤️ Match တွေ့ပါပြီ! သက်ဆိုင်ရာ ဘာသာစကား Community Chat သို့ ခေါ်ဆောင်သွားပါမည်။');
+                alert('❤️ Match တွေ့ပါပြီ! သင်ရွေးချယ်ထားသော ဘာသာစကား Community Chat သို့ တန်းရောက်သွားပါမည်။');
                 switchTab('chat');
             } else {
                 currentIndex = (currentIndex + 1) % profiles.length;
@@ -474,7 +505,6 @@
             }
         }
 
-        // ရွေးချယ်ထားသော ဘာသာစကားအလိုက် သီးသန့် Room များကို ချိတ်ဆက်ပေးသော ဖန်ရှင်
         function loadCommunityChatMessages() {
             const chatMessages = document.getElementById('chatMessages');
             chatMessages.innerHTML = '';
