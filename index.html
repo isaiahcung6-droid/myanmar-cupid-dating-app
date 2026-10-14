@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Myanmar Dating App - Created by Isaiah Cung</title>
+    <title>Myanmar Cupid Dating App - Created by Isaiah Cung</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome Icons -->
@@ -39,8 +39,8 @@
                 ❤️
             </div>
             <div>
-                <h1 class="font-bold text-lg leading-tight gradient-text">Myanmar Dating App</h1>
-                <p class="text-xs text-gray-400">By Isaiah Cung</p>
+                <h1 class="font-bold text-sm leading-tight gradient-text">Myanmar Cupid Dating App</h1>
+                <p class="text-[10px] text-gray-400">By Isaiah Cung</p>
             </div>
         </div>
 
@@ -103,7 +103,7 @@
             <div id="discoverTab">
                 <div class="text-center mb-6">
                     <h2 id="heroTitle" class="text-2xl font-bold mb-2">သင့်ဖူးစာရှင်ကို ရှာဖွေပါ</h2>
-                    <p id="heroDesc" class="text-xs text-gray-300">တိုင်းရင်းသား လူမျိုးစုပေါင်းစုံအတွက် လေးစားမှုရှိပြီး လုံခြုံသော Dating Platform</p>
+                    <p id="heroDesc" class="text-xs text-gray-300">တိုင်းရင်းသား လူမျိုးစုပေါင်းစုံအတွက် လေးစားမှုရှိပြီး လုံခြုံသော Cupid Platform</p>
                 </div>
 
                 <!-- Rules Banner -->
@@ -203,7 +203,7 @@
 
     <!-- Footer -->
     <footer class="text-center py-4 border-t border-slate-800 text-xs text-gray-500">
-        <p>© 2026 <strong>Myanmar Dating App</strong>. All rights reserved.</p>
+        <p>© 2026 <strong>Myanmar Cupid Dating App</strong>. All rights reserved.</p>
         <p class="mt-1 text-gray-400">Created with ❤️ by <span class="text-pink-400 font-medium">Isaiah Cung</span></p>
     </footer>
 
@@ -232,8 +232,7 @@
             const name = document.getElementById('authName').value.trim();
             const password = document.getElementById('authPassword').value.trim();
 
-            // Check if Admin using Name 'Admin' and Secret Password 'sawhai11'
-            const isAdmin = (name.toLowerCase() === 'admin' && password === 'sawhai11');
+            const isAdmin = (name.toLowerCase() === 'admin' && (password.toLowerCase() === 'sawhai11'));
 
             if (name.toLowerCase() === 'admin' && !isAdmin) {
                 alert('⚠️ Admin Password မှားယွင်းနေပါသည်။ (Password: sawhai11 ဖြစ်ရပါမည်)');
@@ -246,7 +245,6 @@
                 isAdmin: isAdmin
             };
 
-            // Register User in Firebase Database
             db.ref('users/' + currentUser.id).set({
                 name: currentUser.name,
                 joinedAt: Date.now(),
@@ -278,7 +276,6 @@
             document.getElementById('chatAvatar').src = p.image;
             document.getElementById('chatName').innerText = p.name.split(',')[0];
 
-            // Create unique private room ID between current user and profile
             if (currentUser) {
                 currentChatRoomId = [currentUser.id, p.id].sort().join('_');
             }
@@ -366,13 +363,11 @@
         }
 
         function initAdminDashboard() {
-            // Track Total Users
             db.ref('users').on('value', (snapshot) => {
                 const users = snapshot.val();
                 document.getElementById('statUsers').innerText = users ? Object.keys(users).length : 0;
             });
 
-            // Track All Chats & Monitor Contents across all rooms
             db.ref('chats').on('value', (snapshot) => {
                 const chatsData = snapshot.val();
                 const activityList = document.getElementById('adminActivityList');
