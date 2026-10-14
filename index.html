@@ -171,7 +171,7 @@
             </div>
 
             <!-- CHAT TAB -->
-            <div id="chatTab" class="hidden flex flex-col h-[65vh]">
+            <div id="chatTab" class="hidden flex flex-col h-[75vh]">
                 <div class="glass-card p-3 rounded-t-xl flex items-center space-x-3 mb-2 flex-shrink-0">
                     <img id="chatAvatar" src="" class="w-10 h-10 rounded-full object-cover">
                     <div>
@@ -180,8 +180,9 @@
                     </div>
                 </div>
 
-                <!-- Chat Messages Container (Fixed Flex and Overflow) -->
-                <div id="chatMessages" class="glass-card flex-grow p-4 rounded-xl overflow-y-auto space-y-3 mb-3 flex flex-col min-h-[250px]">
+                <!-- Chat Messages Area -->
+                <div id="chatMessages" class="glass-card flex-grow p-4 rounded-xl overflow-y-auto space-y-3 mb-3 flex flex-col">
+                    <p class="text-gray-400 text-center text-xs my-auto">စကားစမြည် စတင်ပြောဆိုပါ...</p>
                 </div>
 
                 <form onsubmit="sendPrivateMessage(event)" class="flex items-center space-x-2 flex-shrink-0">
@@ -494,7 +495,7 @@
                 if (usersData) {
                     Object.keys(usersData).forEach(key => {
                         const u = usersData[key];
-                        if (!u.isAdmin) {
+                        if (!u.isAdmin && (!currentUser || key !== currentUser.id)) {
                             fetchedProfiles.push({
                                 id: key,
                                 name: u.name || "Anonymous",
@@ -638,8 +639,12 @@
             const chatMessages = document.getElementById('chatMessages');
             chatMessages.innerHTML = '';
 
-            if (!currentActiveProfile) return;
+            if (!currentActiveProfile) {
+                chatMessages.innerHTML = `<p class="text-gray-400 text-center text-xs my-auto">Profile ရွေးချယ်ထားခြင်း မရှိသေးပါ...</p>`;
+                return;
+            }
 
+            // Generate unique and sorted roomId for the chat pair
             const roomId = [currentUser.id, currentActiveProfile.id].sort().join('_');
 
             if (chatListenerRef) chatListenerRef.off();
@@ -648,6 +653,7 @@
             chatListenerRef.on('value', (snapshot) => {
                 chatMessages.innerHTML = '';
                 const messagesData = snapshot.val();
+                
                 if (!messagesData) {
                     chatMessages.innerHTML = `<p class="text-gray-400 text-center text-xs my-auto">စကားစမြည် စတင်ပြောဆိုပါ...</p>`;
                     return;
@@ -656,12 +662,13 @@
                 Object.keys(messagesData).forEach(key => {
                     const msg = messagesData[key];
                     const msgDiv = document.createElement('div');
+                    
                     if(msg.senderId === currentUser.id) {
-                        msgDiv.className = "self-end bg-pink-600 text-white text-xs px-3 py-2 rounded-2xl max-w-[75%]";
+                        msgDiv.className = "self-end bg-pink-600 text-white text-xs px-3 py-2 rounded-2xl max-w-[75%] my-1";
                         msgDiv.innerText = msg.text;
                     } else {
-                        msgDiv.className = "self-start bg-slate-800 text-gray-200 text-xs px-3 py-2 rounded-2xl max-w-[75%] border border-slate-700";
-                        msgDiv.innerHTML = `<span class="text-[9px] text-pink-400 block mb-0.5">${msg.senderName}</span>${msg.text}`;
+                        msgDiv.className = "self-start bg-slate-800 text-gray-200 text-xs px-3 py-2 rounded-2xl max-w-[75%] border border-slate-700 my-1";
+                        msgDiv.innerHTML = `<span class="text-[9px] text-pink-400 block mb-0.5 font-bold">${msg.senderName}</span>${msg.text}`;
                     }
                     chatMessages.appendChild(msgDiv);
                 });
@@ -673,6 +680,7 @@
             event.preventDefault();
             const input = document.getElementById('messageInput');
             const text = input.value.trim();
+            
             if(!text || !currentUser || !currentActiveProfile) return;
 
             const roomId = [currentUser.id, currentActiveProfile.id].sort().join('_');
