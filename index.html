@@ -242,7 +242,8 @@
                 phEmail: "09xxxxxxxxx",
                 labelPass: "စကားဝှက် (Password)",
                 phPass: "******",
-                btnAuth: "အကောင့်ဝင်မည် / Register"
+                btnAuth: "အကောင့်ဝင်မည် / Register",
+                phChatInput: "စာတို ရိုက်ရန်..."
             },
             en: {
                 heroTitle: "Find Your Match",
@@ -257,7 +258,8 @@
                 phEmail: "Enter phone or email",
                 labelPass: "Password",
                 phPass: "******",
-                btnAuth: "Sign In / Register"
+                btnAuth: "Sign In / Register",
+                phChatInput: "Type a message..."
             },
             tapong: {
                 heroTitle: "Na Nakruh, Na Lu tuah thuai in",
@@ -272,7 +274,8 @@
                 phEmail: "09xxxxxxxxx",
                 labelPass: "na lai thup",
                 phPass: "******",
-                btnAuth: "Account lut awm"
+                btnAuth: "Account lut awm",
+                phChatInput: "lai ngan hmun tuh"
             },
             falam: {
                 heroTitle: "Na Duhmi Zawn Ruah",
@@ -287,7 +290,8 @@
                 phEmail: "09xxxxxxxxx",
                 labelPass: "Thuhup (Password)",
                 phPass: "******",
-                btnAuth: "Lut aw / Register"
+                btnAuth: "Lut aw / Register",
+                phChatInput: "Cazin ngan na duh..."
             },
             mizo: {
                 heroTitle: "I Duhtak Zawng Rawh",
@@ -302,7 +306,8 @@
                 phEmail: "09xxxxxxxxx",
                 labelPass: "Thukhawchang (Password)",
                 phPass: "******",
-                btnAuth: "Lut rawh / Register"
+                btnAuth: "Lut rawh / Register",
+                phChatInput: "Thuchah ziak rawh..."
             }
         };
 
@@ -323,6 +328,7 @@
             const labelPass = document.getElementById('labelPass');
             const authPassword = document.getElementById('authPassword');
             const btnSubmitAuth = document.getElementById('btnSubmitAuth');
+            const messageInput = document.getElementById('messageInput');
 
             if (heroTitle) heroTitle.innerText = data.heroTitle;
             if (heroDesc) heroDesc.innerText = data.heroDesc;
@@ -338,6 +344,7 @@
             if (labelPass) labelPass.innerText = data.labelPass;
             if (authPassword && data.phPass) authPassword.placeholder = data.phPass;
             if (btnSubmitAuth) btnSubmitAuth.innerText = data.btnAuth;
+            if (messageInput && data.phChatInput) messageInput.placeholder = data.phChatInput;
         }
 
         function handleAuth(event) {
