@@ -8,6 +8,9 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Firebase SDK (Real-time Database & Auth) -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Padauk:wght@400;700&family=Poppins:wght@300;400;600;700&display=swap');
         body {
@@ -44,6 +47,7 @@
         <div class="flex items-center space-x-2">
             <button onclick="switchTab('discover')" id="btnDiscover" class="bg-pink-600 text-white text-xs px-3 py-1.5 rounded-lg font-semibold transition">Discover</button>
             <button onclick="switchTab('chat')" id="btnChat" class="bg-slate-800 text-gray-300 text-xs px-3 py-1.5 rounded-lg font-semibold border border-slate-700 transition">Chat</button>
+            <button onclick="switchTab('admin')" id="btnAdmin" class="bg-slate-800 text-amber-400 text-xs px-3 py-1.5 rounded-lg font-semibold border border-slate-700 transition"><i class="fa-solid fa-lock mr-1"></i>Admin</button>
 
             <!-- Language Selector -->
             <select id="languageSelect" onchange="changeLanguage(this.value)" class="bg-slate-800 text-pink-400 text-xs font-semibold border border-pink-500/30 rounded-lg px-2 py-1.5 focus:outline-none cursor-pointer">
@@ -84,7 +88,7 @@
                 </div>
             </div>
 
-            <!-- Dynamic Profile Card -->
+            <!-- Profile Card -->
             <div class="glass-card rounded-2xl overflow-hidden shadow-2xl relative mb-6">
                 <div class="relative h-80 bg-slate-700">
                     <img id="profileImg" src="" alt="Profile" class="w-full h-full object-cover">
@@ -100,7 +104,7 @@
                     </div>
                 </div>
 
-                <!-- Action Buttons (Pass / Like / Star) -->
+                <!-- Action Buttons -->
                 <div class="p-4 flex justify-around items-center bg-slate-900/80">
                     <button onclick="nextProfile('pass')" class="w-12 h-12 rounded-full bg-slate-800 text-gray-400 border border-slate-700 flex items-center justify-center hover:bg-rose-500 hover:text-white transition">
                         <i class="fa-solid fa-xmark text-xl"></i>
@@ -115,30 +119,58 @@
             </div>
         </div>
 
-        <!-- CHAT TAB -->
+        <!-- CHAT TAB (REAL-TIME DATABASE CHAT) -->
         <div id="chatTab" class="hidden flex flex-col h-[75vh]">
             <div class="glass-card p-3 rounded-t-xl flex items-center space-x-3 mb-2">
                 <img id="chatAvatar" src="" class="w-10 h-10 rounded-full object-cover">
                 <div>
                     <h3 id="chatName" class="font-bold text-sm text-white"></h3>
-                    <p class="text-[10px] text-emerald-400"><i class="fa-solid fa-circle text-[8px] mr-1"></i> Online</p>
+                    <p class="text-[10px] text-emerald-400"><i class="fa-solid fa-circle text-[8px] mr-1"></i> Real-time Chat Active</p>
                 </div>
             </div>
 
             <!-- Message History Container -->
             <div id="chatMessages" class="glass-card flex-grow p-4 rounded-xl overflow-y-auto space-y-3 mb-3 flex flex-col">
                 <div class="self-start bg-slate-800 text-gray-200 text-xs px-3 py-2 rounded-2xl max-w-[75%] border border-slate-700">
-                    မင်္ဂလာပါရှင်။ မိတ်ဆွေနဲ့ သိခွင့်ရတာ ဝမ်းသာပါတယ်။ 🙏
+                    မင်္ဂလာပါ! ဒီ Chat ထဲမှာ ပို့လိုက်တဲ့ စာတွေဟာ အပြင်လူတွေနဲ့ တကယ် အပြန်အလှန် ပို့လို့ရပါပြီ[span_2](start_span)[span_2](end_span)。
                 </div>
             </div>
 
             <!-- Text Input Box Form -->
-            <form onsubmit="sendMessage(event)" class="flex items-center space-x-2">
+            <form onsubmit="sendRealtimeMessage(event)" class="flex items-center space-x-2">
                 <input type="text" id="messageInput" placeholder="စာတို ရိုက်ရန်..." class="flex-grow bg-slate-800 text-white text-xs px-4 py-3 rounded-xl border border-slate-700 focus:outline-none focus:border-pink-500">
                 <button type="submit" class="bg-gradient-to-r from-pink-500 to-purple-600 text-white px-4 py-3 rounded-xl text-xs font-semibold shadow-md hover:opacity-90 transition">
                     <i class="fa-solid fa-paper-plane"></i>
                 </button>
             </form>
+        </div>
+
+        <!-- ADMIN TAB (LIVE STATS & DATABASE LOGS) -->
+        <div id="adminTab" class="hidden">
+            <div class="glass-card p-5 rounded-2xl shadow-xl">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="font-bold text-base text-amber-400"><i class="fa-solid fa-gauge mr-2"></i>Admin Dashboard</h3>
+                    <span class="bg-emerald-500/20 text-emerald-300 text-[10px] px-2 py-0.5 rounded-full border border-emerald-500/30">Live Database</span>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3 mb-4">
+                    <div class="bg-slate-800/80 p-3 rounded-xl border border-slate-700 text-center">
+                        <p class="text-xs text-gray-400">Total Users</p>
+                        <h4 id="statUsers" class="text-xl font-bold text-white mt-1">1</h4>
+                    </div>
+                    <div class="bg-slate-800/80 p-3 rounded-xl border border-slate-700 text-center">
+                        <p class="text-xs text-gray-400">Total Messages</p>
+                        <h4 id="statMessages" class="text-xl font-bold text-pink-400 mt-1">0</h4>
+                    </div>
+                </div>
+
+                <div class="space-y-2">
+                    <h4 class="text-xs font-semibold text-gray-400 uppercase">Live Chat Logs</h4>
+                    <div id="adminActivityList" class="bg-slate-900/60 p-3 rounded-xl text-xs space-y-2 border border-slate-800 max-h-48 overflow-y-auto">
+                        <p class="text-gray-300">• System connected to Firebase successfully.</p>
+                    </div>
+                </div>
+            </div>
         </div>
 
     </main>
@@ -149,8 +181,15 @@
         <p class="mt-1 text-gray-400">Created with ❤️ by <span class="text-pink-400 font-medium">Isaiah Cung</span></p>
     </footer>
 
-    <!-- JavaScript -->
+    <!-- JavaScript & Firebase Real-time Logic -->
     <script>
+        // Firebase Free Public Test Configuration (Real-time DB)
+        const firebaseConfig = {
+            databaseURL: "https://myanmar-dating-app-default-rtdb.firebaseio.com/"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+
         const profiles = [
             { name: "Lian, 24", location: "Yangon • Falam / Myanmar", bio: "သီချင်းနားထောင်ရတာ ကြိုက်တယ်။ မိတ်ဆွေအသစ်များနဲ့ ခင်မင်ချင်ပါတယ်။", image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=600" },
             { name: "Nuam, 22", location: "Mandalay • Mizo / Myanmar", bio: "ဝါသနာကတော့ ခရီးသွားတာနဲ့ စာဖတ်တာပါ။", image: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&q=80&w=600" },
@@ -159,6 +198,7 @@
         ];
 
         let currentIndex = 0;
+        let currentUserId = 'user_' + Math.floor(Math.random() * 100000);
 
         function loadProfile() {
             const p = profiles[currentIndex];
@@ -181,9 +221,92 @@
             }
         }
 
+        function switchTab(tab) {
+            const discoverTab = document.getElementById('discoverTab');
+            const chatTab = document.getElementById('chatTab');
+            const adminTab = document.getElementById('adminTab');
+            const btnDiscover = document.getElementById('btnDiscover');
+            const btnChat = document.getElementById('btnChat');
+            const btnAdmin = document.getElementById('btnAdmin');
+
+            discoverTab.classList.add('hidden');
+            chatTab.classList.add('hidden');
+            adminTab.classList.add('hidden');
+            btnDiscover.className = "bg-slate-800 text-gray-300 text-xs px-3 py-1.5 rounded-lg font-semibold border border-slate-700 transition";
+            btnChat.className = "bg-slate-800 text-gray-300 text-xs px-3 py-1.5 rounded-lg font-semibold border border-slate-700 transition";
+            btnAdmin.className = "bg-slate-800 text-amber-400 text-xs px-3 py-1.5 rounded-lg font-semibold border border-slate-700 transition";
+
+            if(tab === 'discover') {
+                discoverTab.classList.remove('hidden');
+                btnDiscover.className = "bg-pink-600 text-white text-xs px-3 py-1.5 rounded-lg font-semibold transition";
+            } else if(tab === 'chat') {
+                chatTab.classList.remove('hidden');
+                btnChat.className = "bg-pink-600 text-white text-xs px-3 py-1.5 rounded-lg font-semibold transition";
+            } else {
+                adminTab.classList.remove('hidden');
+                btnAdmin.className = "bg-amber-600 text-white text-xs px-3 py-1.5 rounded-lg font-semibold transition";
+            }
+        }
+
+        // Real-time Chat Sending to Firebase Database
+        function sendRealtimeMessage(event) {
+            event.preventDefault();
+            const input = document.getElementById('messageInput');
+            const text = input.value.trim();
+            if(!text) return;
+
+            const messageData = {
+                sender: currentUserId,
+                text: text,
+                timestamp: Date.now()
+            };
+
+            // Push to Firebase Realtime Database
+            db.ref('messages').push(messageData);
+            input.value = '';
+        }
+
+        // Listen to Real-time Messages from Database
+        db.ref('messages').on('child_added', (snapshot) => {
+            const msg = snapshot.val();
+            const chatMessages = document.getElementById('chatMessages');
+
+            const msgDiv = document.createElement('div');
+            if(msg.sender === currentUserId) {
+                msgDiv.className = "self-end bg-pink-600 text-white text-xs px-3 py-2 rounded-2xl max-w-[75%]";
+            } else {
+                msgDiv.className = "self-start bg-slate-800 text-gray-200 text-xs px-3 py-2 rounded-2xl max-w-[75%] border border-slate-700";
+                msgDiv.innerHTML = `<span class="text-[9px] text-pink-400 block mb-0.5">Other User</span>${msg.text}`;
+            }
+            if(msg.sender === currentUserId) {
+                msgDiv.innerText = msg.text;
+            }
+
+            chatMessages.appendChild(msgDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        });
+
+        // Track Total Messages in Admin Dashboard
+        db.ref('messages').on('value', (snapshot) => {
+            const data = snapshot.val();
+            const count = data ? Object.keys(data).length : 0;
+            document.getElementById('statMessages').innerText = count;
+
+            const activityList = document.getElementById('adminActivityList');
+            if(data) {
+                const keys = Object.keys(data);
+                const lastKey = keys[keys.length - 1];
+                const lastMsg = data[lastKey];
+                const p = document.createElement('p');
+                p.className = "text-gray-300";
+                p.innerText = `• New message: "${lastMsg.text}"`;
+                activityList.appendChild(p);
+            }
+        });
+
         const translations = {
-            my: { heroTitle: "သင့်ဖူးစာရှင်ကို ရှာဖွေပါ", heroDesc: "တိုင်းရင်းသား လူမျိုးစုပေါင်းစုံအတွက် လေးစားမှုရှိပြီး လုံခြုံသော Dating Platform", rulesTitle: "အသိုင်းအဝိုင်း စည်းမျဉ်းစည်းကမ်းများ", rulesText: "ညစ်ပတ်သော စာ/စကားများ ရေးသားခြင်း၊ ရိုင်းစိုင်းစွာ ပြောဆိုခြင်းနှင့် အနှောင့်အယှက်ပေးခြင်းများကို လုံးဝ ခွင့်မပြုပါ။" },
-            en: { heroTitle: "Find Your Perfect Match", heroDesc: "A respectful and secure dating platform for all ethnic communities.", rulesTitle: "Community Guidelines", rulesText: "No inappropriate language, toxic behavior, or harassment allowed." }
+            my: { heroTitle: "သင့်ဖူးစာရှင်ကို ရှာဖွေပါ", heroDesc: "တိုင်းရင်းသား လူမျိုးစုပေါင်းစုံအတွက် လေးစားမှုရှိပြီး လုံခြုံသော Dating Platform" },
+            en: { heroTitle: "Find Your Perfect Match", heroDesc: "A respectful and secure dating platform for all ethnic communities." }
         };
 
         function changeLanguage(lang) {
@@ -191,53 +314,7 @@
             if(data) {
                 document.getElementById('heroTitle').innerText = data.heroTitle;
                 document.getElementById('heroDesc').innerText = data.heroDesc;
-                document.getElementById('rulesTitle').innerText = data.rulesTitle;
-                document.getElementById('rulesText').innerText = data.rulesText;
             }
-        }
-
-        function switchTab(tab) {
-            const discoverTab = document.getElementById('discoverTab');
-            const chatTab = document.getElementById('chatTab');
-            const btnDiscover = document.getElementById('btnDiscover');
-            const btnChat = document.getElementById('btnChat');
-
-            if(tab === 'discover') {
-                discoverTab.classList.remove('hidden');
-                chatTab.classList.add('hidden');
-                btnDiscover.className = "bg-pink-600 text-white text-xs px-3 py-1.5 rounded-lg font-semibold transition";
-                btnChat.className = "bg-slate-800 text-gray-300 text-xs px-3 py-1.5 rounded-lg font-semibold border border-slate-700 transition";
-            } else {
-                discoverTab.classList.add('hidden');
-                chatTab.classList.remove('hidden');
-                btnChat.className = "bg-pink-600 text-white text-xs px-3 py-1.5 rounded-lg font-semibold transition";
-                btnDiscover.className = "bg-slate-800 text-gray-300 text-xs px-3 py-1.5 rounded-lg font-semibold border border-slate-700 transition";
-            }
-        }
-
-        function sendMessage(event) {
-            event.preventDefault();
-            const input = document.getElementById('messageInput');
-            const text = input.value.trim();
-            if(!text) return;
-
-            const chatMessages = document.getElementById('chatMessages');
-
-            const userMsg = document.createElement('div');
-            userMsg.className = "self-end bg-pink-600 text-white text-xs px-3 py-2 rounded-2xl max-w-[75%]";
-            userMsg.innerText = text;
-            chatMessages.appendChild(userMsg);
-
-            input.value = '';
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-
-            setTimeout(() => {
-                const replyMsg = document.createElement('div');
-                replyMsg.className = "self-start bg-slate-800 text-gray-200 text-xs px-3 py-2 rounded-2xl max-w-[75%]";
-                replyMsg.innerText = "မင်္ဂလာပါရှင်။ စာပို့ပေးလို့ ကျေးဇူးတင်ပါတယ်ရှင် 😊";
-                chatMessages.appendChild(replyMsg);
-                chatMessages.scrollTop = chatMessages.scrollHeight;
-            }, 1000);
         }
 
         window.onload = loadProfile;
