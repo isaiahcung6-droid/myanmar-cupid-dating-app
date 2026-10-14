@@ -6,72 +6,456 @@
     <title>Myanmar Cupid Dating App - Created by Isaiah Cung</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
     <style>
-        /* မူလ Style များ ဒီမှာ ရှိပါမယ် */
+        @import url('https://fonts.googleapis.com/css2?family=Padauk:wght@400;700&family=Poppins:wght@300;400;600;700&display=swap');
+        body {
+            font-family: 'Poppins', 'Padauk', sans-serif;
+            background-color: #0f172a;
+            color: #f8fafc;
+        }
+        .glass-card {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .gradient-text {
+            background: linear-gradient(135deg, #ec4899, #8b5cf6, #3b82f6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
     </style>
 </head>
-<body class="min-h-screen flex flex-col justify-between ...">
+<body class="min-h-screen flex flex-col justify-between">
 
-    <!-- Navbar အပိုင်း -->
-    <nav class="...">
-        <!-- ဥပမာ - ဘာသာစကားရွေးရန် Dropdown ထည့်မည့်နေရာ -->
-        <select id="lang-select" class="bg-gray-800 text-white px-2 py-1 rounded">
-            <option value="my">မြန်မာ</option>
-            <option value="en">English</option>
-            <option value="tapong">Tapong</option>
-        </select>
+    <!-- Navigation Bar -->
+    <nav class="glass-card sticky top-0 z-50 px-4 py-3 flex justify-between items-center shadow-lg">
+        <div class="flex items-center space-x-2">
+            <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-pink-500 to-purple-600 flex items-center justify-center text-white font-bold text-xl shadow-md">
+                ❤️
+            </div>
+            <div>
+                <h1 class="font-bold text-sm leading-tight gradient-text">Myanmar Cupid Dating App</h1>
+                <p class="text-[10px] text-gray-400">By Isaiah Cung</p>
+            </div>
+        </div>
+
+        <div class="flex items-center space-x-2">
+            <div id="mainNavButtons" class="hidden flex space-x-1">
+                <button onclick="switchTab('discover')" id="btnDiscover" class="bg-pink-600 text-white text-xs px-2.5 py-1.5 rounded-lg font-semibold transition">Discover</button>
+                <button onclick="switchTab('chat')" id="btnChat" class="bg-slate-800 text-gray-300 text-xs px-2.5 py-1.5 rounded-lg font-semibold border border-slate-700 transition">Chat</button>
+                <button onclick="switchTab('admin')" id="btnAdmin" class="bg-slate-800 text-amber-400 text-xs px-2.5 py-1.5 rounded-lg font-semibold border border-slate-700 transition hidden"><i class="fa-solid fa-lock mr-1"></i>Admin</button>
+            </div>
+
+            <!-- Language Selector -->
+            <select id="languageSelect" onchange="changeLanguage(this.value)" class="bg-slate-800 text-pink-400 text-xs font-semibold border border-pink-500/30 rounded-lg px-2 py-1.5 focus:outline-none cursor-pointer">
+                <option value="my">🇲🇲 မြန်မာ</option>
+                <option value="tapong">🇲🇲 Tapong</option>
+                <option value="mizo">🇲🇲 Mizo</option>
+                <option value="falam">🇲🇲 Falam</option>
+                <option value="hakha">🇲🇲 Hakha</option>
+                <option value="tidim">🇲🇲 Tidim</option>
+                <option value="zaniat">🇲🇲 Zaniat</option>
+                <option value="karen">🇲🇲 Karen</option>
+                <option value="shan">🇲🇲 Shan</option>
+                <option value="en">🇺🇸 English</option>
+            </select>
+        </div>
     </nav>
 
-    <!-- ပင်မ အကြောင်းအရာများ (id လေးတွေ ထည့်ပေးထားပါ) -->
-    <main class="p-4">
-        <h1 id="hero-title" class="...">သင့်ဖူးစာရှင်ကို ရှာဖွေပါ</h1>
-        <p id="hero-desc" class="...">တိုင်းရင်းသား လူမျိုးစုပေါင်းစုံအတွက် လေးစားမှုရှိပြီး လုံခြုံသော Cupid Platform</p>
+    <!-- Main Content Area -->
+    <main class="container mx-auto px-4 py-6 max-w-md flex-grow">
+        
+        <!-- LOGIN / SIGN UP SECTION -->
+        <div id="authSection" class="glass-card p-6 rounded-2xl shadow-2xl">
+            <div class="text-center mb-6">
+                <h2 id="authTitle" class="text-2xl font-bold gradient-text mb-1">မင်္ဂလာပါ</h2>
+                <p id="authDesc" class="text-xs text-gray-300">အကောင့်ဝင်ပါ သို့မဟုတ် အကောင့်သစ်ပြုလုပ်ပါ</p>
+            </div>
 
-        <h3 id="rules-title" class="...">အသိုင်းအဝိုင်း စည်းမျဉ်းစည်းကမ်းများ</h3>
-        <p id="rules-desc" class="...">ညစ်ညမ်းသော စာ/စကားများ ရေးသားခြင်း၊ ရိုင်းစိုင်းစွာ ပြောဆိုခြင်းနှင့် အနှောင့်အယှက်ပေးခြင်းများကို လုံးဝ ခွင့်မပြုပါ။</p>
+            <form onsubmit="handleAuth(event)" class="space-y-4">
+                <div>
+                    <label id="labelName" class="block text-xs font-medium text-gray-300 mb-1">နာမည် (Name)</label>
+                    <input type="text" id="authName" required placeholder="သင့်နာမည်ရိုက်ပါ (Admin အတွက် Admin ဟုထည့်ပါ)" class="w-full bg-slate-800 text-white text-xs px-4 py-3 rounded-xl border border-slate-700 focus:outline-none focus:border-pink-500">
+                </div>
+                <div>
+                    <label id="labelContact" class="block text-xs font-medium text-gray-300 mb-1">ဖုန်း သို့မဟုတ် အီးမေးလ်</label>
+                    <input type="text" id="authEmail" required placeholder="09xxxxxxxxx" class="w-full bg-slate-800 text-white text-xs px-4 py-3 rounded-xl border border-slate-700 focus:outline-none focus:border-pink-500">
+                </div>
+                <div>
+                    <label id="labelPass" class="block text-xs font-medium text-gray-300 mb-1">စကားဝှက် (Password)</label>
+                    <input type="password" id="authPassword" required placeholder="******" class="w-full bg-slate-800 text-white text-xs px-4 py-3 rounded-xl border border-slate-700 focus:outline-none focus:border-pink-500">
+                </div>
+
+                <button type="submit" id="btnSubmitAuth" class="w-full bg-gradient-to-r from-pink-500 to-rose-500 text-white py-3 rounded-xl text-xs font-bold shadow-lg hover:opacity-90 transition mt-2">
+                    အကောင့်ဝင်မည် / Register
+                </button>
+            </form>
+        </div>
+
+        <!-- APP CONTENT (HIDDEN UNTIL LOGIN) -->
+        <div id="appSection" class="hidden">
+            <!-- DISCOVER TAB -->
+            <div id="discoverTab">
+                <div class="text-center mb-6">
+                    <h2 id="heroTitle" class="text-2xl font-bold mb-2">သင့်ဖူးစာရှင်ကို ရှာဖွေပါ</h2>
+                    <p id="heroDesc" class="text-xs text-gray-300">တိုင်းရင်းသား လူမျိုးစုပေါင်းစုံအတွက် လေးစားမှုရှိပြီး လုံခြုံသော Cupid Platform</p>
+                </div>
+
+                <!-- Rules Banner -->
+                <div class="glass-card border-l-4 border-rose-500 p-4 rounded-r-xl mb-6 shadow-md">
+                    <div class="flex items-start space-x-3">
+                        <i class="fa-solid fa-shield-halved text-rose-500 text-xl mt-0.5"></i>
+                        <div>
+                            <h3 id="rulesTitle" class="font-semibold text-rose-400 text-sm">အသိုင်းအဝိုင်း စည်းမျဉ်းစည်းကမ်းများ</h3>
+                            <p id="rulesText" class="text-xs text-gray-300 mt-1">
+                                ညစ်ပတ်သော စာ/စကားများ ရေးသားခြင်း၊ ရိုင်းစိုင်းစွာ ပြောဆိုခြင်းနှင့် အနှောင့်အယှက်ပေးခြင်းများကို လုံးဝ ခွင့်မပြုပါ။
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Profile Card -->
+                <div class="glass-card rounded-2xl overflow-hidden shadow-2xl relative mb-6">
+                    <div class="relative h-80 bg-slate-700">
+                        <img id="profileImg" src="" alt="Profile" class="w-full h-full object-cover">
+                        <div class="absolute bottom-0 inset-x-0 bg-gradient-to-t from-slate-950 via-slate-950/60 to-transparent p-4">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <h3 id="profileName" class="text-xl font-bold text-white"></h3>
+                                    <p id="profileLocation" class="text-xs text-pink-400 font-medium"><i class="fa-solid fa-location-dot mr-1"></i></p>
+                                </div>
+                                <span class="bg-pink-500/20 text-pink-300 text-xs px-2.5 py-1 rounded-full border border-pink-500/30">Verified</span>
+                            </div>
+                            <p id="profileBio" class="text-xs text-gray-300 mt-2"></p>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="p-4 flex justify-around items-center bg-slate-900/80">
+                        <button onclick="nextProfile('pass')" class="w-12 h-12 rounded-full bg-slate-800 text-gray-400 border border-slate-700 flex items-center justify-center hover:bg-rose-500 hover:text-white transition">
+                            <i class="fa-solid fa-xmark text-xl"></i>
+                        </button>
+                        <button onclick="nextProfile('like')" class="w-14 h-14 rounded-full bg-gradient-to-r from-pink-500 to-rose-500 text-white shadow-lg flex items-center justify-center hover:scale-105 transition">
+                            <i class="fa-solid fa-heart text-2xl"></i>
+                        </button>
+                        <button onclick="nextProfile('star')" class="w-12 h-12 rounded-full bg-slate-800 text-amber-400 border border-slate-700 flex items-center justify-center hover:bg-amber-500 hover:text-white transition">
+                            <i class="fa-solid fa-star text-lg"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CHAT TAB (PRIVATE USER CHAT) -->
+            <div id="chatTab" class="hidden flex flex-col h-[75vh]">
+                <div class="glass-card p-3 rounded-t-xl flex items-center space-x-3 mb-2">
+                    <img id="chatAvatar" src="" class="w-10 h-10 rounded-full object-cover">
+                    <div>
+                        <h3 id="chatName" class="font-bold text-sm text-white"></h3>
+                        <p class="text-[10px] text-emerald-400"><i class="fa-solid fa-circle text-[8px] mr-1"></i> Private Chat Secure</p>
+                    </div>
+                </div>
+
+                <div id="chatMessages" class="glass-card flex-grow p-4 rounded-xl overflow-y-auto space-y-3 mb-3 flex flex-col">
+                </div>
+
+                <form onsubmit="sendPrivateMessage(event)" class="flex items-center space-x-2">
+                    <input type="text" id="messageInput" placeholder="စာတို ရိုက်ရန်..." class="flex-grow bg-slate-800 text-white text-xs px-4 py-3 rounded-xl border border-slate-700 focus:outline-none focus:border-pink-500">
+                    <button type="submit" class="bg-gradient-to-r from-pink-500 to-purple-600 text-white px-4 py-3 rounded-xl text-xs font-semibold shadow-md hover:opacity-90 transition">
+                        <i class="fa-solid fa-paper-plane"></i>
+                    </button>
+                </form>
+            </div>
+
+            <!-- ADMIN TAB (MONITOR ALL CHATS & USERS) -->
+            <div id="adminTab" class="hidden">
+                <div class="glass-card p-5 rounded-2xl shadow-xl">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="font-bold text-base text-amber-400"><i class="fa-solid fa-gauge mr-2"></i>Admin Safety Dashboard</h3>
+                        <span class="bg-emerald-500/20 text-emerald-300 text-[10px] px-2 py-0.5 rounded-full border border-emerald-500/30">Owner Access Only</span>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-3 mb-4">
+                        <div class="bg-slate-800/80 p-3 rounded-xl border border-slate-700 text-center">
+                            <p class="text-xs text-gray-400">Total Users</p>
+                            <h4 id="statUsers" class="text-xl font-bold text-white mt-1">0</h4>
+                        </div>
+                        <div class="bg-slate-800/80 p-3 rounded-xl border border-slate-700 text-center">
+                            <p class="text-xs text-gray-400">Active Chats</p>
+                            <h4 id="statMessages" class="text-xl font-bold text-pink-400 mt-1">0</h4>
+                        </div>
+                    </div>
+
+                    <div class="space-y-2">
+                        <h4 class="text-xs font-semibold text-gray-400 uppercase">All Customer Conversations (Monitor)</h4>
+                        <div id="adminActivityList" class="bg-slate-900/60 p-3 rounded-xl text-xs space-y-2 border border-slate-800 max-h-60 overflow-y-auto">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </main>
 
-    <!-- Footer သို့မဟုတ် အောက်ဆုံးအပိုင်း -->
-    <footer class="...">
-        <p>© 2026 Myanmar Cupid Dating App.</p>
+    <!-- Footer -->
+    <footer class="text-center py-4 border-t border-slate-800 text-xs text-gray-500">
+        <p>© 2026 <strong>Myanmar Cupid Dating App</strong>. All rights reserved.</p>
+        <p class="mt-1 text-gray-400">Created with ❤️ by <span class="text-pink-400 font-medium">Isaiah Cung</span></p>
     </footer>
 
-    <!-- ========================================== -->
-    <!-- အောက်ဆုံးနားက </body> အပိတ်မတိုင်မီ JavaScript ထည့်ရန် -->
-    <!-- ========================================== -->
+    <!-- JavaScript & Firebase Logic -->
     <script>
+        const firebaseConfig = {
+            databaseURL: "https://myanmar-dating-app-default-rtdb.firebaseio.com/"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+
+        let currentUser = null;
+        let currentChatRoomId = null;
+        let currentActiveProfile = null;
+        let chatListenerRef = null;
+
+        const profiles = [
+            { id: 'profile_1', name: "Lian, 24", location: "Yangon • Falam / Myanmar", bio: "သီချင်းနားထောင်ရတာ ကြိုက်တယ်။ မိတ်ဆွေအသစ်များနဲ့ ခင်မင်ချင်ပါတယ်။", image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=600" },
+            { id: 'profile_2', name: "Nuam, 22", location: "Mandalay • Mizo / Myanmar", bio: "ဝါသနာကတော့ ခရီးသွားတာနဲ့ စာဖတ်တာပါ။", image: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&q=80&w=600" },
+            { id: 'profile_3', name: "Hmuaki, 25", location: "Aizawl • Mizo", bio: "တေးဂီတကို ချစ်မြတ်နိုးသူတစ်ဦးဖြစ်ပါတယ်။", image: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&q=80&w=600" }
+        ];
+        let currentIndex = 0;
+
+        // ဘာသာစကားအလိုက် စာသားများ (Translations)
         const translations = {
             my: {
                 heroTitle: "သင့်ဖူးစာရှင်ကို ရှာဖွေပါ",
                 heroDesc: "တိုင်းရင်းသား လူမျိုးစုပေါင်းစုံအတွက် လေးစားမှုရှိပြီး လုံခြုံသော Cupid Platform",
                 rulesTitle: "အသိုင်းအဝိုင်း စည်းမျဉ်းစည်းကမ်းများ",
-                rulesDesc: "ညစ်ညမ်းသော စာ/စကားများ ရေးသားခြင်း၊ ရိုင်းစိုင်းစွာ ပြောဆိုခြင်းနှင့် အနှောင့်အယှက်ပေးခြင်းများကို လုံးဝ ခွင့်မပြုပါ။"
+                rulesText: "ညစ်ပတ်သော စာ/စကားများ ရေးသားခြင်း၊ ရိုင်းစိုင်းစွာ ပြောဆိုခြင်းနှင့် အနှောင့်အယှက်ပေးခြင်းများကို လုံးဝ ခွင့်မပြုပါ။",
+                authTitle: "မင်္ဂလာပါ",
+                authDesc: "အကောင့်ဝင်ပါ သို့မဟုတ် အကောင့်သစ်ပြုလုပ်ပါ"
             },
             en: {
                 heroTitle: "Find Your Match",
                 heroDesc: "A respectful and secure Cupid Platform for all ethnic groups",
                 rulesTitle: "Community Guidelines",
-                rulesDesc: "Inappropriate language, harassment, and abusive behavior are strictly prohibited."
+                rulesText: "Inappropriate language, harassment, and abusive behavior are strictly prohibited.",
+                authTitle: "Welcome",
+                authDesc: "Sign in or create a new account"
             },
             tapong: {
                 heroTitle: "Ngaip-Aam Yong Kuaing",
                 heroDesc: "Tapong platform for everyone",
                 rulesTitle: "Community Rules",
-                rulesDesc: "Strictly respectful environment"
+                rulesText: "Strictly respectful environment",
+                authTitle: "Awn-khur",
+                authDesc: "Account lut awm"
+            },
+            mizo: {
+                heroTitle: "I Duhtak Zawng Rawh",
+                heroDesc: "Hnam hrang hrang tanin a hmunhim leh zahawm Cupid Platform",
+                rulesTitle: "Pawl Dan Leh Hrai",
+                rulesText: "Thumal bawlhhlawh leh inhnial buaina a awm tur a ni lo.",
+                authTitle: "Chibai",
+                authDesc: "Lut rawh aw"
+            },
+            falam: {
+                heroTitle: "Na Duhmi Zawn Ruah",
+                heroDesc: "Miphun vialte caah ningcang le thliarhrang lo tein hman khawh mi Cupid Platform",
+                rulesTitle: "Hrihrang Le Phung",
+                rulesText: "Cazin ṭhalo le mi hrokhrawl ti awk a si lo.",
+                authTitle: "Kan I Lawm",
+                authDesc: "Account lut cang"
             }
+            // လိုအပ်ပါက အခြားဘာသာစကားများကို ဤနေရာတွင် ဆက်လက်ထည့်သွင်းနိုင်ပါသည်
         };
 
-        const langSelect = document.getElementById('lang-select');
-        
-        langSelect.addEventListener('change', (e) => {
-            const selectedLang = e.target.value;
-            const data = translations[selectedLang] || translations['my'];
+        function changeLanguage(lang) {
+            const data = translations[lang] || translations['my'];
+            
+            const heroTitle = document.getElementById('heroTitle');
+            const heroDesc = document.getElementById('heroDesc');
+            const rulesTitle = document.getElementById('rulesTitle');
+            const rulesText = document.getElementById('rulesText');
+            const authTitle = document.getElementById('authTitle');
+            const authDesc = document.getElementById('authDesc');
 
-            document.getElementById('hero-title').textContent = data.heroTitle;
-            document.getElementById('hero-desc').textContent = data.heroDesc;
-            document.getElementById('rules-title').textContent = data.rulesTitle;
-            document.getElementById('rules-desc').textContent = data.rulesDesc;
-        });
+            if (heroTitle) heroTitle.innerText = data.heroTitle;
+            if (heroDesc) heroDesc.innerText = data.heroDesc;
+            if (rulesTitle) rulesTitle.innerText = data.rulesTitle;
+            if (rulesText) rulesText.innerText = data.rulesText;
+            if (authTitle) authTitle.innerText = data.authTitle;
+            if (authDesc) authDesc.innerText = data.authDesc;
+        }
+
+        function handleAuth(event) {
+            event.preventDefault();
+            const name = document.getElementById('authName').value.trim();
+            const password = document.getElementById('authPassword').value.trim();
+
+            const isAdmin = (name.toLowerCase() === 'admin' && (password.toLowerCase() === 'sawhai11'));
+
+            if (name.toLowerCase() === 'admin' && !isAdmin) {
+                alert('⚠️ Admin Password မှားယွင်းနေပါသည်။ (Password: sawhai11 ဖြစ်ရပါမည်)');
+                return;
+            }
+
+            currentUser = {
+                id: isAdmin ? 'admin_owner' : 'user_' + Math.floor(Math.random() * 100000),
+                name: name,
+                isAdmin: isAdmin
+            };
+
+            db.ref('users/' + currentUser.id).set({
+                name: currentUser.name,
+                joinedAt: Date.now(),
+                isAdmin: currentUser.isAdmin
+            });
+
+            document.getElementById('authSection').classList.add('hidden');
+            document.getElementById('appSection').classList.remove('hidden');
+            document.getElementById('mainNavButtons').classList.remove('hidden');
+
+            if (currentUser.isAdmin) {
+                document.getElementById('btnAdmin').classList.remove('hidden');
+                switchTab('admin');
+                initAdminDashboard();
+            } else {
+                switchTab('discover');
+                loadProfile();
+            }
+        }
+
+        function loadProfile() {
+            const p = profiles[currentIndex];
+            currentActiveProfile = p;
+            document.getElementById('profileImg').src = p.image;
+            document.getElementById('profileName').innerText = p.name;
+            document.getElementById('profileLocation').innerHTML = `<i class="fa-solid fa-location-dot mr-1"></i> ${p.location}`;
+            document.getElementById('profileBio').innerText = p.bio;
+
+            document.getElementById('chatAvatar').src = p.image;
+            document.getElementById('chatName').innerText = p.name.split(',')[0];
+
+            if (currentUser) {
+                currentChatRoomId = [currentUser.id, p.id].sort().join('_');
+            }
+        }
+
+        function nextProfile(action) {
+            if(action === 'like' || action === 'star') {
+                alert('❤️ Match တွေ့ပါပြီ! Private Chat သို့ ခေါ်ဆောင်သွားပါမည်။');
+                switchTab('chat');
+            } else {
+                currentIndex = (currentIndex + 1) % profiles.length;
+                loadProfile();
+            }
+        }
+
+        function switchTab(tab) {
+            const discoverTab = document.getElementById('discoverTab');
+            const chatTab = document.getElementById('chatTab');
+            const adminTab = document.getElementById('adminTab');
+            const btnDiscover = document.getElementById('btnDiscover');
+            const btnChat = document.getElementById('btnChat');
+            const btnAdmin = document.getElementById('btnAdmin');
+
+            discoverTab.classList.add('hidden');
+            chatTab.classList.add('hidden');
+            adminTab.classList.add('hidden');
+            btnDiscover.className = "bg-slate-800 text-gray-300 text-xs px-2.5 py-1.5 rounded-lg font-semibold border border-slate-700 transition";
+            btnChat.className = "bg-slate-800 text-gray-300 text-xs px-2.5 py-1.5 rounded-lg font-semibold border border-slate-700 transition";
+            if(currentUser && currentUser.isAdmin) btnAdmin.className = "bg-slate-800 text-amber-400 text-xs px-2.5 py-1.5 rounded-lg font-semibold border border-slate-700 transition";
+
+            if(tab === 'discover') {
+                discoverTab.classList.remove('hidden');
+                btnDiscover.className = "bg-pink-600 text-white text-xs px-2.5 py-1.5 rounded-lg font-semibold transition";
+            } else if(tab === 'chat') {
+                chatTab.classList.remove('hidden');
+                btnChat.className = "bg-pink-600 text-white text-xs px-2.5 py-1.5 rounded-lg font-semibold transition";
+                loadPrivateChatMessages();
+            } else if(tab === 'admin' && currentUser && currentUser.isAdmin) {
+                adminTab.classList.remove('hidden');
+                btnAdmin.className = "bg-amber-600 text-white text-xs px-2.5 py-1.5 rounded-lg font-semibold transition";
+            }
+        }
+
+        function loadPrivateChatMessages() {
+            const chatMessages = document.getElementById('chatMessages');
+            chatMessages.innerHTML = '';
+
+            if (chatListenerRef) {
+                chatListenerRef.off();
+            }
+
+            if (!currentChatRoomId) return;
+
+            chatListenerRef = db.ref('chats/' + currentChatRoomId + '/messages');
+            chatListenerRef.on('child_added', (snapshot) => {
+                const msg = snapshot.val();
+                const msgDiv = document.createElement('div');
+
+                if(currentUser && msg.senderId === currentUser.id) {
+                    msgDiv.className = "self-end bg-pink-600 text-white text-xs px-3 py-2 rounded-2xl max-w-[75%]";
+                    msgDiv.innerText = msg.text;
+                } else {
+                    msgDiv.className = "self-start bg-slate-800 text-gray-200 text-xs px-3 py-2 rounded-2xl max-w-[75%] border border-slate-700";
+                    msgDiv.innerHTML = `<span class="text-[9px] text-pink-400 block mb-0.5">${msg.senderName || 'User'}</span>${msg.text}`;
+                }
+
+                chatMessages.appendChild(msgDiv);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            });
+        }
+
+        function sendPrivateMessage(event) {
+            event.preventDefault();
+            const input = document.getElementById('messageInput');
+            const text = input.value.trim();
+            if(!text || !currentUser || !currentChatRoomId) return;
+
+            db.ref('chats/' + currentChatRoomId + '/messages').push({
+                senderId: currentUser.id,
+                senderName: currentUser.name,
+                text: text,
+                timestamp: Date.now()
+            });
+            input.value = '';
+        }
+
+        function initAdminDashboard() {
+            db.ref('users').on('value', (snapshot) => {
+                const users = snapshot.val();
+                document.getElementById('statUsers').innerText = users ? Object.keys(users).length : 0;
+            });
+
+            db.ref('chats').on('value', (snapshot) => {
+                const chatsData = snapshot.val();
+                const activityList = document.getElementById('adminActivityList');
+                activityList.innerHTML = '';
+
+                let totalMessagesCount = 0;
+
+                if (chatsData) {
+                    Object.keys(chatsData).forEach(roomId => {
+                        const room = chatsData[roomId];
+                        if (room && room.messages) {
+                            Object.keys(room.messages).forEach(msgKey => {
+                                totalMessagesCount++;
+                                const msg = room.messages[msgKey];
+                                const p = document.createElement('p');
+                                p.className = "text-gray-300 border-b border-slate-800 pb-1 mb-1";
+                                p.innerHTML = `<span class="text-amber-400 font-semibold">[Room: ${roomId.substring(0,10)}...]</span> <span class="text-pink-400">${msg.senderName}:</span> ${msg.text}`;
+                                activityList.appendChild(p);
+                            });
+                        }
+                    });
+                }
+                document.getElementById('statMessages').innerText = totalMessagesCount;
+            });
+        }
     </script>
 </body>
 </html>
