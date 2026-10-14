@@ -147,20 +147,22 @@
                 </div>
             </div>
 
-            <!-- CHAT TAB -->
+            <!-- LANGUAGE COMMUNITY CHAT TAB -->
             <div id="chatTab" class="hidden flex flex-col h-[75vh]">
                 <div class="glass-card p-3 rounded-t-xl flex items-center space-x-3 mb-2">
-                    <img id="chatAvatar" src="" class="w-10 h-10 rounded-full object-cover">
+                    <div class="w-10 h-10 rounded-full bg-pink-500/20 text-pink-400 flex items-center justify-center font-bold">
+                        <i class="fa-solid fa-users"></i>
+                    </div>
                     <div>
-                        <h3 id="chatName" class="font-bold text-sm text-white"></h3>
-                        <p class="text-[10px] text-emerald-400"><i class="fa-solid fa-circle text-[8px] mr-1"></i> Private Chat Secure</p>
+                        <h3 id="roomTitleDisplay" class="font-bold text-sm text-white">Language Community Room</h3>
+                        <p class="text-[10px] text-emerald-400"><i class="fa-solid fa-circle text-[8px] mr-1"></i> Public Language Chat Secure</p>
                     </div>
                 </div>
 
                 <div id="chatMessages" class="glass-card flex-grow p-4 rounded-xl overflow-y-auto space-y-3 mb-3 flex flex-col">
                 </div>
 
-                <form onsubmit="sendPrivateMessage(event)" class="flex items-center space-x-2">
+                <form onsubmit="sendCommunityMessage(event)" class="flex items-center space-x-2">
                     <input type="text" id="messageInput" placeholder="စာတို ရိုက်ရန်..." class="flex-grow bg-slate-800 text-white text-xs px-4 py-3 rounded-xl border border-slate-700 focus:outline-none focus:border-pink-500">
                     <button type="submit" class="bg-gradient-to-r from-pink-500 to-purple-600 text-white px-4 py-3 rounded-xl text-xs font-semibold shadow-md hover:opacity-90 transition">
                         <i class="fa-solid fa-paper-plane"></i>
@@ -182,13 +184,13 @@
                             <h4 id="statUsers" class="text-xl font-bold text-white mt-1">0</h4>
                         </div>
                         <div class="bg-slate-800/80 p-3 rounded-xl border border-slate-700 text-center">
-                            <p class="text-xs text-gray-400">Active Chats</p>
+                            <p class="text-xs text-gray-400">Active Room Messages</p>
                             <h4 id="statMessages" class="text-xl font-bold text-pink-400 mt-1">0</h4>
                         </div>
                     </div>
 
                     <div class="space-y-2">
-                        <h4 class="text-xs font-semibold text-gray-400 uppercase">All Customer Conversations (Monitor)</h4>
+                        <h4 class="text-xs font-semibold text-gray-400 uppercase">All Community Room Conversations (Monitor)</h4>
                         <div id="adminActivityList" class="bg-slate-900/60 p-3 rounded-xl text-xs space-y-2 border border-slate-800 max-h-60 overflow-y-auto">
                         </div>
                     </div>
@@ -213,8 +215,6 @@
         const db = firebase.database();
 
         let currentUser = null;
-        let currentChatRoomId = null;
-        let currentActiveProfile = null;
         let chatListenerRef = null;
 
         const profiles = [
@@ -224,7 +224,7 @@
         ];
         let currentIndex = 0;
 
-        // ဘာသာစကားအလိုက် ခေါင်းစဉ်များ အမှန်ပြင်ဆင်ထားခြင်း
+        // ဘာသာစကားအလိုက် အချက်အလက်များနှင့် သီးသန့် Chat Room အမည်များ
         const translations = {
             my: {
                 authTitle: "အကောင့်ဝင်ရန်",
@@ -240,7 +240,8 @@
                 heroDesc: "တိုင်းရင်းသား လူမျိုးစုပေါင်းစုံအတွက် လေးစားမှုရှိပြီး လုံခြုံသော Cupid Platform",
                 rulesTitle: "အသိုင်းအဝိုင်း စည်းမျဉ်းစည်းကမ်းများ",
                 rulesText: "ညစ်ပတ်သော စာ/စကားများ ရေးသားခြင်း၊ ရိုင်းစိုင်းစွာ ပြောဆိုခြင်းနှင့် အနှောင့်အယှက်ပေးခြင်းများကို လုံးဝ ခွင့်မပြုပါ။",
-                chatInputPh: "စာတို ရိုက်ရန်..."
+                chatInputPh: "စာတို ရိုက်ရန်...",
+                roomName: "မြန်မာ Community Room"
             },
             falam: {
                 authTitle: "Na Dam Maw",
@@ -256,7 +257,8 @@
                 heroDesc: "Miphun dang le Midang hrang ah a him a thabik mi Cupid platform",
                 rulesTitle: "Thlunding mi le Zawmdingmi pawl",
                 rulesText: "Tawngthalo le midang hnaihnawk zawng in le Cozah duh lo zawng thil tuah lo ding. zuk tar lo ding.",
-                chatInputPh: "Ca kuat ngan nak"
+                chatInputPh: "Ca kuat ngan nak",
+                roomName: "Falam Community Room"
             },
             hakha: {
                 authTitle: "Kan I Lawm",
@@ -272,7 +274,8 @@
                 heroDesc: "Miphun vialte ca ningcang le thliarhrang lo tein hman khawhmi cupid platform",
                 rulesTitle: "Hrinhrang le phung",
                 rulesText: "Cazin tha lo le mi hrokhrawl ti awk si lo",
-                chatInputPh: "Cakuat tial"
+                chatInputPh: "Cakuat tial",
+                roomName: "Hakha Community Room"
             },
             tapong: {
                 authTitle: "Na Hmuak Ing",
@@ -288,7 +291,8 @@
                 heroDesc: "Mite ca le hnamdang te ca a him le phaber ah Cupid platform",
                 rulesTitle: "Hluntuh le Zawmtuh",
                 rulesText: "Uan pha ngua ai tuh ngua. Mi hnaihnawk zuang lai ngan tuh ngua. Cozah deih ngua zuk dah tuh ngua.",
-                chatInputPh: "Lai kuat ngan hmun"
+                chatInputPh: "Lai kuat ngan hmun",
+                roomName: "Tapong Community Room"
             },
             mizo: {
                 authTitle: "Chibai / Welcome",
@@ -304,7 +308,8 @@
                 heroDesc: "Hnam hrang hrang te tana a him le zahawm Cupid platform",
                 rulesTitle: "Dan le Dun",
                 rulesText: "Thumal bawlhhlawh le inhnial buaina a awm tur ani lo. En mawi lo zawng thlalak te dah tur ani lo",
-                chatInputPh: "Thuchah ziak rawh"
+                chatInputPh: "Thuchah ziak rawh",
+                roomName: "Mizo Community Room"
             },
             tidim: {
                 authTitle: "Hong Dawn Ing / Hello",
@@ -320,7 +325,8 @@
                 heroDesc: "Mi khempeuh te a ding a ki lawm le a pha Cupid platform",
                 rulesTitle: "Thu ki zaksakna",
                 rulesText: "Kampau sia zang lo ding. Mite a ding buaina bawl lo ding. Kumpi phal lo mante tak lo ding",
-                chatInputPh: "Lai gelh in"
+                chatInputPh: "Lai gelh in",
+                roomName: "Tidim Community Room"
             },
             en: {
                 authTitle: "Welcome",
@@ -336,7 +342,8 @@
                 heroDesc: "A secure and respectful Cupid Platform",
                 rulesTitle: "Community Guidelines",
                 rulesText: "Inappropriate language and behavior are strictly prohibited.",
-                chatInputPh: "Type a message..."
+                chatInputPh: "Type a message...",
+                roomName: "English Community Room"
             }
         };
 
@@ -357,8 +364,8 @@
             const labelPass = document.getElementById('labelPass');
             const authPassword = document.getElementById('authPassword');
             const btnSubmitAuth = document.getElementById('btnSubmitAuth');
-
             const messageInput = document.getElementById('messageInput');
+            const roomTitleDisplay = document.getElementById('roomTitleDisplay');
 
             if (heroTitle) heroTitle.innerText = data.heroTitle;
             if (heroDesc) heroDesc.innerText = data.heroDesc;
@@ -374,8 +381,13 @@
             if (labelPass) labelPass.innerText = data.labelPass;
             if (authPassword && data.phPass) authPassword.placeholder = data.phPass;
             if (btnSubmitAuth) btnSubmitAuth.innerText = data.btnAuth;
-
             if (messageInput && data.chatInputPh) messageInput.placeholder = data.chatInputPh;
+            if (roomTitleDisplay && data.roomName) roomTitleDisplay.innerText = data.roomName;
+
+            // ဘာသာစကားပြောင်းလိုက်သည်နှင့် လက်ရှိဖွင့်ထားသော Chat Room ကိုပါ အလိုအလျောက် သက်ဆိုင်ရာအခန်းသို့ ပြောင်းပေးမည်
+            if (currentUser && !currentUser.isAdmin) {
+                loadCommunityChatMessages();
+            }
         }
 
         function handleAuth(event) {
@@ -418,23 +430,15 @@
 
         function loadProfile() {
             const p = profiles[currentIndex];
-            currentActiveProfile = p;
             document.getElementById('profileImg').src = p.image;
             document.getElementById('profileName').innerText = p.name;
             document.getElementById('profileLocation').innerHTML = `<i class="fa-solid fa-location-dot mr-1"></i> ${p.location}`;
             document.getElementById('profileBio').innerText = p.bio;
-
-            document.getElementById('chatAvatar').src = p.image;
-            document.getElementById('chatName').innerText = p.name.split(',')[0];
-
-            if (currentUser) {
-                currentChatRoomId = [currentUser.id, p.id].sort().join('_');
-            }
         }
 
         function nextProfile(action) {
             if(action === 'like' || action === 'star') {
-                alert('❤️ Match တွေ့ပါပြီ! Private Chat သို့ ခေါ်ဆောင်သွားပါမည်။');
+                alert('❤️ Match တွေ့ပါပြီ! သက်ဆိုင်ရာ ဘာသာစကား Community Chat သို့ ခေါ်ဆောင်သွားပါမည်။');
                 switchTab('chat');
             } else {
                 currentIndex = (currentIndex + 1) % profiles.length;
@@ -463,14 +467,15 @@
             } else if(tab === 'chat') {
                 chatTab.classList.remove('hidden');
                 btnChat.className = "bg-pink-600 text-white text-xs px-2.5 py-1.5 rounded-lg font-semibold transition";
-                loadPrivateChatMessages();
+                loadCommunityChatMessages();
             } else if(tab === 'admin' && currentUser && currentUser.isAdmin) {
                 adminTab.classList.remove('hidden');
                 btnAdmin.className = "bg-amber-600 text-white text-xs px-2.5 py-1.5 rounded-lg font-semibold transition";
             }
         }
 
-        function loadPrivateChatMessages() {
+        // ရွေးချယ်ထားသော ဘာသာစကားအလိုက် သီးသန့် Room များကို ချိတ်ဆက်ပေးသော ဖန်ရှင်
+        function loadCommunityChatMessages() {
             const chatMessages = document.getElementById('chatMessages');
             chatMessages.innerHTML = '';
 
@@ -478,9 +483,10 @@
                 chatListenerRef.off();
             }
 
-            if (!currentChatRoomId) return;
+            const selectedLang = document.getElementById('languageSelect').value;
+            const currentRoomId = 'community_room_' + selectedLang;
 
-            chatListenerRef = db.ref('chats/' + currentChatRoomId + '/messages');
+            chatListenerRef = db.ref('rooms/' + currentRoomId + '/messages');
             chatListenerRef.on('child_added', (snapshot) => {
                 const msg = snapshot.val();
                 const msgDiv = document.createElement('div');
@@ -498,13 +504,16 @@
             });
         }
 
-        function sendPrivateMessage(event) {
+        function sendCommunityMessage(event) {
             event.preventDefault();
             const input = document.getElementById('messageInput');
             const text = input.value.trim();
-            if(!text || !currentUser || !currentChatRoomId) return;
+            if(!text || !currentUser) return;
 
-            db.ref('chats/' + currentChatRoomId + '/messages').push({
+            const selectedLang = document.getElementById('languageSelect').value;
+            const currentRoomId = 'community_room_' + selectedLang;
+
+            db.ref('rooms/' + currentRoomId + '/messages').push({
                 senderId: currentUser.id,
                 senderName: currentUser.name,
                 text: text,
@@ -519,23 +528,23 @@
                 document.getElementById('statUsers').innerText = users ? Object.keys(users).length : 0;
             });
 
-            db.ref('chats').on('value', (snapshot) => {
-                const chatsData = snapshot.val();
+            db.ref('rooms').on('value', (snapshot) => {
+                const roomsData = snapshot.val();
                 const activityList = document.getElementById('adminActivityList');
                 activityList.innerHTML = '';
 
                 let totalMessagesCount = 0;
 
-                if (chatsData) {
-                    Object.keys(chatsData).forEach(roomId => {
-                        const room = chatsData[roomId];
+                if (roomsData) {
+                    Object.keys(roomsData).forEach(roomId => {
+                        const room = roomsData[roomId];
                         if (room && room.messages) {
                             Object.keys(room.messages).forEach(msgKey => {
                                 totalMessagesCount++;
                                 const msg = room.messages[msgKey];
                                 const p = document.createElement('p');
                                 p.className = "text-gray-300 border-b border-slate-800 pb-1 mb-1";
-                                p.innerHTML = `<span class="text-amber-400 font-semibold">[Room: ${roomId.substring(0,10)}...]</span> <span class="text-pink-400">${msg.senderName}:</span> ${msg.text}`;
+                                p.innerHTML = `<span class="text-amber-400 font-semibold">[Room: ${roomId}]</span> <span class="text-pink-400">${msg.senderName}:</span> ${msg.text}`;
                                 activityList.appendChild(p);
                             });
                         }
