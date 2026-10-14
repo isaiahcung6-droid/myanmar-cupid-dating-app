@@ -77,19 +77,19 @@
             <form onsubmit="handleAuth(event)" class="space-y-4">
                 <div>
                     <label id="labelName" class="block text-xs font-medium text-gray-300 mb-1">နာမည် (Name)</label>
-                    <input type="text" id="authName" oninput="checkAdminInput(this.value)" required placeholder="သင့်နာမည်ရိုက်ပါ (ဥပမာ - မောင်မောင်)" class="w-full bg-slate-800 text-white text-xs px-4 py-3 rounded-xl border border-slate-700 focus:outline-none focus:border-pink-500">
+                    <input type="text" id="authName" oninput="checkAdminInput()" required placeholder="သင့်နာမည်ရိုက်ပါ (ဥပမာ - မောင်မောင်)" class="w-full bg-slate-800 text-white text-xs px-4 py-3 rounded-xl border border-slate-700 focus:outline-none focus:border-pink-500">
                 </div>
                 
-                <!-- Age Input Field (Hidden for Admin) -->
+                <!-- Age Input Field -->
                 <div id="ageFieldContainer">
                     <label id="labelAge" class="block text-xs font-medium text-gray-300 mb-1">အသက် (Age)</label>
-                    <input type="number" id="authAge" min="18" max="100" placeholder="သင့်အသက်ထည့်ပါ (ဥပမာ - 22)" class="w-full bg-slate-800 text-white text-xs px-4 py-3 rounded-xl border border-slate-700 focus:outline-none focus:border-pink-500">
+                    <input type="number" id="authAge" min="18" max="100" required placeholder="သင့်အသက်ထည့်ပါ (ဥပမာ - 22)" class="w-full bg-slate-800 text-white text-xs px-4 py-3 rounded-xl border border-slate-700 focus:outline-none focus:border-pink-500">
                 </div>
 
-                <!-- Location Input Field (Hidden for Admin) -->
+                <!-- Location Input Field -->
                 <div id="locationFieldContainer">
                     <label id="labelLocation" class="block text-xs font-medium text-gray-300 mb-1">နေရပ်လိပ်စာ (Location)</label>
-                    <input type="text" id="authLocation" placeholder="သင့်မြို့/နေရပ်လိပ်စာ (ဥပမာ - Yangon)" class="w-full bg-slate-800 text-white text-xs px-4 py-3 rounded-xl border border-slate-700 focus:outline-none focus:border-pink-500">
+                    <input type="text" id="authLocation" required placeholder="သင့်မြို့/နေရပ်လိပ်စာ (ဥပမာ - Yangon)" class="w-full bg-slate-800 text-white text-xs px-4 py-3 rounded-xl border border-slate-700 focus:outline-none focus:border-pink-500">
                 </div>
 
                 <div>
@@ -322,7 +322,7 @@
                 labelName: "Hmin (Name)",
                 phName: "Na hmin tial",
                 labelAge: "Kum (Age)",
-                phName: "Na kum tial",
+                phAge: "Na kum tial",
                 labelLocation: "Um nak hmun (Location)",
                 phLocation: "Na umnak khua",
                 labelContact: "Phone or Email",
@@ -428,13 +428,14 @@
             }
         };
 
-        function checkAdminInput(val) {
+        function checkAdminInput() {
+            const nameVal = document.getElementById('authName').value.trim().toLowerCase();
             const ageContainer = document.getElementById('ageFieldContainer');
             const locContainer = document.getElementById('locationFieldContainer');
             const ageInput = document.getElementById('authAge');
             const locInput = document.getElementById('authLocation');
 
-            if (val.trim().toLowerCase() === 'admin') {
+            if (nameVal === 'admin') {
                 ageContainer.style.display = 'none';
                 locContainer.style.display = 'none';
                 ageInput.removeAttribute('required');
