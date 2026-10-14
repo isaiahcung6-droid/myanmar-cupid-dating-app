@@ -227,7 +227,7 @@
         <p class="mt-1 text-gray-400">Created with ❤️ by <span class="text-pink-400 font-medium">Isaiah Cung</span></p>
     </footer>
 
-    <!-- Firebase Realtime Logic & Corrected Translation Sync -->
+    <!-- Firebase Realtime Logic -->
     <script>
         const firebaseConfig = {
             databaseURL: "https://myanmar-dating-app-default-rtdb.firebaseio.com/"
@@ -239,7 +239,14 @@
         let currentActiveProfile = null;
         let chatListenerRef = null;
 
-        let allProfilesList = [];
+        // Default Fallback Profiles to ensure Discover tab is never empty
+        const defaultFallbackProfiles = [
+            { id: 'default_1', name: "Lian, 24", ethnicity: "falam", bio: "သီချင်းနားထောင်ရတာ ကြိုက်တယ်။ မိတ်ဆွေအသစ်များနဲ့ ခင်မင်ချင်ပါတယ်။", image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=600" },
+            { id: 'default_2', name: "Nuam, 22", ethnicity: "mizo", bio: "ဝါသနာကတော့ ခရီးသွားတာနဲ့ စာဖတ်တာပါ။", image: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&q=80&w=600" },
+            { id: 'default_3', name: "Hmuaki, 25", ethnicity: "mizo", bio: "တေးဂီတကို ချစ်မြတ်နိုးသူတစ်ဦးဖြစ်ပါတယ်။", image: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&q=80&w=600" }
+        ];
+
+        let allProfilesList = [...defaultFallbackProfiles];
         let filteredProfiles = [];
         let currentIndex = 0;
 
@@ -479,17 +486,16 @@
             if (noProfileText) noProfileText.innerText = data.noProfileText;
         }
 
-        // Fetch Realtime Profiles from Firebase Database
         function listenToProfiles() {
             db.ref('users').on('value', (snapshot) => {
                 const usersData = snapshot.val();
-                allProfilesList = [];
+                let fetchedProfiles = [];
 
                 if (usersData) {
                     Object.keys(usersData).forEach(key => {
                         const u = usersData[key];
                         if (!u.isAdmin) {
-                            allProfilesList.push({
+                            fetchedProfiles.push({
                                 id: key,
                                 name: u.name || "Anonymous",
                                 ethnicity: u.ethnicity || "myanmar",
@@ -499,6 +505,8 @@
                         }
                     });
                 }
+
+                allProfilesList = fetchedProfiles.length > 0 ? fetchedProfiles : defaultFallbackProfiles;
                 filterProfiles();
             });
         }
@@ -508,7 +516,7 @@
             const selectedEth = document.getElementById('ethnicityFilter').value;
 
             filteredProfiles = allProfilesList.filter(p => {
-                const matchesQuery = p.name.toLowerCase().includes(query);
+                const matchesQuery = p.name ? p.name.toLowerCase().includes(query) : true;
                 const matchesEth = (selectedEth === 'all') || (p.ethnicity === selectedEth);
                 return matchesQuery && matchesEth;
             });
