@@ -80,7 +80,7 @@
             <form onsubmit="handleAuth(event)" class="space-y-4">
                 <div>
                     <label class="block text-xs font-medium text-gray-300 mb-1">နာမည် (Name)</label>
-                    <input type="text" id="authName" required placeholder="သင့်နာမည်ရိုက်ပါ (Admin ဆိုလျှင် Admin ဟုထည့်ပါ)" class="w-full bg-slate-800 text-white text-xs px-4 py-3 rounded-xl border border-slate-700 focus:outline-none focus:border-pink-500">
+                    <input type="text" id="authName" required placeholder="သင့်နာမည်ရိုက်ပါ (Admin အတွက် Admin ဟုထည့်ပါ)" class="w-full bg-slate-800 text-white text-xs px-4 py-3 rounded-xl border border-slate-700 focus:outline-none focus:border-pink-500">
                 </div>
                 <div>
                     <label class="block text-xs font-medium text-gray-300 mb-1">ဖုန်း သို့မဟုတ် အီးမေးလ်</label>
@@ -230,9 +230,15 @@
         function handleAuth(event) {
             event.preventDefault();
             const name = document.getElementById('authName').value.trim();
-            const email = document.getElementById('authEmail').value.trim();
+            const password = document.getElementById('authPassword').value.trim();
 
-            const isAdmin = (name.toLowerCase() === 'admin' || email.toLowerCase().includes('admin'));
+            // Check if Admin using Name 'Admin' and Secret Password 'sawhai11'
+            const isAdmin = (name.toLowerCase() === 'admin' && password === 'sawhai11');
+
+            if (name.toLowerCase() === 'admin' && !isAdmin) {
+                alert('⚠️ Admin Password မှားယွင်းနေပါသည်။ (Password: sawhai11 ဖြစ်ရပါမည်)');
+                return;
+            }
 
             currentUser = {
                 id: isAdmin ? 'admin_owner' : 'user_' + Math.floor(Math.random() * 100000),
