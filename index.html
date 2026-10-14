@@ -70,7 +70,7 @@
         <!-- LOGIN / SIGN UP SECTION -->
         <div id="authSection" class="glass-card p-6 rounded-2xl shadow-2xl">
             <div class="text-center mb-6">
-                <h2 id="authTitle" class="text-2xl font-bold gradient-text mb-1">အကောင့်ဝင်ရန်</h2>
+                <h2 id="authTitle" class="text-2xl font-bold gradient-text mb-1">မင်္ဂလာပါ / ကြိုဆိုပါ၏</h2>
                 <p id="authDesc" class="text-xs text-gray-300">အကောင့်ဝင်ပါ သို့မဟုတ် အကောင့်သစ်ပြုလုပ်ပါ</p>
             </div>
 
@@ -240,7 +240,7 @@
 
         const translations = {
             my: {
-                authTitle: "အကောင့်ဝင်ရန်",
+                authTitle: "မင်္ဂလာပါ / ကြိုဆိုပါ၏",
                 authDesc: "အကောင့်ဝင်ပါ သို့မဟုတ် အကောင့်သစ်ပြုလုပ်ပါ",
                 labelName: "နာမည် (Name)",
                 phName: "သင့်နာမည်ရိုက်ပါ (Admin အတွက် Admin ဟုထည့်ပါ)",
@@ -435,7 +435,6 @@
                 language: selectedLang
             };
 
-            // ရွေးချယ်လိုက်သော ဘာသာစကားအတိုင်း App ရဲ့ UI နဲ့ Header Select ကို တန်းပြောင်းမည်
             changeLanguage(selectedLang);
 
             db.ref('users/' + currentUser.id).set({
