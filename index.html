@@ -8,9 +8,6 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Padauk:wght@400;700&family=Poppins:wght@300;400;600;700&display=swap');
         body {
@@ -106,7 +103,7 @@
                     <p id="heroDesc" class="text-xs text-gray-200 font-medium px-2">တိုင်းရင်းသား လူမျိုးစုပေါင်းစုံအတွက် လေးစားမှုရှိပြီး လုံခြုံသော Cupid Platform</p>
                 </div>
 
-                <!-- SEARCH & FILTER BOX (NEW ADDITION) -->
+                <!-- SEARCH & FILTER BOX -->
                 <div class="glass-card p-3 rounded-xl mb-4 shadow-md flex items-center space-x-2">
                     <div class="relative flex-grow">
                         <i class="fa-solid fa-magnifying-glass absolute left-3 top-3 text-gray-400 text-xs"></i>
@@ -170,7 +167,7 @@
                 </div>
             </div>
 
-            <!-- CHAT TAB (PRIVATE USER CHAT) -->
+            <!-- CHAT TAB -->
             <div id="chatTab" class="hidden flex flex-col h-[75vh]">
                 <div class="glass-card p-3 rounded-t-xl flex items-center space-x-3 mb-2">
                     <img id="chatAvatar" src="" class="w-10 h-10 rounded-full object-cover">
@@ -191,7 +188,7 @@
                 </form>
             </div>
 
-            <!-- ADMIN TAB (MONITOR ALL CHATS & USERS) -->
+            <!-- ADMIN TAB -->
             <div id="adminTab" class="hidden">
                 <div class="glass-card p-5 rounded-2xl shadow-xl">
                     <div class="flex items-center justify-between mb-4">
@@ -202,7 +199,7 @@
                     <div class="grid grid-cols-2 gap-3 mb-4">
                         <div class="bg-slate-800/80 p-3 rounded-xl border border-slate-700 text-center">
                             <p class="text-xs text-gray-400">Total Users</p>
-                            <h4 id="statUsers" class="text-xl font-bold text-white mt-1">0</h4>
+                            <h4 id="statUsers" class="text-xl font-bold text-white mt-1">1</h4>
                         </div>
                         <div class="bg-slate-800/80 p-3 rounded-xl border border-slate-700 text-center">
                             <p class="text-xs text-gray-400">Active Chats</p>
@@ -213,6 +210,7 @@
                     <div class="space-y-2">
                         <h4 class="text-xs font-semibold text-gray-400 uppercase">All Customer Conversations (Monitor)</h4>
                         <div id="adminActivityList" class="bg-slate-900/60 p-3 rounded-xl text-xs space-y-2 border border-slate-800 max-h-60 overflow-y-auto">
+                            <p class="text-gray-400 text-center py-2">စကားပြောဆိုမှု မရှိသေးပါ။</p>
                         </div>
                     </div>
                 </div>
@@ -227,18 +225,11 @@
         <p class="mt-1 text-gray-400">Created with ❤️ by <span class="text-pink-400 font-medium">Isaiah Cung</span></p>
     </footer>
 
-    <!-- JavaScript & Firebase Logic -->
+    <!-- JavaScript Logic -->
     <script>
-        const firebaseConfig = {
-            databaseURL: "https://myanmar-dating-app-default-rtdb.firebaseio.com/"
-        };
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.database();
-
         let currentUser = null;
-        let currentChatRoomId = null;
         let currentActiveProfile = null;
-        let chatListenerRef = null;
+        let localMessages = {};
 
         const profiles = [
             { id: 'profile_1', name: "Lian, 24", location: "Yangon • Falam / Myanmar", ethnicity: "falam", bio: "သီချင်းနားထောင်ရတာ ကြိုက်တယ်။ မိတ်ဆွေအသစ်များနဲ့ ခင်မင်ချင်ပါတယ်။", image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=600" },
@@ -248,7 +239,6 @@
         let filteredProfiles = [...profiles];
         let currentIndex = 0;
 
-        // ဘာသာစကားအလိုက် စာသားများ (Translations)
         const translations = {
             my: {
                 heroTitle: "သင့်ဖူးစာရှင်ကို ရှာဖွေပါ",
@@ -407,12 +397,6 @@
                 isAdmin: isAdmin
             };
 
-            db.ref('users/' + currentUser.id).set({
-                name: currentUser.name,
-                joinedAt: Date.now(),
-                isAdmin: currentUser.isAdmin
-            });
-
             document.getElementById('authSection').classList.add('hidden');
             document.getElementById('appSection').classList.remove('hidden');
             document.getElementById('mainNavButtons').classList.remove('hidden');
@@ -438,10 +422,6 @@
 
             document.getElementById('chatAvatar').src = p.image;
             document.getElementById('chatName').innerText = p.name.split(',')[0];
-
-            if (currentUser) {
-                currentChatRoomId = [currentUser.id, p.id].sort().join('_');
-            }
         }
 
         function nextProfile(action) {
@@ -481,6 +461,7 @@
             } else if(tab === 'admin' && currentUser && currentUser.isAdmin) {
                 adminTab.classList.remove('hidden');
                 btnAdmin.className = "bg-amber-600 text-white text-xs px-2.5 py-1.5 rounded-lg font-semibold transition";
+                initAdminDashboard();
             }
         }
 
@@ -488,75 +469,71 @@
             const chatMessages = document.getElementById('chatMessages');
             chatMessages.innerHTML = '';
 
-            if (chatListenerRef) {
-                chatListenerRef.off();
+            const roomId = currentUser.id + '_' + (currentActiveProfile ? currentActiveProfile.id : 'default');
+            const messages = localMessages[roomId] || [];
+
+            if (messages.length === 0) {
+                chatMessages.innerHTML = `<p class="text-gray-400 text-center text-xs my-auto">စကားစမြည် စတင်ပြောဆိုပါ...</p>`;
+                return;
             }
 
-            if (!currentChatRoomId) return;
-
-            chatListenerRef = db.ref('chats/' + currentChatRoomId + '/messages');
-            chatListenerRef.on('child_added', (snapshot) => {
-                const msg = snapshot.val();
+            messages.forEach(msg => {
                 const msgDiv = document.createElement('div');
-
-                if(currentUser && msg.senderId === currentUser.id) {
+                if(msg.senderId === currentUser.id) {
                     msgDiv.className = "self-end bg-pink-600 text-white text-xs px-3 py-2 rounded-2xl max-w-[75%]";
                     msgDiv.innerText = msg.text;
                 } else {
                     msgDiv.className = "self-start bg-slate-800 text-gray-200 text-xs px-3 py-2 rounded-2xl max-w-[75%] border border-slate-700";
-                    msgDiv.innerHTML = `<span class="text-[9px] text-pink-400 block mb-0.5">${msg.senderName || 'User'}</span>${msg.text}`;
+                    msgDiv.innerHTML = `<span class="text-[9px] text-pink-400 block mb-0.5">${msg.senderName}</span>${msg.text}`;
                 }
-
                 chatMessages.appendChild(msgDiv);
-                chatMessages.scrollTop = chatMessages.scrollHeight;
             });
+            chatMessages.scrollTop = chatMessages.scrollHeight;
         }
 
         function sendPrivateMessage(event) {
             event.preventDefault();
             const input = document.getElementById('messageInput');
             const text = input.value.trim();
-            if(!text || !currentUser || !currentChatRoomId) return;
+            if(!text || !currentUser) return;
 
-            db.ref('chats/' + currentChatRoomId + '/messages').push({
+            const roomId = currentUser.id + '_' + (currentActiveProfile ? currentActiveProfile.id : 'default');
+            if(!localMessages[roomId]) localMessages[roomId] = [];
+
+            localMessages[roomId].push({
                 senderId: currentUser.id,
                 senderName: currentUser.name,
                 text: text,
                 timestamp: Date.now()
             });
+
             input.value = '';
+            loadPrivateChatMessages();
         }
 
         function initAdminDashboard() {
-            db.ref('users').on('value', (snapshot) => {
-                const users = snapshot.val();
-                document.getElementById('statUsers').innerText = users ? Object.keys(users).length : 0;
+            const activityList = document.getElementById('adminActivityList');
+            activityList.innerHTML = '';
+
+            let totalMsgCount = 0;
+            let hasActivity = false;
+
+            Object.keys(localMessages).forEach(roomId => {
+                const msgs = localMessages[roomId];
+                msgs.forEach(m => {
+                    hasActivity = true;
+                    totalMsgCount++;
+                    const p = document.createElement('p');
+                    p.className = "text-gray-300 border-b border-slate-800 pb-1 mb-1";
+                    p.innerHTML = `<span class="text-amber-400 font-semibold">[Room]</span> <span class="text-pink-400">${m.senderName}:</span> ${m.text}`;
+                    activityList.appendChild(p);
+                });
             });
 
-            db.ref('chats').on('value', (snapshot) => {
-                const chatsData = snapshot.val();
-                const activityList = document.getElementById('adminActivityList');
-                activityList.innerHTML = '';
-
-                let totalMessagesCount = 0;
-
-                if (chatsData) {
-                    Object.keys(chatsData).forEach(roomId => {
-                        const room = chatsData[roomId];
-                        if (room && room.messages) {
-                            Object.keys(room.messages).forEach(msgKey => {
-                                totalMessagesCount++;
-                                const msg = room.messages[msgKey];
-                                const p = document.createElement('p');
-                                p.className = "text-gray-300 border-b border-slate-800 pb-1 mb-1";
-                                p.innerHTML = `<span class="text-amber-400 font-semibold">[Room: ${roomId.substring(0,10)}...]</span> <span class="text-pink-400">${msg.senderName}:</span> ${msg.text}`;
-                                activityList.appendChild(p);
-                            });
-                        }
-                    });
-                }
-                document.getElementById('statMessages').innerText = totalMessagesCount;
-            });
+            if(!hasActivity) {
+                activityList.innerHTML = `<p class="text-gray-400 text-center py-2">စကားပြောဆိုမှု မရှိသေးပါ။</p>`;
+            }
+            document.getElementById('statMessages').innerText = totalMsgCount;
         }
     </script>
 </body>
