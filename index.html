@@ -76,15 +76,28 @@
 
             <form onsubmit="handleAuth(event)" class="space-y-4">
                 <div>
-                    <label id="labelName" class="block text-xs font-medium text-gray-300 mb-1">Hming (Name)</label>
+                    <label id="labelName" class="block text-xs font-medium text-gray-300 mb-1">နာမည် (Name)</label>
                     <input type="text" id="authName" required placeholder="သင့်နာမည်ရိုက်ပါ (Admin အတွက် Admin ဟုထည့်ပါ)" class="w-full bg-slate-800 text-white text-xs px-4 py-3 rounded-xl border border-slate-700 focus:outline-none focus:border-pink-500">
                 </div>
+                
+                <!-- Age Input Field -->
+                <div>
+                    <label id="labelAge" class="block text-xs font-medium text-gray-300 mb-1">အသက် (Age)</label>
+                    <input type="number" id="authAge" min="18" max="100" required placeholder="သင့်အသက်ထည့်ပါ (ဥပမာ - 22)" class="w-full bg-slate-800 text-white text-xs px-4 py-3 rounded-xl border border-slate-700 focus:outline-none focus:border-pink-500">
+                </div>
+
+                <!-- Location Input Field -->
+                <div>
+                    <label id="labelLocation" class="block text-xs font-medium text-gray-300 mb-1">နေရပ်လိပ်စာ (Location)</label>
+                    <input type="text" id="authLocation" required placeholder="သင့်မြို့/နေရပ်လိပ်စာ (ဥပမာ - Yangon)" class="w-full bg-slate-800 text-white text-xs px-4 py-3 rounded-xl border border-slate-700 focus:outline-none focus:border-pink-500">
+                </div>
+
                 <div>
                     <label id="labelContact" class="block text-xs font-medium text-gray-300 mb-1">Phone or Email</label>
                     <input type="text" id="authEmail" required placeholder="09xxxxxxxxx" class="w-full bg-slate-800 text-white text-xs px-4 py-3 rounded-xl border border-slate-700 focus:outline-none focus:border-pink-500">
                 </div>
                 <div>
-                    <label id="labelPass" class="block text-xs font-medium text-gray-300 mb-1">Ca thupmi</label>
+                    <label id="labelPass" class="block text-xs font-medium text-gray-300 mb-1">စကားဝှက် (Password)</label>
                     <input type="password" id="authPassword" required placeholder="******" class="w-full bg-slate-800 text-white text-xs px-4 py-3 rounded-xl border border-slate-700 focus:outline-none focus:border-pink-500">
                 </div>
 
@@ -197,7 +210,7 @@
             </div>
 
             <!-- ADMIN TAB -->
-            <div id="adminTab" class="hidden">
+            <div id="adminTab" class="hidden space-y-4">
                 <div class="glass-card p-5 rounded-2xl shadow-xl">
                     <div class="flex items-center justify-between mb-4">
                         <h3 class="font-bold text-base text-amber-400"><i class="fa-solid fa-gauge mr-2"></i>Admin Safety Dashboard</h3>
@@ -212,6 +225,13 @@
                         <div class="bg-slate-800/80 p-3 rounded-xl border border-slate-700 text-center">
                             <p class="text-xs text-gray-400">Active Room Messages</p>
                             <h4 id="statMessages" class="text-xl font-bold text-pink-400 mt-1">0</h4>
+                        </div>
+                    </div>
+
+                    <!-- Registered Users List -->
+                    <div class="space-y-2 mb-4">
+                        <h4 class="text-xs font-semibold text-gray-400 uppercase">Registered Users List</h4>
+                        <div id="adminUsersList" class="bg-slate-900/60 p-3 rounded-xl text-xs space-y-2 border border-slate-800 max-h-40 overflow-y-auto">
                         </div>
                     </div>
 
@@ -257,6 +277,10 @@
                 authDesc: "အကောင့်ဝင်ပါ သို့မဟုတ် အကောင့်သစ်ပြုလုပ်ပါ",
                 labelName: "နာမည် (Name)",
                 phName: "သင့်နာမည်ရိုက်ပါ (Admin အတွက် Admin ဟုထည့်ပါ)",
+                labelAge: "အသက် (Age)",
+                phAge: "သင့်အသက်ထည့်ပါ (ဥပမာ - 22)",
+                labelLocation: "နေရပ်လိပ်စာ (Location)",
+                phLocation: "သင့်မြို့/နေရပ်လိပ်စာ (ဥပမာ - Yangon)",
                 labelContact: "ဖုန်း သို့မဟုတ် အီးမေးလ်",
                 phEmail: "09xxxxxxxxx",
                 labelPass: "စကားဝှက် (Password)",
@@ -275,6 +299,10 @@
                 authDesc: "Account lut aw / Account thar tuah aw",
                 labelName: "Hming (Name)",
                 phName: "Na hming ngan aw",
+                labelAge: "Kum (Age)",
+                phAge: "Na kum hrilh aw",
+                labelLocation: "Um nak hmun (Location)",
+                phLocation: "Na um nak khua",
                 labelContact: "Phone or Email",
                 phEmail: "09xxxxxxxxx",
                 labelPass: "Ca thupmi",
@@ -293,6 +321,10 @@
                 authDesc: "Account thutnak/ Register",
                 labelName: "Hmin (Name)",
                 phName: "Na hmin tial",
+                labelAge: "Kum (Age)",
+                phName: "Na kum tial",
+                labelLocation: "Um nak hmun (Location)",
+                phLocation: "Na umnak khua",
                 labelContact: "Phone or Email",
                 phEmail: "09xxxxxxxxx",
                 labelPass: "Biathup",
@@ -311,6 +343,10 @@
                 authDesc: "Account lut in / Account Thiar Vauh in",
                 labelName: "Hming (Name)",
                 phName: "Na hming ngan in",
+                labelAge: "Kum (Age)",
+                phAge: "Na kum ngan in",
+                labelLocation: "Location (Nang umnak hmun)",
+                phLocation: "Nang umnak hmun",
                 labelContact: "Phone or Email",
                 phEmail: "09xxxxxxxxx",
                 labelPass: "Na laithup",
@@ -322,13 +358,17 @@
                 rulesText: "Uan pha ngua ai tuh ngua. Mi hnaihnawk zuang lai ngan tuh ngua. Cozah deih ngua zuk dah tuh ngua.",
                 chatInputPh: "Lai kuat ngan hmun",
                 roomName: "Tapong Community Room",
-                labelLangJoin: "Join uan hril hmun"
+                labelLangJoin: "Join na deihhak uan hril in"
             },
             mizo: {
                 authTitle: "Chibai / Welcome",
                 authDesc: "Account lut rawh / A thar siam rawh",
                 labelName: "Hming (Name)",
                 phName: "I hming ziak rawh",
+                labelAge: "Kum (Age)",
+                phAge: "I kum ziak rawh",
+                labelLocation: "I awmna hmun (Location)",
+                phLocation: "I khaw awmna",
                 labelContact: "Phone or Email",
                 phEmail: "09xxxxxxxxx",
                 labelPass: "Lehkhathup",
@@ -347,6 +387,10 @@
                 authDesc: "Account lutin / Account thak bawl in",
                 labelName: "Ming (Name)",
                 phName: "Na Ming gelh in",
+                labelAge: "Kum (Age)",
+                phAge: "Na kum gelh in",
+                labelLocation: "Na omna mun (Location)",
+                phLocation: "Na omna khua",
                 labelContact: "Phone or Email",
                 phEmail: "09xxxxxxxxx",
                 labelPass: "Thuthup",
@@ -365,6 +409,10 @@
                 authDesc: "Sign in or create a new account",
                 labelName: "Name",
                 phName: "Enter your name",
+                labelAge: "Age",
+                phAge: "Enter your age",
+                labelLocation: "Location",
+                phLocation: "Enter your location",
                 labelContact: "Phone or Email",
                 phEmail: "Phone or Email",
                 labelPass: "Password",
@@ -396,6 +444,10 @@
 
             const labelName = document.getElementById('labelName');
             const authName = document.getElementById('authName');
+            const labelAge = document.getElementById('labelAge');
+            const authAge = document.getElementById('authAge');
+            const labelLocation = document.getElementById('labelLocation');
+            const authLocation = document.getElementById('authLocation');
             const labelContact = document.getElementById('labelContact');
             const authEmail = document.getElementById('authEmail');
             const labelPass = document.getElementById('labelPass');
@@ -414,6 +466,10 @@
 
             if (labelName) labelName.innerText = data.labelName;
             if (authName && data.phName) authName.placeholder = data.phName;
+            if (labelAge) labelAge.innerText = data.labelAge;
+            if (authAge && data.phAge) authAge.placeholder = data.phAge;
+            if (labelLocation) labelLocation.innerText = data.labelLocation;
+            if (authLocation && data.phLocation) authLocation.placeholder = data.phLocation;
             if (labelContact) labelContact.innerText = data.labelContact;
             if (authEmail && data.phEmail) authEmail.placeholder = data.phEmail;
             if (labelPass) labelPass.innerText = data.labelPass;
@@ -431,6 +487,8 @@
         function handleAuth(event) {
             event.preventDefault();
             const name = document.getElementById('authName').value.trim();
+            const age = document.getElementById('authAge').value.trim();
+            const location = document.getElementById('authLocation').value.trim();
             const password = document.getElementById('authPassword').value.trim();
             const selectedLang = document.getElementById('authLanguage').value;
 
@@ -444,6 +502,8 @@
             currentUser = {
                 id: isAdmin ? 'admin_owner' : 'user_' + Math.floor(Math.random() * 100000),
                 name: name,
+                age: age,
+                location: location,
                 isAdmin: isAdmin,
                 language: selectedLang
             };
@@ -452,6 +512,8 @@
 
             db.ref('users/' + currentUser.id).set({
                 name: currentUser.name,
+                age: age,
+                location: location,
                 language: selectedLang,
                 joinedAt: Date.now(),
                 isAdmin: currentUser.isAdmin
@@ -564,7 +626,7 @@
 
             db.ref('rooms/' + currentRoomId + '/messages').push({
                 senderId: currentUser.id,
-                senderName: currentUser.name + (currentUser.isAdmin ? ' (Admin)' : ''),
+                senderName: currentUser.name + (currentUser.age ? ` (${currentUser.age})` : '') + (currentUser.isAdmin ? ' (Admin)' : ''),
                 text: text,
                 timestamp: Date.now()
             });
@@ -575,6 +637,18 @@
             db.ref('users').on('value', (snapshot) => {
                 const users = snapshot.val();
                 document.getElementById('statUsers').innerText = users ? Object.keys(users).length : 0;
+                
+                const usersListContainer = document.getElementById('adminUsersList');
+                usersListContainer.innerHTML = '';
+                if (users) {
+                    Object.keys(users).forEach(uid => {
+                        const u = users[uid];
+                        const userP = document.createElement('p');
+                        userP.className = "text-gray-300 border-b border-slate-800 pb-1 mb-1 flex justify-between";
+                        userP.innerHTML = `<span><strong class="text-white">${u.name}</strong> (${u.age || 'N/A'} yrs, ${u.location || 'N/A'})</span> <span class="text-pink-400">[${(u.language || 'my').toUpperCase()}]</span>`;
+                        usersListContainer.appendChild(userP);
+                    });
+                }
             });
 
             db.ref('rooms').on('value', (snapshot) => {
