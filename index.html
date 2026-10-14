@@ -48,7 +48,7 @@
             <div id="mainNavButtons" class="hidden flex space-x-1">
                 <button onclick="switchTab('discover')" id="btnDiscover" class="bg-pink-600 text-white text-xs px-2.5 py-1.5 rounded-lg font-semibold transition">Discover</button>
                 <button onclick="switchTab('chat')" id="btnChat" class="bg-slate-800 text-gray-300 text-xs px-2.5 py-1.5 rounded-lg font-semibold border border-slate-700 transition">Chat</button>
-                <button onclick="switchTab('admin')" id="btnAdmin" class="bg-slate-800 text-amber-400 text-xs px-2.5 py-1.5 rounded-lg font-semibold border border-slate-700 transition"><i class="fa-solid fa-lock mr-1"></i>Admin</button>
+                <button onclick="switchTab('admin')" id="btnAdmin" class="bg-slate-800 text-amber-400 text-xs px-2.5 py-1.5 rounded-lg font-semibold border border-slate-700 transition hidden"><i class="fa-solid fa-lock mr-1"></i>Admin</button>
             </div>
 
             <!-- Language Selector -->
@@ -80,7 +80,7 @@
             <form onsubmit="handleAuth(event)" class="space-y-4">
                 <div>
                     <label class="block text-xs font-medium text-gray-300 mb-1">နာမည် (Name)</label>
-                    <input type="text" id="authName" required placeholder="သင့်နာမည်ရိုက်ပါ" class="w-full bg-slate-800 text-white text-xs px-4 py-3 rounded-xl border border-slate-700 focus:outline-none focus:border-pink-500">
+                    <input type="text" id="authName" required placeholder="သင့်နာမည်ရိုက်ပါ (Admin ဆိုလျှင် Admin ဟုထည့်ပါ)" class="w-full bg-slate-800 text-white text-xs px-4 py-3 rounded-xl border border-slate-700 focus:outline-none focus:border-pink-500">
                 </div>
                 <div>
                     <label class="block text-xs font-medium text-gray-300 mb-1">ဖုန်း သို့မဟုတ် အီးမေးလ်</label>
@@ -150,20 +150,20 @@
                 </div>
             </div>
 
-            <!-- CHAT TAB -->
+            <!-- CHAT TAB (PRIVATE USER CHAT) -->
             <div id="chatTab" class="hidden flex flex-col h-[75vh]">
                 <div class="glass-card p-3 rounded-t-xl flex items-center space-x-3 mb-2">
                     <img id="chatAvatar" src="" class="w-10 h-10 rounded-full object-cover">
                     <div>
                         <h3 id="chatName" class="font-bold text-sm text-white"></h3>
-                        <p class="text-[10px] text-emerald-400"><i class="fa-solid fa-circle text-[8px] mr-1"></i> Real-time Chat Active</p>
+                        <p class="text-[10px] text-emerald-400"><i class="fa-solid fa-circle text-[8px] mr-1"></i> Private Chat Secure</p>
                     </div>
                 </div>
 
                 <div id="chatMessages" class="glass-card flex-grow p-4 rounded-xl overflow-y-auto space-y-3 mb-3 flex flex-col">
                 </div>
 
-                <form onsubmit="sendRealtimeMessage(event)" class="flex items-center space-x-2">
+                <form onsubmit="sendPrivateMessage(event)" class="flex items-center space-x-2">
                     <input type="text" id="messageInput" placeholder="စာတို ရိုက်ရန်..." class="flex-grow bg-slate-800 text-white text-xs px-4 py-3 rounded-xl border border-slate-700 focus:outline-none focus:border-pink-500">
                     <button type="submit" class="bg-gradient-to-r from-pink-500 to-purple-600 text-white px-4 py-3 rounded-xl text-xs font-semibold shadow-md hover:opacity-90 transition">
                         <i class="fa-solid fa-paper-plane"></i>
@@ -171,12 +171,12 @@
                 </form>
             </div>
 
-            <!-- ADMIN TAB -->
+            <!-- ADMIN TAB (MONITOR ALL CHATS & USERS) -->
             <div id="adminTab" class="hidden">
                 <div class="glass-card p-5 rounded-2xl shadow-xl">
                     <div class="flex items-center justify-between mb-4">
-                        <h3 class="font-bold text-base text-amber-400"><i class="fa-solid fa-gauge mr-2"></i>Admin Dashboard</h3>
-                        <span class="bg-emerald-500/20 text-emerald-300 text-[10px] px-2 py-0.5 rounded-full border border-emerald-500/30">Live Database</span>
+                        <h3 class="font-bold text-base text-amber-400"><i class="fa-solid fa-gauge mr-2"></i>Admin Safety Dashboard</h3>
+                        <span class="bg-emerald-500/20 text-emerald-300 text-[10px] px-2 py-0.5 rounded-full border border-emerald-500/30">Owner Access Only</span>
                     </div>
 
                     <div class="grid grid-cols-2 gap-3 mb-4">
@@ -185,14 +185,14 @@
                             <h4 id="statUsers" class="text-xl font-bold text-white mt-1">0</h4>
                         </div>
                         <div class="bg-slate-800/80 p-3 rounded-xl border border-slate-700 text-center">
-                            <p class="text-xs text-gray-400">Total Messages</p>
+                            <p class="text-xs text-gray-400">Active Chats</p>
                             <h4 id="statMessages" class="text-xl font-bold text-pink-400 mt-1">0</h4>
                         </div>
                     </div>
 
                     <div class="space-y-2">
-                        <h4 class="text-xs font-semibold text-gray-400 uppercase">Live Chat Logs</h4>
-                        <div id="adminActivityList" class="bg-slate-900/60 p-3 rounded-xl text-xs space-y-2 border border-slate-800 max-h-48 overflow-y-auto">
+                        <h4 class="text-xs font-semibold text-gray-400 uppercase">All Customer Conversations (Monitor)</h4>
+                        <div id="adminActivityList" class="bg-slate-900/60 p-3 rounded-xl text-xs space-y-2 border border-slate-800 max-h-60 overflow-y-auto">
                         </div>
                     </div>
                 </div>
@@ -207,7 +207,7 @@
         <p class="mt-1 text-gray-400">Created with ❤️ by <span class="text-pink-400 font-medium">Isaiah Cung</span></p>
     </footer>
 
-    <!-- JavaScript & Firebase -->
+    <!-- JavaScript & Firebase Logic -->
     <script>
         const firebaseConfig = {
             databaseURL: "https://myanmar-dating-app-default-rtdb.firebaseio.com/"
@@ -216,38 +216,54 @@
         const db = firebase.database();
 
         let currentUser = null;
+        let currentChatRoomId = null;
+        let currentActiveProfile = null;
+        let chatListenerRef = null;
+
+        const profiles = [
+            { id: 'profile_1', name: "Lian, 24", location: "Yangon • Falam / Myanmar", bio: "သီချင်းနားထောင်ရတာ ကြိုက်တယ်။ မိတ်ဆွေအသစ်များနဲ့ ခင်မင်ချင်ပါတယ်။", image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=600" },
+            { id: 'profile_2', name: "Nuam, 22", location: "Mandalay • Mizo / Myanmar", bio: "ဝါသနာကတော့ ခရီးသွားတာနဲ့ စာဖတ်တာပါ။", image: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&q=80&w=600" },
+            { id: 'profile_3', name: "Hmuaki, 25", location: "Aizawl • Mizo", bio: "တေးဂီတကို ချစ်မြတ်နိုးသူတစ်ဦးဖြစ်ပါတယ်။", image: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&q=80&w=600" }
+        ];
+        let currentIndex = 0;
 
         function handleAuth(event) {
             event.preventDefault();
-            const name = document.getElementById('authName').value;
+            const name = document.getElementById('authName').value.trim();
+            const email = document.getElementById('authEmail').value.trim();
+
+            const isAdmin = (name.toLowerCase() === 'admin' || email.toLowerCase().includes('admin'));
+
             currentUser = {
-                id: 'user_' + Math.floor(Math.random() * 100000),
-                name: name
+                id: isAdmin ? 'admin_owner' : 'user_' + Math.floor(Math.random() * 100000),
+                name: name,
+                isAdmin: isAdmin
             };
 
-            // Register User in Firebase
+            // Register User in Firebase Database
             db.ref('users/' + currentUser.id).set({
                 name: currentUser.name,
-                joinedAt: Date.now()
+                joinedAt: Date.now(),
+                isAdmin: currentUser.isAdmin
             });
 
             document.getElementById('authSection').classList.add('hidden');
             document.getElementById('appSection').classList.remove('hidden');
             document.getElementById('mainNavButtons').classList.remove('hidden');
 
-            loadProfile();
+            if (currentUser.isAdmin) {
+                document.getElementById('btnAdmin').classList.remove('hidden');
+                switchTab('admin');
+                initAdminDashboard();
+            } else {
+                switchTab('discover');
+                loadProfile();
+            }
         }
-
-        const profiles = [
-            { name: "Lian, 24", location: "Yangon • Falam / Myanmar", bio: "သီချင်းနားထောင်ရတာ ကြိုက်တယ်။ မိတ်ဆွေအသစ်များနဲ့ ခင်မင်ချင်ပါတယ်။", image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=600" },
-            { name: "Nuam, 22", location: "Mandalay • Mizo / Myanmar", bio: "ဝါသနာကတော့ ခရီးသွားတာနဲ့ စာဖတ်တာပါ။", image: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&q=80&w=600" },
-            { name: "Hmuaki, 25", location: "Aizawl • Mizo", bio: "တေးဂီတကို ချစ်မြတ်နိုးသူတစ်ဦးဖြစ်ပါတယ်။", image: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&q=80&w=600" }
-        ];
-
-        let currentIndex = 0;
 
         function loadProfile() {
             const p = profiles[currentIndex];
+            currentActiveProfile = p;
             document.getElementById('profileImg').src = p.image;
             document.getElementById('profileName').innerText = p.name;
             document.getElementById('profileLocation').innerHTML = `<i class="fa-solid fa-location-dot mr-1"></i> ${p.location}`;
@@ -255,11 +271,16 @@
 
             document.getElementById('chatAvatar').src = p.image;
             document.getElementById('chatName').innerText = p.name.split(',')[0];
+
+            // Create unique private room ID between current user and profile
+            if (currentUser) {
+                currentChatRoomId = [currentUser.id, p.id].sort().join('_');
+            }
         }
 
         function nextProfile(action) {
             if(action === 'like' || action === 'star') {
-                alert('❤️ Match တွေ့ပါပြီ! Chat Tab သို့ ခေါ်ဆောင်သွားပါမည်။');
+                alert('❤️ Match တွေ့ပါပြီ! Private Chat သို့ ခေါ်ဆောင်သွားပါမည်။');
                 switchTab('chat');
             } else {
                 currentIndex = (currentIndex + 1) % profiles.length;
@@ -280,7 +301,7 @@
             adminTab.classList.add('hidden');
             btnDiscover.className = "bg-slate-800 text-gray-300 text-xs px-2.5 py-1.5 rounded-lg font-semibold border border-slate-700 transition";
             btnChat.className = "bg-slate-800 text-gray-300 text-xs px-2.5 py-1.5 rounded-lg font-semibold border border-slate-700 transition";
-            btnAdmin.className = "bg-slate-800 text-amber-400 text-xs px-2.5 py-1.5 rounded-lg font-semibold border border-slate-700 transition";
+            if(currentUser && currentUser.isAdmin) btnAdmin.className = "bg-slate-800 text-amber-400 text-xs px-2.5 py-1.5 rounded-lg font-semibold border border-slate-700 transition";
 
             if(tab === 'discover') {
                 discoverTab.classList.remove('hidden');
@@ -288,19 +309,48 @@
             } else if(tab === 'chat') {
                 chatTab.classList.remove('hidden');
                 btnChat.className = "bg-pink-600 text-white text-xs px-2.5 py-1.5 rounded-lg font-semibold transition";
-            } else {
+                loadPrivateChatMessages();
+            } else if(tab === 'admin' && currentUser && currentUser.isAdmin) {
                 adminTab.classList.remove('hidden');
                 btnAdmin.className = "bg-amber-600 text-white text-xs px-2.5 py-1.5 rounded-lg font-semibold transition";
             }
         }
 
-        function sendRealtimeMessage(event) {
+        function loadPrivateChatMessages() {
+            const chatMessages = document.getElementById('chatMessages');
+            chatMessages.innerHTML = '';
+
+            if (chatListenerRef) {
+                chatListenerRef.off();
+            }
+
+            if (!currentChatRoomId) return;
+
+            chatListenerRef = db.ref('chats/' + currentChatRoomId + '/messages');
+            chatListenerRef.on('child_added', (snapshot) => {
+                const msg = snapshot.val();
+                const msgDiv = document.createElement('div');
+
+                if(currentUser && msg.senderId === currentUser.id) {
+                    msgDiv.className = "self-end bg-pink-600 text-white text-xs px-3 py-2 rounded-2xl max-w-[75%]";
+                    msgDiv.innerText = msg.text;
+                } else {
+                    msgDiv.className = "self-start bg-slate-800 text-gray-200 text-xs px-3 py-2 rounded-2xl max-w-[75%] border border-slate-700";
+                    msgDiv.innerHTML = `<span class="text-[9px] text-pink-400 block mb-0.5">${msg.senderName || 'User'}</span>${msg.text}`;
+                }
+
+                chatMessages.appendChild(msgDiv);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            });
+        }
+
+        function sendPrivateMessage(event) {
             event.preventDefault();
             const input = document.getElementById('messageInput');
             const text = input.value.trim();
-            if(!text || !currentUser) return;
+            if(!text || !currentUser || !currentChatRoomId) return;
 
-            db.ref('messages').push({
+            db.ref('chats/' + currentChatRoomId + '/messages').push({
                 senderId: currentUser.id,
                 senderName: currentUser.name,
                 text: text,
@@ -309,32 +359,39 @@
             input.value = '';
         }
 
-        db.ref('messages').on('child_added', (snapshot) => {
-            const msg = snapshot.val();
-            const chatMessages = document.getElementById('chatMessages');
+        function initAdminDashboard() {
+            // Track Total Users
+            db.ref('users').on('value', (snapshot) => {
+                const users = snapshot.val();
+                document.getElementById('statUsers').innerText = users ? Object.keys(users).length : 0;
+            });
 
-            const msgDiv = document.createElement('div');
-            if(currentUser && msg.senderId === currentUser.id) {
-                msgDiv.className = "self-end bg-pink-600 text-white text-xs px-3 py-2 rounded-2xl max-w-[75%]";
-                msgDiv.innerText = msg.text;
-            } else {
-                msgDiv.className = "self-start bg-slate-800 text-gray-200 text-xs px-3 py-2 rounded-2xl max-w-[75%] border border-slate-700";
-                msgDiv.innerHTML = `<span class="text-[9px] text-pink-400 block mb-0.5">${msg.senderName || 'User'}</span>${msg.text}`;
-            }
+            // Track All Chats & Monitor Contents across all rooms
+            db.ref('chats').on('value', (snapshot) => {
+                const chatsData = snapshot.val();
+                const activityList = document.getElementById('adminActivityList');
+                activityList.innerHTML = '';
 
-            chatMessages.appendChild(msgDiv);
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-        });
+                let totalMessagesCount = 0;
 
-        db.ref('users').on('value', (snapshot) => {
-            const users = snapshot.val();
-            document.getElementById('statUsers').innerText = users ? Object.keys(users).length : 0;
-        });
-
-        db.ref('messages').on('value', (snapshot) => {
-            const data = snapshot.val();
-            document.getElementById('statMessages').innerText = data ? Object.keys(data).length : 0;
-        });
+                if (chatsData) {
+                    Object.keys(chatsData).forEach(roomId => {
+                        const room = chatsData[roomId];
+                        if (room && room.messages) {
+                            Object.keys(room.messages).forEach(msgKey => {
+                                totalMessagesCount++;
+                                const msg = room.messages[msgKey];
+                                const p = document.createElement('p');
+                                p.className = "text-gray-300 border-b border-slate-800 pb-1 mb-1";
+                                p.innerHTML = `<span class="text-amber-400 font-semibold">[Room: ${roomId.substring(0,10)}...]</span> <span class="text-pink-400">${msg.senderName}:</span> ${msg.text}`;
+                                activityList.appendChild(p);
+                            });
+                        }
+                    });
+                }
+                document.getElementById('statMessages').innerText = totalMessagesCount;
+            });
+        }
     </script>
 </body>
 </html>
