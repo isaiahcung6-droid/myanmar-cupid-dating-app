@@ -507,11 +507,11 @@
             const query = document.getElementById('searchInput').value.toLowerCase().trim();
             const selectedEth = document.getElementById('ethnicityFilter').value;
 
+            // Shows all registered users from Firebase Realtime DB
             filteredProfiles = allProfilesList.filter(p => {
                 const matchesQuery = p.name.toLowerCase().includes(query);
                 const matchesEth = (selectedEth === 'all') || (p.ethnicity === selectedEth);
-                const isNotSelf = currentUser ? p.id !== currentUser.id : true;
-                return matchesQuery && matchesEth && isNotSelf;
+                return matchesQuery && matchesEth;
             });
 
             currentIndex = 0;
