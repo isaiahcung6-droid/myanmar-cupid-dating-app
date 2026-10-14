@@ -53,8 +53,8 @@
 
             <!-- Language Selector -->
             <select id="languageSelect" onchange="changeLanguage(this.value)" class="bg-slate-800 text-pink-400 text-xs font-semibold border border-pink-500/30 rounded-lg px-2 py-1.5 focus:outline-none cursor-pointer">
-                <option value="my">🇲🇲 မြန်မာ</option>
                 <option value="tapong">🇲🇲 Tapong</option>
+                <option value="my">🇲🇲 မြန်မာ</option>
                 <option value="falam">🇲🇲 Falam</option>
                 <option value="mizo">🇲🇲 Mizo</option>
                 <option value="hakha">🇲🇲 Hakha</option>
@@ -73,26 +73,26 @@
         <!-- LOGIN / SIGN UP SECTION -->
         <div id="authSection" class="glass-card p-6 rounded-2xl shadow-2xl">
             <div class="text-center mb-6">
-                <h2 id="authTitle" class="text-2xl font-bold gradient-text mb-1">မင်္ဂလာပါ</h2>
-                <p id="authDesc" class="text-xs text-gray-300">အကောင့်ဝင်ပါ သို့မဟုတ် အကောင့်သစ်ပြုလုပ်ပါ</p>
+                <h2 id="authTitle" class="text-2xl font-bold gradient-text mb-1">Hello Na Hmuak Ing</h2>
+                <p id="authDesc" class="text-xs text-gray-300">Account lut in Account Thiar Vuah In</p>
             </div>
 
             <form onsubmit="handleAuth(event)" class="space-y-4">
                 <div>
-                    <label id="labelName" class="block text-xs font-medium text-gray-300 mb-1">နာမည် (Name)</label>
-                    <input type="text" id="authName" required placeholder="သင့်နာမည်ရိုက်ပါ (Admin အတွက် Admin ဟုထည့်ပါ)" class="w-full bg-slate-800 text-white text-xs px-4 py-3 rounded-xl border border-slate-700 focus:outline-none focus:border-pink-500">
+                    <label id="labelName" class="block text-xs font-medium text-gray-300 mb-1">Hming (Name)</label>
+                    <input type="text" id="authName" required placeholder="na hming ngan in" class="w-full bg-slate-800 text-white text-xs px-4 py-3 rounded-xl border border-slate-700 focus:outline-none focus:border-pink-500">
                 </div>
                 <div>
-                    <label id="labelContact" class="block text-xs font-medium text-gray-300 mb-1">ဖုန်း သို့မဟုတ် အီးမေးလ်</label>
+                    <label id="labelContact" class="block text-xs font-medium text-gray-300 mb-1">Phong ngua le email</label>
                     <input type="text" id="authEmail" required placeholder="09xxxxxxxxx" class="w-full bg-slate-800 text-white text-xs px-4 py-3 rounded-xl border border-slate-700 focus:outline-none focus:border-pink-500">
                 </div>
                 <div>
-                    <label id="labelPass" class="block text-xs font-medium text-gray-300 mb-1">စကားဝှက် (Password)</label>
+                    <label id="labelPass" class="block text-xs font-medium text-gray-300 mb-1">na lai thup</label>
                     <input type="password" id="authPassword" required placeholder="******" class="w-full bg-slate-800 text-white text-xs px-4 py-3 rounded-xl border border-slate-700 focus:outline-none focus:border-pink-500">
                 </div>
 
                 <button type="submit" id="btnSubmitAuth" class="w-full bg-gradient-to-r from-pink-500 to-rose-500 text-white py-3 rounded-xl text-xs font-bold shadow-lg hover:opacity-90 transition mt-2">
-                    အကောင့်ဝင်မည် / Register
+                    Account lut tuh
                 </button>
             </form>
         </div>
@@ -102,18 +102,18 @@
             <!-- DISCOVER TAB -->
             <div id="discoverTab">
                 <div class="text-center mb-4">
-                    <h2 id="heroTitle" class="text-2xl font-bold mb-1">သင့်ဖူးစာရှင်ကို ရှာဖွေပါ</h2>
-                    <p id="heroDesc" class="text-xs text-gray-200 font-medium px-2">တိုင်းရင်းသား လူမျိုးစုပေါင်းစုံအတွက် လေးစားမှုရှိပြီး လုံခြုံသော Cupid Platform</p>
+                    <h2 id="heroTitle" class="text-2xl font-bold mb-1">Na Hnakruh Le Lu Tuh Ah Thuai In</h2>
+                    <p id="heroDesc" class="text-xs text-gray-200 font-medium px-2">mi te ca le hnam dang te ca a him le a pha ber ah hi cupid platform</p>
                 </div>
 
                 <!-- SEARCH & FILTER BOX -->
                 <div class="glass-card p-3 rounded-xl mb-4 shadow-md flex items-center space-x-2">
                     <div class="relative flex-grow">
                         <i class="fa-solid fa-magnifying-glass absolute left-3 top-3 text-gray-400 text-xs"></i>
-                        <input type="text" id="searchInput" oninput="filterProfiles()" placeholder="နာမည်ဖြင့် ရှာရန်..." class="w-full bg-slate-800 text-white text-xs pl-8 pr-3 py-2 rounded-lg border border-slate-700 focus:outline-none focus:border-pink-500">
+                        <input type="text" id="searchInput" oninput="filterProfiles()" placeholder="Hming in thuai hmun." class="w-full bg-slate-800 text-white text-xs pl-8 pr-3 py-2 rounded-lg border border-slate-700 focus:outline-none focus:border-pink-500">
                     </div>
                     <select id="ethnicityFilter" onchange="filterProfiles()" class="bg-slate-800 text-pink-400 text-xs font-semibold border border-slate-700 rounded-lg px-2 py-2 focus:outline-none">
-                        <option id="optAll" value="all">အားလုံး</option>
+                        <option id="optAll" value="all">A vesek in</option>
                         <option value="falam">Falam</option>
                         <option value="mizo">Mizo</option>
                         <option value="myanmar">Myanmar</option>
@@ -166,7 +166,7 @@
                 <!-- No Profile Found State -->
                 <div id="noProfileMsg" class="hidden glass-card p-6 rounded-2xl text-center text-gray-400 text-xs">
                     <i class="fa-solid fa-user-slash text-3xl mb-2 text-pink-500/60"></i>
-                    <p id="noProfileText">ရှာဖွေမှုနှင့် ကိုက်ညီသော Profile မတွေ့ရှိပါ။</p>
+                    <p id="noProfileText">Profile hmu tuh om ngua</p>
                 </div>
             </div>
 
@@ -184,7 +184,7 @@
                 </div>
 
                 <form onsubmit="sendPrivateMessage(event)" class="flex items-center space-x-2">
-                    <input type="text" id="messageInput" placeholder="စာတို ရိုက်ရန်..." class="flex-grow bg-slate-800 text-white text-xs px-4 py-3 rounded-xl border border-slate-700 focus:outline-none focus:border-pink-500">
+                    <input type="text" id="messageInput" placeholder="lai ngan hmun tuh..." class="flex-grow bg-slate-800 text-white text-xs px-4 py-3 rounded-xl border border-slate-700 focus:outline-none focus:border-pink-500">
                     <button type="submit" class="bg-gradient-to-r from-pink-500 to-purple-600 text-white px-4 py-3 rounded-xl text-xs font-semibold shadow-md hover:opacity-90 transition">
                         <i class="fa-solid fa-paper-plane"></i>
                     </button>
@@ -227,7 +227,7 @@
         <p class="mt-1 text-gray-400">Created with ❤️ by <span class="text-pink-400 font-medium">Isaiah Cung</span></p>
     </footer>
 
-    <!-- Firebase Realtime Logic -->
+    <!-- Firebase Realtime Logic & Language Translation Sync -->
     <script>
         const firebaseConfig = {
             databaseURL: "https://myanmar-dating-app-default-rtdb.firebaseio.com/"
@@ -244,6 +244,25 @@
         let currentIndex = 0;
 
         const translations = {
+            tapong: {
+                heroTitle: "Na Hnakruh Le Lu Tuh Ah Thuai In",
+                heroDesc: "mi te ca le hnam dang te ca a him le a pha ber ah hi cupid platform",
+                rulesTitle: "Hluntuh le zuamtuh thu teh",
+                rulesText: "Uan pah ngua ai tuh ngua, mi hnai hnawk zuang lai uan hmang tuh ngua, cozah deih zuang ngua zuk te dah tuh ngua",
+                authTitle: "Hello Na Hmuak Ing",
+                authDesc: "Account lut in Account Thiar Vuah In",
+                labelName: "Hming (Name)",
+                phName: "na hming ngan in",
+                labelContact: "Phong ngua le email",
+                phEmail: "09xxxxxxxxx",
+                labelPass: "na lai thup",
+                phPass: "******",
+                btnAuth: "Account lut tuh",
+                phChatInput: "lai ngan hmun tuh...",
+                phSearch: "Hming in thuai hmun.",
+                optAll: "A vesek in",
+                noProfileText: "Profile hmu tuh om ngua"
+            },
             my: {
                 heroTitle: "သင့်ဖူးစာရှင်ကို ရှာဖွေပါ",
                 heroDesc: "တိုင်းရင်းသား လူမျိုးစုပေါင်းစုံအတွက် လေးစားမှုရှိပြီး လုံခြုံသော Cupid Platform",
@@ -262,44 +281,6 @@
                 phSearch: "နာမည်ဖြင့် ရှာရန်...",
                 optAll: "အားလုံး",
                 noProfileText: "ရှာဖွေမှုနှင့် ကိုက်ညီသော Profile မတွေ့ရှိပါ။"
-            },
-            en: {
-                heroTitle: "Find Your Match",
-                heroDesc: "A respectful and secure Cupid Platform for all ethnic groups",
-                rulesTitle: "Community Guidelines",
-                rulesText: "Inappropriate language, harassment, and abusive behavior are strictly prohibited.",
-                authTitle: "Welcome",
-                authDesc: "Sign in or create a new account",
-                labelName: "Name",
-                phName: "Enter your name (Type Admin for Admin)",
-                labelContact: "Phone or Email",
-                phEmail: "Enter phone or email",
-                labelPass: "Password",
-                phPass: "******",
-                btnAuth: "Sign In / Register",
-                phChatInput: "Type a message...",
-                phSearch: "Search by name...",
-                optAll: "All",
-                noProfileText: "No matching profiles found."
-            },
-            tapong: {
-                heroTitle: "Na Hnakruh Le Lu Tuh Ah Thuai In",
-                heroDesc: "mi te ca le hnam dang te ca a him le a pha ber ah hi cupid platform",
-                rulesTitle: "Hluntuh le zuamtuh thu teh",
-                rulesText: "Uan pah ngua ai tuh ngua, mi hnai hnawk zuang lai uan hmang tuh ngua, cozah deih zuang ngua zuk te dah tuh ngua",
-                authTitle: "Hello Na Hmuak Ing",
-                authDesc: "Account lut in Account Thiar Vuah In",
-                labelName: "Hming (Name)",
-                phName: "na hming ngan in",
-                labelContact: "Phong ngua le email",
-                phEmail: "09xxxxxxxxx",
-                labelPass: "na lai thup",
-                phPass: "******",
-                btnAuth: "Account lut awm",
-                phChatInput: "lai ngan hmun tuh",
-                phSearch: "Hming in thuai hmun.",
-                optAll: "A vesek in",
-                noProfileText: "Profile hmuh lo a si."
             },
             falam: {
                 heroTitle: "Na Duhmi Zawn Ruah",
@@ -358,86 +339,29 @@
                 optAll: "Duhdim",
                 noProfileText: "Profile kawlmi a um lo."
             },
-            tidim: {
-                heroTitle: "Nangmah Deih pen Zawn In",
-                heroDesc: "Mihing khempeuh ading a hoih le a him platform",
-                rulesTitle: "Thuhih le Ngeina",
-                rulesText: "Pau sia le kam sia zang lo ding.",
-                authTitle: "Chibai / Welcome",
-                authDesc: "Account lutin / Register",
-                labelName: "Min (Name)",
-                phName: "Na min gelh in",
-                labelContact: "Phone ahaam le Email",
-                phEmail: "09xxxxxxxxx",
-                labelPass: "Thuthup (Password)",
+            en: {
+                heroTitle: "Find Your Match",
+                heroDesc: "A respectful and secure Cupid Platform for all ethnic groups",
+                rulesTitle: "Community Guidelines",
+                rulesText: "Inappropriate language, harassment, and abusive behavior are strictly prohibited.",
+                authTitle: "Welcome",
+                authDesc: "Sign in or create a new account",
+                labelName: "Name",
+                phName: "Enter your name (Type Admin for Admin)",
+                labelContact: "Phone or Email",
+                phEmail: "Enter phone or email",
+                labelPass: "Password",
                 phPass: "******",
-                btnAuth: "Lut in / Register",
-                phChatInput: "Lai gelh in...",
-                phSearch: "Min zawn in...",
-                optAll: "Khempeuh",
-                noProfileText: "Profile muzolo."
-            },
-            zaniat: {
-                heroTitle: "Duhmi Kawlnak",
-                heroDesc: "Miphun tling caah platform",
-                rulesTitle: "Phungphai",
-                rulesText: "Thil ṭhalo tuah lo ding.",
-                authTitle: "Chibai",
-                authDesc: "Account lut / Register",
-                labelName: "Min (Name)",
-                phName: "Na min ṭial aw",
-                labelContact: "Phone / Email",
-                phEmail: "09xxxxxxxxx",
-                labelPass: "Biathup",
-                phPass: "******",
-                btnAuth: "Lut aw",
-                phChatInput: "Biaknak...",
-                phSearch: "Kawlnak...",
-                optAll: "Zavente",
-                noProfileText: "Profile um lo."
-            },
-            karen: {
-                heroTitle: "မၤသးခုနကစၢ်",
-                heroDesc: "ကညီဖိတဖၣ်အဂီၢ် ပလၢဲဖိ platform",
-                rulesTitle: "စည်းမျဉ်းစည်းကမ်းများ",
-                rulesText: "တၢ်ကတိၤသသီတဖၣ် မၤတဂ့ၤ.",
-                authTitle: "မင်္ဂလာပါ",
-                authDesc: "အကောင့်ဝင်ပါ",
-                labelName: "မံၤ (Name)",
-                phName: "ကွဲးနမံၤ",
-                labelContact: "ဖုန်း / အီးမေးလ်",
-                phEmail: "09xxxxxxxxx",
-                labelPass: "စကားဝှက်",
-                phPass: "******",
-                btnAuth: "ဝင်မည်",
-                phChatInput: "ကွဲးလံာ်...",
-                phSearch: "ဃိးနမံၤ...",
-                optAll: "ခဲလၢာ်",
-                noProfileText: "တထံၣ်ဘၣ်."
-            },
-            shan: {
-                heroTitle: "ႁႃၵူႈၸၢႆး/ၵူႈယိင်း",
-                heroDesc: "တႃႇတႆးႁဝ်းၶႃႈ platform",
-                rulesTitle: "ပိူင်ယၢမ်း",
-                rulesText: "ၵႂၢမ်းဢမ်ႇလီ ဢမ်ႇလႆႈလၢတ်ႈ.",
-                authTitle: "မၢဝ်ႇသၢဝ်ႁဝ်း",
-                authDesc: "လွင်ႈၶဝ်ႈဢေးၵောက်ပိူင်",
-                labelName: "ၸိုဝ်ႈ (Name)",
-                phName: "တႅမ်ႈၸိုဝ်ႈ",
-                labelContact: "ဖုန်း / အီးမေးလ်",
-                phEmail: "09xxxxxxxxx",
-                labelPass: "စကားဝှက်",
-                phPass: "******",
-                btnAuth: "ၶဝ်ႈႁဵတ်း",
-                phChatInput: "တႅမ်ႈလိၵ်ႈ...",
-                phSearch: "ႁႃၸိုဝ်ႈ...",
-                optAll: "တင်းသဵင်ႈ",
-                noProfileText: "ဢမ်ႇထူပ်း."
+                btnAuth: "Sign In / Register",
+                phChatInput: "Type a message...",
+                phSearch: "Search by name...",
+                optAll: "All",
+                noProfileText: "No matching profiles found."
             }
         };
 
         function changeLanguage(lang) {
-            const data = translations[lang] || translations['my'];
+            const data = translations[lang] || translations['tapong'];
             
             const heroTitle = document.getElementById('heroTitle');
             const heroDesc = document.getElementById('heroDesc');
@@ -476,7 +400,7 @@
             
             if (searchInput && data.phSearch) searchInput.placeholder = data.phSearch;
             if (optAll && data.optAll) optAll.innerText = data.optAll;
-            if (noProfileText && data.noProfileText) noProfileText.innerText = data.noProfileText;
+            if (noProfileText) noProfileText.innerText = data.noProfileText;
         }
 
         // Fetch Realtime Profiles from Firebase Database
