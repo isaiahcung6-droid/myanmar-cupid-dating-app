@@ -48,12 +48,17 @@
                 <button onclick="switchTab('admin')" id="btnAdmin" class="bg-slate-800 text-amber-400 text-xs px-2.5 py-1.5 rounded-lg font-semibold border border-slate-700 transition hidden"><i class="fa-solid fa-lock mr-1"></i>Admin</button>
             </div>
 
-            <!-- Language Selector -->
+            <!-- Language Selector (All 10 Languages Included) -->
             <select id="languageSelect" onchange="changeLanguage(this.value)" class="bg-slate-800 text-pink-400 text-xs font-semibold border border-pink-500/30 rounded-lg px-2 py-1.5 focus:outline-none cursor-pointer">
                 <option value="my">🇲🇲 မြန်မာ</option>
                 <option value="tapong">🇲🇲 Tapong</option>
                 <option value="falam">🇲🇲 Falam</option>
                 <option value="mizo">🇲🇲 Mizo</option>
+                <option value="hakha">🇲🇲 Hakha</option>
+                <option value="tidim">🇲🇲 Tidim</option>
+                <option value="zaniat">🇲🇲 Zaniat</option>
+                <option value="karen">🇲🇲 Karen</option>
+                <option value="shan">🇲🇲 Shan</option>
                 <option value="en">🇺🇸 English</option>
             </select>
         </div>
@@ -77,10 +82,6 @@
                 <div>
                     <label id="labelContact" class="block text-xs font-medium text-gray-300 mb-1">ဖုန်း သို့မဟုတ် အီးမေးလ်</label>
                     <input type="text" id="authEmail" required placeholder="09xxxxxxxxx" class="w-full bg-slate-800 text-white text-xs px-4 py-3 rounded-xl border border-slate-700 focus:outline-none focus:border-pink-500">
-                </div>
-                <div>
-                    <label class="block text-xs font-medium text-gray-300 mb-1">မြို့/ဒေသ (Location)</label>
-                    <input type="text" id="authLocation" required placeholder="ဥပမာ- Yangon / Falam" class="w-full bg-slate-800 text-white text-xs px-4 py-3 rounded-xl border border-slate-700 focus:outline-none focus:border-pink-500">
                 </div>
                 <div>
                     <label id="labelPass" class="block text-xs font-medium text-gray-300 mb-1">စကားဝှက် (Password)</label>
@@ -207,7 +208,7 @@
                     </div>
 
                     <div class="space-y-2">
-                        <h4 class="text-xs font-semibold text-gray-400 uppercase">Registered Users & Profile List</h4>
+                        <h4 class="text-xs font-semibold text-gray-400 uppercase">Registered Users List</h4>
                         <div id="adminUserList" class="bg-slate-900/60 p-3 rounded-xl text-xs space-y-2 border border-slate-800 max-h-60 overflow-y-auto">
                         </div>
                     </div>
@@ -229,14 +230,12 @@
         let currentActiveProfile = null;
         let localMessages = {};
 
-        // Default Sample Profiles
         const defaultProfiles = [
             { id: 'profile_1', name: "Lian, 24", location: "Yangon • Falam / Myanmar", ethnicity: "falam", bio: "သီချင်းနားထောင်ရတာ ကြိုက်တယ်။ မိတ်ဆွေအသစ်များနဲ့ ခင်မင်ချင်ပါတယ်။", image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=600" },
             { id: 'profile_2', name: "Nuam, 22", location: "Mandalay • Mizo / Myanmar", ethnicity: "mizo", bio: "ဝါသနာကတော့ ခရီးသွားတာနဲ့ စာဖတ်တာပါ။", image: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&q=80&w=600" },
             { id: 'profile_3', name: "Hmuaki, 25", location: "Aizawl • Mizo", ethnicity: "mizo", bio: "တေးဂီတကို ချစ်မြတ်နိုးသူတစ်ဦးဖြစ်ပါတယ်။", image: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&q=80&w=600" }
         ];
 
-        // Load profiles from LocalStorage or use Defaults
         let profiles = JSON.parse(localStorage.getItem('myanmar_cupid_users')) || defaultProfiles;
         let filteredProfiles = [...profiles];
         let currentIndex = 0;
@@ -336,6 +335,101 @@
                 phSearch: "Hming emaw hmunhma zawng rawh...",
                 optAll: "A ve ve in",
                 noProfileText: "Profile hmuh tur a awm lo."
+            },
+            hakha: {
+                heroTitle: "Dawtmi Kawlnak",
+                heroDesc: "Miphun tling caah a himmi le zahawmmi platform",
+                rulesTitle: "Abu Phungphai",
+                rulesText: "Sualnak chim relnak lo le ningcang loin um lo ding.",
+                authTitle: "Na dam maw",
+                authDesc: "Account thutnak / Register",
+                labelName: "Min (Name)",
+                phName: "Na min tial ngat",
+                labelContact: "Phone asilole Email",
+                phEmail: "09xxxxxxxxx",
+                labelPass: "Biathup (Password)",
+                phPass: "******",
+                btnAuth: "Lut / Register",
+                phChatInput: "Catuak tial...",
+                phSearch: "Min le Khua kawlnak...",
+                optAll: "Duhdim",
+                noProfileText: "Profile kawlmi a um lo."
+            },
+            tidim: {
+                heroTitle: "Nangmah Deih pen Zawn In",
+                heroDesc: "Mihing khempeuh ading a hoih le a him platform",
+                rulesTitle: "Thuhih le Ngeina",
+                rulesText: "Pau sia le kam sia zang lo ding.",
+                authTitle: "Chibai / Welcome",
+                authDesc: "Account lutin / Register",
+                labelName: "Min (Name)",
+                phName: "Na min gelh in",
+                labelContact: "Phone ahaam le Email",
+                phEmail: "09xxxxxxxxx",
+                labelPass: "Thuthup (Password)",
+                phPass: "******",
+                btnAuth: "Lut in / Register",
+                phChatInput: "Lai gelh in...",
+                phSearch: "Min le Kho zawn in...",
+                optAll: "Khempeuh",
+                noProfileText: "Profile muzolo."
+            },
+            zaniat: {
+                heroTitle: "Duhmi Kawlnak",
+                heroDesc: "Miphun tling caah platform",
+                rulesTitle: "Phungphai",
+                rulesText: "Thil ṭhalo tuah lo ding.",
+                authTitle: "Chibai",
+                authDesc: "Account lut / Register",
+                labelName: "Min (Name)",
+                phName: "Na min ṭial aw",
+                labelContact: "Phone / Email",
+                phEmail: "09xxxxxxxxx",
+                labelPass: "Biathup",
+                phPass: "******",
+                btnAuth: "Lut aw",
+                phChatInput: "Biaknak...",
+                phSearch: "Kawlnak...",
+                optAll: "Zavente",
+                noProfileText: "Profile um lo."
+            },
+            karen: {
+                heroTitle: "မၤသးခုနကစၢ်",
+                heroDesc: "ကညီဖိတဖၣ်အဂီၢ် ပလၢဲဖိ platform",
+                rulesTitle: "စည်းမျဉ်းစည်းကမ်းများ",
+                rulesText: "တၢ်ကတိၤသသီတဖၣ် မၤတဂ့ၤ.",
+                authTitle: "မင်္ဂလာပါ",
+                authDesc: "အကောင့်ဝင်ပါ",
+                labelName: "မံၤ (Name)",
+                phName: "ကွဲးနမံၤ",
+                labelContact: "ဖုန်း / အီးမေးလ်",
+                phEmail: "09xxxxxxxxx",
+                labelPass: "စကားဝှက်",
+                phPass: "******",
+                btnAuth: "ဝင်မည်",
+                phChatInput: "ကွဲးလံာ်...",
+                phSearch: "ဃိးနမံၤ...",
+                optAll: "ခဲလၢာ်",
+                noProfileText: "တထံၣ်ဘၣ်."
+            },
+            shan: {
+                heroTitle: "ႁႃၵူႈၸၢႆး/ၵူႈယိင်း",
+                heroDesc: "တႃႇတႆးႁဝ်းၶႃႈ platform",
+                rulesTitle: "ပိူင်ယၢမ်း",
+                rulesText: "ၵႂၢမ်းဢမ်ႇလီ ဢမ်ႇလႆႈလၢတ်ႈ.",
+                authTitle: "မၢဝ်ႇသၢဝ်ႁဝ်း",
+                authDesc: "လွင်ႈၶဝ်ႈဢေးၵောက်ပိူင်",
+                labelName: "ၸိုဝ်ႈ (Name)",
+                phName: "တႅမ်ႈၸိုဝ်ႈ",
+                labelContact: "ဖုန်း / အီးမေးလ်",
+                phEmail: "09xxxxxxxxx",
+                labelPass: "စကားဝှက်",
+                phPass: "******",
+                btnAuth: "ၶဝ်ႈႁဵတ်း",
+                phChatInput: "တႅမ်ႈလိၵ်ႈ...",
+                phSearch: "ႁႃၸိုဝ်ႈ...",
+                optAll: "တင်းသဵင်ႈ",
+                noProfileText: "ဢမ်ႇထူပ်း."
             }
         };
 
@@ -386,7 +480,6 @@
             const query = document.getElementById('searchInput').value.toLowerCase().trim();
             const selectedEth = document.getElementById('ethnicityFilter').value;
 
-            // Show profiles excluding currently logged in user
             filteredProfiles = profiles.filter(p => {
                 const matchesQuery = p.name.toLowerCase().includes(query) || p.location.toLowerCase().includes(query);
                 const matchesEth = (selectedEth === 'all') || (p.ethnicity === selectedEth);
@@ -408,7 +501,6 @@
         function handleAuth(event) {
             event.preventDefault();
             const name = document.getElementById('authName').value.trim();
-            const location = document.getElementById('authLocation').value.trim();
             const password = document.getElementById('authPassword').value.trim();
 
             const isAdmin = (name.toLowerCase() === 'admin' && (password.toLowerCase() === 'sawhai11'));
@@ -422,18 +514,16 @@
             currentUser = {
                 id: userId,
                 name: name,
-                location: location || 'Myanmar',
                 isAdmin: isAdmin
             };
 
-            // Register user as a public profile if not Admin
             if (!isAdmin) {
                 const existingIdx = profiles.findIndex(p => p.name.toLowerCase() === name.toLowerCase());
                 if (existingIdx === -1) {
                     const newProfile = {
                         id: userId,
                         name: name,
-                        location: location || "Myanmar",
+                        location: "Myanmar",
                         ethnicity: "myanmar",
                         bio: "Cupid App မိတ်ဆွေအသစ်များနဲ့ ခင်မင်လိုပါသည်။",
                         image: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=600"
