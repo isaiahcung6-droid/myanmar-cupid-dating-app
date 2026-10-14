@@ -8,6 +8,9 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Firebase SDK (Compat Version) -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Padauk:wght@400;700&family=Poppins:wght@300;400;600;700&display=swap');
         body {
@@ -48,7 +51,7 @@
                 <button onclick="switchTab('admin')" id="btnAdmin" class="bg-slate-800 text-amber-400 text-xs px-2.5 py-1.5 rounded-lg font-semibold border border-slate-700 transition hidden"><i class="fa-solid fa-lock mr-1"></i>Admin</button>
             </div>
 
-            <!-- Language Selector (All 10 Languages Included) -->
+            <!-- Language Selector (All Languages) -->
             <select id="languageSelect" onchange="changeLanguage(this.value)" class="bg-slate-800 text-pink-400 text-xs font-semibold border border-pink-500/30 rounded-lg px-2 py-1.5 focus:outline-none cursor-pointer">
                 <option value="my">🇲🇲 မြန်မာ</option>
                 <option value="tapong">🇲🇲 Tapong</option>
@@ -224,20 +227,21 @@
         <p class="mt-1 text-gray-400">Created with ❤️ by <span class="text-pink-400 font-medium">Isaiah Cung</span></p>
     </footer>
 
-    <!-- JavaScript Logic -->
+    <!-- Firebase Realtime Logic -->
     <script>
+        // Firebase Config
+        const firebaseConfig = {
+            databaseURL: "https://myanmar-dating-app-default-rtdb.firebaseio.com/"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+
         let currentUser = null;
         let currentActiveProfile = null;
-        let localMessages = {};
+        let chatListenerRef = null;
 
-        const defaultProfiles = [
-            { id: 'profile_1', name: "Lian, 24", location: "Yangon • Falam / Myanmar", ethnicity: "falam", bio: "သီချင်းနားထောင်ရတာ ကြိုက်တယ်။ မိတ်ဆွေအသစ်များနဲ့ ခင်မင်ချင်ပါတယ်။", image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=600" },
-            { id: 'profile_2', name: "Nuam, 22", location: "Mandalay • Mizo / Myanmar", ethnicity: "mizo", bio: "ဝါသနာကတော့ ခရီးသွားတာနဲ့ စာဖတ်တာပါ။", image: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&q=80&w=600" },
-            { id: 'profile_3', name: "Hmuaki, 25", location: "Aizawl • Mizo", ethnicity: "mizo", bio: "တေးဂီတကို ချစ်မြတ်နိုးသူတစ်ဦးဖြစ်ပါတယ်။", image: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&q=80&w=600" }
-        ];
-
-        let profiles = JSON.parse(localStorage.getItem('myanmar_cupid_users')) || defaultProfiles;
-        let filteredProfiles = [...profiles];
+        let allProfilesList = [];
+        let filteredProfiles = [];
         let currentIndex = 0;
 
         const translations = {
@@ -476,11 +480,36 @@
             if (noProfileText && data.noProfileText) noProfileText.innerText = data.noProfileText;
         }
 
+        // Fetch Realtime Profiles from Firebase
+        function listenToProfiles() {
+            db.ref('users').on('value', (snapshot) => {
+                const usersData = snapshot.val();
+                allProfilesList = [];
+
+                if (usersData) {
+                    Object.keys(usersData).forEach(key => {
+                        const u = usersData[key];
+                        if (!u.isAdmin) {
+                            allProfilesList.push({
+                                id: key,
+                                name: u.name || "Anonymous",
+                                location: u.location || "Myanmar",
+                                ethnicity: u.ethnicity || "myanmar",
+                                bio: u.bio || "Cupid Platform မိတ်ဆွေအသစ်များနဲ့ ခင်မင်လိုပါသည်။",
+                                image: u.image || "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=600"
+                            });
+                        }
+                    });
+                }
+                filterProfiles();
+            });
+        }
+
         function filterProfiles() {
             const query = document.getElementById('searchInput').value.toLowerCase().trim();
             const selectedEth = document.getElementById('ethnicityFilter').value;
 
-            filteredProfiles = profiles.filter(p => {
+            filteredProfiles = allProfilesList.filter(p => {
                 const matchesQuery = p.name.toLowerCase().includes(query) || p.location.toLowerCase().includes(query);
                 const matchesEth = (selectedEth === 'all') || (p.ethnicity === selectedEth);
                 const isNotSelf = currentUser ? p.id !== currentUser.id : true;
@@ -510,32 +539,33 @@
                 return;
             }
 
-            const userId = isAdmin ? 'admin_owner' : 'user_' + Date.now();
+            const cleanId = name.replace(/[^a-zA-Z0-9]/g, "_").toLowerCase();
+            const userId = isAdmin ? 'admin_owner' : 'user_' + cleanId;
+            
             currentUser = {
                 id: userId,
                 name: name,
                 isAdmin: isAdmin
             };
 
+            // Save user to Firebase Database so others can see in real-time
             if (!isAdmin) {
-                const existingIdx = profiles.findIndex(p => p.name.toLowerCase() === name.toLowerCase());
-                if (existingIdx === -1) {
-                    const newProfile = {
-                        id: userId,
-                        name: name,
-                        location: "Myanmar",
-                        ethnicity: "myanmar",
-                        bio: "Cupid App မိတ်ဆွေအသစ်များနဲ့ ခင်မင်လိုပါသည်။",
-                        image: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=600"
-                    };
-                    profiles.unshift(newProfile);
-                    localStorage.setItem('myanmar_cupid_users', JSON.stringify(profiles));
-                }
+                db.ref('users/' + userId).set({
+                    name: name,
+                    joinedAt: Date.now(),
+                    isAdmin: false,
+                    location: "Myanmar",
+                    ethnicity: "myanmar",
+                    bio: "Cupid Platform မိတ်ဆွေအသစ်များနဲ့ ခင်မင်လိုပါသည်။",
+                    image: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=600"
+                });
             }
 
             document.getElementById('authSection').classList.add('hidden');
             document.getElementById('appSection').classList.remove('hidden');
             document.getElementById('mainNavButtons').classList.remove('hidden');
+
+            listenToProfiles();
 
             if (currentUser.isAdmin) {
                 document.getElementById('btnAdmin').classList.remove('hidden');
@@ -543,7 +573,6 @@
                 initAdminDashboard();
             } else {
                 switchTab('discover');
-                filterProfiles();
             }
         }
 
@@ -606,38 +635,46 @@
             const chatMessages = document.getElementById('chatMessages');
             chatMessages.innerHTML = '';
 
-            const roomId = currentUser.id + '_' + (currentActiveProfile ? currentActiveProfile.id : 'default');
-            const messages = localMessages[roomId] || [];
+            if (!currentActiveProfile) return;
 
-            if (messages.length === 0) {
-                chatMessages.innerHTML = `<p class="text-gray-400 text-center text-xs my-auto">စကားစမြည် စတင်ပြောဆိုပါ...</p>`;
-                return;
-            }
+            const roomId = [currentUser.id, currentActiveProfile.id].sort().join('_');
 
-            messages.forEach(msg => {
-                const msgDiv = document.createElement('div');
-                if(msg.senderId === currentUser.id) {
-                    msgDiv.className = "self-end bg-pink-600 text-white text-xs px-3 py-2 rounded-2xl max-w-[75%]";
-                    msgDiv.innerText = msg.text;
-                } else {
-                    msgDiv.className = "self-start bg-slate-800 text-gray-200 text-xs px-3 py-2 rounded-2xl max-w-[75%] border border-slate-700";
-                    msgDiv.innerHTML = `<span class="text-[9px] text-pink-400 block mb-0.5">${msg.senderName}</span>${msg.text}`;
+            if (chatListenerRef) chatListenerRef.off();
+
+            chatListenerRef = db.ref('chats/' + roomId + '/messages');
+            chatListenerRef.on('value', (snapshot) => {
+                chatMessages.innerHTML = '';
+                const messagesData = snapshot.val();
+                if (!messagesData) {
+                    chatMessages.innerHTML = `<p class="text-gray-400 text-center text-xs my-auto">စကားစမြည် စတင်ပြောဆိုပါ...</p>`;
+                    return;
                 }
-                chatMessages.appendChild(msgDiv);
+
+                Object.keys(messagesData).forEach(key => {
+                    const msg = messagesData[key];
+                    const msgDiv = document.createElement('div');
+                    if(msg.senderId === currentUser.id) {
+                        msgDiv.className = "self-end bg-pink-600 text-white text-xs px-3 py-2 rounded-2xl max-w-[75%]";
+                        msgDiv.innerText = msg.text;
+                    } else {
+                        msgDiv.className = "self-start bg-slate-800 text-gray-200 text-xs px-3 py-2 rounded-2xl max-w-[75%] border border-slate-700";
+                        msgDiv.innerHTML = `<span class="text-[9px] text-pink-400 block mb-0.5">${msg.senderName}</span>${msg.text}`;
+                    }
+                    chatMessages.appendChild(msgDiv);
+                });
+                chatMessages.scrollTop = chatMessages.scrollHeight;
             });
-            chatMessages.scrollTop = chatMessages.scrollHeight;
         }
 
         function sendPrivateMessage(event) {
             event.preventDefault();
             const input = document.getElementById('messageInput');
             const text = input.value.trim();
-            if(!text || !currentUser) return;
+            if(!text || !currentUser || !currentActiveProfile) return;
 
-            const roomId = currentUser.id + '_' + (currentActiveProfile ? currentActiveProfile.id : 'default');
-            if(!localMessages[roomId]) localMessages[roomId] = [];
+            const roomId = [currentUser.id, currentActiveProfile.id].sort().join('_');
 
-            localMessages[roomId].push({
+            db.ref('chats/' + roomId + '/messages').push({
                 senderId: currentUser.id,
                 senderName: currentUser.name,
                 text: text,
@@ -645,26 +682,33 @@
             });
 
             input.value = '';
-            loadPrivateChatMessages();
         }
 
         function initAdminDashboard() {
             const userList = document.getElementById('adminUserList');
             userList.innerHTML = '';
 
-            document.getElementById('statUsers').innerText = profiles.length;
-
-            profiles.forEach(p => {
-                const div = document.createElement('div');
-                div.className = "p-2 bg-slate-800/80 rounded-lg border border-slate-700 flex justify-between items-center";
-                div.innerHTML = `
-                    <div>
-                        <p class="text-pink-400 font-bold">${p.name}</p>
-                        <p class="text-[10px] text-gray-400"><i class="fa-solid fa-location-dot mr-1"></i>${p.location}</p>
-                    </div>
-                    <span class="bg-emerald-500/20 text-emerald-300 text-[9px] px-2 py-0.5 rounded-full border border-emerald-500/30">Active</span>
-                `;
-                userList.appendChild(div);
+            db.ref('users').on('value', (snapshot) => {
+                userList.innerHTML = '';
+                const users = snapshot.val();
+                let count = 0;
+                if (users) {
+                    Object.keys(users).forEach(key => {
+                        count++;
+                        const u = users[key];
+                        const div = document.createElement('div');
+                        div.className = "p-2 bg-slate-800/80 rounded-lg border border-slate-700 flex justify-between items-center";
+                        div.innerHTML = `
+                            <div>
+                                <p class="text-pink-400 font-bold">${u.name}</p>
+                                <p class="text-[10px] text-gray-400"><i class="fa-solid fa-location-dot mr-1"></i>${u.location || 'Myanmar'}</p>
+                            </div>
+                            <span class="bg-emerald-500/20 text-emerald-300 text-[9px] px-2 py-0.5 rounded-full border border-emerald-500/30">Active</span>
+                        `;
+                        userList.appendChild(div);
+                    });
+                }
+                document.getElementById('statUsers').innerText = count;
             });
         }
     </script>
