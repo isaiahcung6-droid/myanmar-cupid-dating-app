@@ -110,7 +110,7 @@
                         <input type="text" id="searchInput" oninput="filterProfiles()" placeholder="နာမည် သို့မဟုတ် မြို့/ဒေသဖြင့် ရှာရန်..." class="w-full bg-slate-800 text-white text-xs pl-8 pr-3 py-2 rounded-lg border border-slate-700 focus:outline-none focus:border-pink-500">
                     </div>
                     <select id="ethnicityFilter" onchange="filterProfiles()" class="bg-slate-800 text-pink-400 text-xs font-semibold border border-slate-700 rounded-lg px-2 py-2 focus:outline-none">
-                        <option value="all">အားလုံး</option>
+                        <option id="optAll" value="all">အားလုံး</option>
                         <option value="falam">Falam</option>
                         <option value="mizo">Mizo</option>
                         <option value="myanmar">Myanmar</option>
@@ -163,7 +163,7 @@
                 <!-- No Profile Found State -->
                 <div id="noProfileMsg" class="hidden glass-card p-6 rounded-2xl text-center text-gray-400 text-xs">
                     <i class="fa-solid fa-user-slash text-3xl mb-2 text-pink-500/60"></i>
-                    <p>ရှာဖွေမှုနှင့် ကိုက်ညီသော Profile မတွေ့ရှိပါ။</p>
+                    <p id="noProfileText">ရှာဖွေမှုနှင့် ကိုက်ညီသော Profile မတွေ့ရှိပါ။</p>
                 </div>
             </div>
 
@@ -254,7 +254,10 @@
                 labelPass: "စကားဝှက် (Password)",
                 phPass: "******",
                 btnAuth: "အကောင့်ဝင်မည် / Register",
-                phChatInput: "စာတို ရိုက်ရန်..."
+                phChatInput: "စာတို ရိုက်ရန်...",
+                phSearch: "နာမည် သို့မဟုတ် မြို့/ဒေသဖြင့် ရှာရန်...",
+                optAll: "အားလုံး",
+                noProfileText: "ရှာဖွေမှုနှင့် ကိုက်ညီသော Profile မတွေ့ရှိပါ။"
             },
             en: {
                 heroTitle: "Find Your Match",
@@ -270,7 +273,10 @@
                 labelPass: "Password",
                 phPass: "******",
                 btnAuth: "Sign In / Register",
-                phChatInput: "Type a message..."
+                phChatInput: "Type a message...",
+                phSearch: "Search by name or location...",
+                optAll: "All",
+                noProfileText: "No matching profiles found."
             },
             tapong: {
                 heroTitle: "Na Hnakruh Le Lu Tuh Ah Thuai In",
@@ -286,7 +292,10 @@
                 labelPass: "na lai thup",
                 phPass: "******",
                 btnAuth: "Account lut awm",
-                phChatInput: "lai ngan hmun tuh"
+                phChatInput: "lai ngan hmun tuh",
+                phSearch: "Hming in thuai hmun.",
+                optAll: "A vesek in",
+                noProfileText: "Profile hmuh lo a si."
             },
             falam: {
                 heroTitle: "Na Duhmi Zawn Ruah",
@@ -302,7 +311,10 @@
                 labelPass: "Thuhup (Password)",
                 phPass: "******",
                 btnAuth: "Lut aw / Register",
-                phChatInput: "Cazin ngan na duh..."
+                phChatInput: "Cazin ngan na duh...",
+                phSearch: "Hmin asiloah khua zawnin...",
+                optAll: "Vialte",
+                noProfileText: "Zawn hmuh khawh a si lo."
             },
             mizo: {
                 heroTitle: "I Duhtak Zawng Rawh",
@@ -318,7 +330,10 @@
                 labelPass: "Thukhawchang (Password)",
                 phPass: "******",
                 btnAuth: "Lut rawh / Register",
-                phChatInput: "Thuchah ziak rawh..."
+                phChatInput: "Thuchah ziak rawh...",
+                phSearch: "Hming emaw hmunhma zawng rawh...",
+                optAll: "A ve ve in",
+                noProfileText: "Profile hmuh tur a awm lo."
             }
         };
 
@@ -340,6 +355,9 @@
             const authPassword = document.getElementById('authPassword');
             const btnSubmitAuth = document.getElementById('btnSubmitAuth');
             const messageInput = document.getElementById('messageInput');
+            const searchInput = document.getElementById('searchInput');
+            const optAll = document.getElementById('optAll');
+            const noProfileText = document.getElementById('noProfileText');
 
             if (heroTitle) heroTitle.innerText = data.heroTitle;
             if (heroDesc) heroDesc.innerText = data.heroDesc;
@@ -356,6 +374,10 @@
             if (authPassword && data.phPass) authPassword.placeholder = data.phPass;
             if (btnSubmitAuth) btnSubmitAuth.innerText = data.btnAuth;
             if (messageInput && data.phChatInput) messageInput.placeholder = data.phChatInput;
+            
+            if (searchInput && data.phSearch) searchInput.placeholder = data.phSearch;
+            if (optAll && data.optAll) optAll.innerText = data.optAll;
+            if (noProfileText && data.noProfileText) noProfileText.innerText = data.noProfileText;
         }
 
         function filterProfiles() {
