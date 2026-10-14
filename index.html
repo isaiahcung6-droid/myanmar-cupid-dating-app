@@ -73,26 +73,26 @@
         <!-- LOGIN / SIGN UP SECTION -->
         <div id="authSection" class="glass-card p-6 rounded-2xl shadow-2xl">
             <div class="text-center mb-6">
-                <h2 id="authTitle" class="text-2xl font-bold gradient-text mb-1">Kan I Lawm</h2>
-                <p id="authDesc" class="text-xs text-gray-300">Account lut cang</p>
+                <h2 id="authTitle" class="text-2xl font-bold gradient-text mb-1">Na Dam Maw</h2>
+                <p id="authDesc" class="text-xs text-gray-300">Account thutnak / Register</p>
             </div>
 
             <form onsubmit="handleAuth(event)" class="space-y-4">
                 <div>
-                    <label id="labelName" class="block text-xs font-medium text-gray-300 mb-1">Hmin (Name)</label>
-                    <input type="text" id="authName" required placeholder="Na hmin ṭiang aw" class="w-full bg-slate-800 text-white text-xs px-4 py-3 rounded-xl border border-slate-700 focus:outline-none focus:border-pink-500">
+                    <label id="labelName" class="block text-xs font-medium text-gray-300 mb-1">Min (Name)</label>
+                    <input type="text" id="authName" required placeholder="Na min tial ngat" class="w-full bg-slate-800 text-white text-xs px-4 py-3 rounded-xl border border-slate-700 focus:outline-none focus:border-pink-500">
                 </div>
                 <div>
                     <label id="labelContact" class="block text-xs font-medium text-gray-300 mb-1">Phone asilole Email</label>
                     <input type="text" id="authEmail" required placeholder="09xxxxxxxxx" class="w-full bg-slate-800 text-white text-xs px-4 py-3 rounded-xl border border-slate-700 focus:outline-none focus:border-pink-500">
                 </div>
                 <div>
-                    <label id="labelPass" class="block text-xs font-medium text-gray-300 mb-1">Thuhup (Password)</label>
+                    <label id="labelPass" class="block text-xs font-medium text-gray-300 mb-1">Biathup (Password)</label>
                     <input type="password" id="authPassword" required placeholder="******" class="w-full bg-slate-800 text-white text-xs px-4 py-3 rounded-xl border border-slate-700 focus:outline-none focus:border-pink-500">
                 </div>
 
                 <button type="submit" id="btnSubmitAuth" class="w-full bg-gradient-to-r from-pink-500 to-rose-500 text-white py-3 rounded-xl text-xs font-bold shadow-lg hover:opacity-90 transition mt-2">
-                    Lut aw / Register
+                    Lut aw
                 </button>
             </form>
         </div>
@@ -102,7 +102,7 @@
             <!-- DISCOVER TAB -->
             <div id="discoverTab">
                 <div class="text-center mb-4">
-                    <h2 id="heroTitle" class="text-2xl font-bold mb-1">Na Duhmi Zawn Ruah</h2>
+                    <h2 id="heroTitle" class="text-2xl font-bold mb-1">Duhdawtmi Hawlnak</h2>
                     <p id="heroDesc" class="text-xs text-gray-200 font-medium px-2">Miphun vialte caah ningcang le thliarhrang lo tein hman khawh mi Cupid Platform</p>
                 </div>
 
@@ -110,7 +110,7 @@
                 <div class="glass-card p-3 rounded-xl mb-4 shadow-md flex items-center space-x-2">
                     <div class="relative flex-grow">
                         <i class="fa-solid fa-magnifying-glass absolute left-3 top-3 text-gray-400 text-xs"></i>
-                        <input type="text" id="searchInput" oninput="filterProfiles()" placeholder="Hmin zawnin..." class="w-full bg-slate-800 text-white text-xs pl-8 pr-3 py-2 rounded-lg border border-slate-700 focus:outline-none focus:border-pink-500">
+                        <input type="text" id="searchInput" oninput="filterProfiles()" placeholder="Hming hawlnak..." class="w-full bg-slate-800 text-white text-xs pl-8 pr-3 py-2 rounded-lg border border-slate-700 focus:outline-none focus:border-pink-500">
                     </div>
                     <select id="ethnicityFilter" onchange="filterProfiles()" class="bg-slate-800 text-pink-400 text-xs font-semibold border border-slate-700 rounded-lg px-2 py-2 focus:outline-none">
                         <option id="optAll" value="all">Vialte</option>
@@ -166,7 +166,7 @@
                 <!-- No Profile Found State -->
                 <div id="noProfileMsg" class="hidden glass-card p-6 rounded-2xl text-center text-gray-400 text-xs">
                     <i class="fa-solid fa-user-slash text-3xl mb-2 text-pink-500/60"></i>
-                    <p id="noProfileText">Zawn hmuh khawh a si lo.</p>
+                    <p id="noProfileText">Profile zoh ding a um lo</p>
                 </div>
             </div>
 
@@ -251,30 +251,11 @@
 
         const translations = {
             falam: {
-                heroTitle: "Na Duhmi Zawn Ruah",
+                heroTitle: "Duhdawtmi Hawlnak",
                 heroDesc: "Miphun vialte caah ningcang le thliarhrang lo tein hman khawh mi Cupid Platform",
                 rulesTitle: "Hrihrang Le Phung",
                 rulesText: "Cazin ṭhalo le mi hrokhrawl ti awk a si lo.",
-                authTitle: "Kan I Lawm",
-                authDesc: "Account lut cang",
-                labelName: "Hmin (Name)",
-                phName: "Na hmin ṭiang aw",
-                labelContact: "Phone asilole Email",
-                phEmail: "09xxxxxxxxx",
-                labelPass: "Thuhup (Password)",
-                phPass: "******",
-                btnAuth: "Lut aw / Register",
-                phChatInput: "Cazin ngan na duh...",
-                phSearch: "Hmin zawnin...",
-                optAll: "Vialte",
-                noProfileText: "Zawn hmuh khawh a si lo."
-            },
-            hakha: {
-                heroTitle: "Dawtmi Kawlnak",
-                heroDesc: "Miphun tling caah a himmi le zahawmmi platform",
-                rulesTitle: "Abu Phungphai",
-                rulesText: "Sualnak chim relnak lo le ningcang loin um lo ding.",
-                authTitle: "Na dam maw",
+                authTitle: "Na Dam Maw",
                 authDesc: "Account thutnak / Register",
                 labelName: "Min (Name)",
                 phName: "Na min tial ngat",
@@ -282,11 +263,30 @@
                 phEmail: "09xxxxxxxxx",
                 labelPass: "Biathup (Password)",
                 phPass: "******",
-                btnAuth: "Lut / Register",
+                btnAuth: "Lut aw",
+                phChatInput: "Cazin ngan na duh...",
+                phSearch: "Hming hawlnak...",
+                optAll: "Vialte",
+                noProfileText: "Profile zoh ding a um lo"
+            },
+            hakha: {
+                heroTitle: "Na Duh Mi Zawn Ruah",
+                heroDesc: "Miphun tling caah a himmi le zahawmmi platform",
+                rulesTitle: "Abu Phungphai",
+                rulesText: "Sualnak chim relnak lo le ningcang loin um lo ding.",
+                authTitle: "Kan I Lawm",
+                authDesc: "Account thutnak / Register",
+                labelName: "Min (Name)",
+                phName: "Na min tial ngat",
+                labelContact: "Phone asilole Email",
+                phEmail: "09xxxxxxxxx",
+                labelPass: "Biathup (Password)",
+                phPass: "******",
+                btnAuth: "Lut",
                 phChatInput: "Catuak tial...",
-                phSearch: "Min kawlnak...",
+                phSearch: "Hmin zawnin...",
                 optAll: "Duhdim",
-                noProfileText: "Profile kawlmi a um lo."
+                noProfileText: "Profile hmuh khawh um loh"
             },
             tapong: {
                 heroTitle: "Na Hnakruh Le Lu Tuh Ah Thuai In",
