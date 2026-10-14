@@ -54,11 +54,6 @@
                 <option value="tapong">🇲🇲 Tapong</option>
                 <option value="falam">🇲🇲 Falam</option>
                 <option value="mizo">🇲🇲 Mizo</option>
-                <option value="hakha">🇲🇲 Hakha</option>
-                <option value="tidim">🇲🇲 Tidim</option>
-                <option value="zaniat">🇲🇲 Zaniat</option>
-                <option value="karen">🇲🇲 Karen</option>
-                <option value="shan">🇲🇲 Shan</option>
                 <option value="en">🇺🇸 English</option>
             </select>
         </div>
@@ -82,6 +77,10 @@
                 <div>
                     <label id="labelContact" class="block text-xs font-medium text-gray-300 mb-1">ဖုန်း သို့မဟုတ် အီးမေးလ်</label>
                     <input type="text" id="authEmail" required placeholder="09xxxxxxxxx" class="w-full bg-slate-800 text-white text-xs px-4 py-3 rounded-xl border border-slate-700 focus:outline-none focus:border-pink-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-medium text-gray-300 mb-1">မြို့/ဒေသ (Location)</label>
+                    <input type="text" id="authLocation" required placeholder="ဥပမာ- Yangon / Falam" class="w-full bg-slate-800 text-white text-xs px-4 py-3 rounded-xl border border-slate-700 focus:outline-none focus:border-pink-500">
                 </div>
                 <div>
                     <label id="labelPass" class="block text-xs font-medium text-gray-300 mb-1">စကားဝှက် (Password)</label>
@@ -199,7 +198,7 @@
                     <div class="grid grid-cols-2 gap-3 mb-4">
                         <div class="bg-slate-800/80 p-3 rounded-xl border border-slate-700 text-center">
                             <p class="text-xs text-gray-400">Total Users</p>
-                            <h4 id="statUsers" class="text-xl font-bold text-white mt-1">1</h4>
+                            <h4 id="statUsers" class="text-xl font-bold text-white mt-1">0</h4>
                         </div>
                         <div class="bg-slate-800/80 p-3 rounded-xl border border-slate-700 text-center">
                             <p class="text-xs text-gray-400">Active Chats</p>
@@ -208,9 +207,8 @@
                     </div>
 
                     <div class="space-y-2">
-                        <h4 class="text-xs font-semibold text-gray-400 uppercase">All Customer Conversations (Monitor)</h4>
-                        <div id="adminActivityList" class="bg-slate-900/60 p-3 rounded-xl text-xs space-y-2 border border-slate-800 max-h-60 overflow-y-auto">
-                            <p class="text-gray-400 text-center py-2">စကားပြောဆိုမှု မရှိသေးပါ။</p>
+                        <h4 class="text-xs font-semibold text-gray-400 uppercase">Registered Users & Profile List</h4>
+                        <div id="adminUserList" class="bg-slate-900/60 p-3 rounded-xl text-xs space-y-2 border border-slate-800 max-h-60 overflow-y-auto">
                         </div>
                     </div>
                 </div>
@@ -231,11 +229,15 @@
         let currentActiveProfile = null;
         let localMessages = {};
 
-        const profiles = [
+        // Default Sample Profiles
+        const defaultProfiles = [
             { id: 'profile_1', name: "Lian, 24", location: "Yangon • Falam / Myanmar", ethnicity: "falam", bio: "သီချင်းနားထောင်ရတာ ကြိုက်တယ်။ မိတ်ဆွေအသစ်များနဲ့ ခင်မင်ချင်ပါတယ်။", image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=600" },
             { id: 'profile_2', name: "Nuam, 22", location: "Mandalay • Mizo / Myanmar", ethnicity: "mizo", bio: "ဝါသနာကတော့ ခရီးသွားတာနဲ့ စာဖတ်တာပါ။", image: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&q=80&w=600" },
             { id: 'profile_3', name: "Hmuaki, 25", location: "Aizawl • Mizo", ethnicity: "mizo", bio: "တေးဂီတကို ချစ်မြတ်နိုးသူတစ်ဦးဖြစ်ပါတယ်။", image: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&q=80&w=600" }
         ];
+
+        // Load profiles from LocalStorage or use Defaults
+        let profiles = JSON.parse(localStorage.getItem('myanmar_cupid_users')) || defaultProfiles;
         let filteredProfiles = [...profiles];
         let currentIndex = 0;
 
@@ -384,10 +386,12 @@
             const query = document.getElementById('searchInput').value.toLowerCase().trim();
             const selectedEth = document.getElementById('ethnicityFilter').value;
 
+            // Show profiles excluding currently logged in user
             filteredProfiles = profiles.filter(p => {
                 const matchesQuery = p.name.toLowerCase().includes(query) || p.location.toLowerCase().includes(query);
                 const matchesEth = (selectedEth === 'all') || (p.ethnicity === selectedEth);
-                return matchesQuery && matchesEth;
+                const isNotSelf = currentUser ? p.id !== currentUser.id : true;
+                return matchesQuery && matchesEth && isNotSelf;
             });
 
             currentIndex = 0;
@@ -404,6 +408,7 @@
         function handleAuth(event) {
             event.preventDefault();
             const name = document.getElementById('authName').value.trim();
+            const location = document.getElementById('authLocation').value.trim();
             const password = document.getElementById('authPassword').value.trim();
 
             const isAdmin = (name.toLowerCase() === 'admin' && (password.toLowerCase() === 'sawhai11'));
@@ -413,11 +418,30 @@
                 return;
             }
 
+            const userId = isAdmin ? 'admin_owner' : 'user_' + Date.now();
             currentUser = {
-                id: isAdmin ? 'admin_owner' : 'user_' + Math.floor(Math.random() * 100000),
+                id: userId,
                 name: name,
+                location: location || 'Myanmar',
                 isAdmin: isAdmin
             };
+
+            // Register user as a public profile if not Admin
+            if (!isAdmin) {
+                const existingIdx = profiles.findIndex(p => p.name.toLowerCase() === name.toLowerCase());
+                if (existingIdx === -1) {
+                    const newProfile = {
+                        id: userId,
+                        name: name,
+                        location: location || "Myanmar",
+                        ethnicity: "myanmar",
+                        bio: "Cupid App မိတ်ဆွေအသစ်များနဲ့ ခင်မင်လိုပါသည်။",
+                        image: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=600"
+                    };
+                    profiles.unshift(newProfile);
+                    localStorage.setItem('myanmar_cupid_users', JSON.stringify(profiles));
+                }
+            }
 
             document.getElementById('authSection').classList.add('hidden');
             document.getElementById('appSection').classList.remove('hidden');
@@ -429,7 +453,7 @@
                 initAdminDashboard();
             } else {
                 switchTab('discover');
-                loadProfile();
+                filterProfiles();
             }
         }
 
@@ -476,6 +500,7 @@
             if(tab === 'discover') {
                 discoverTab.classList.remove('hidden');
                 btnDiscover.className = "bg-pink-600 text-white text-xs px-2.5 py-1.5 rounded-lg font-semibold transition";
+                filterProfiles();
             } else if(tab === 'chat') {
                 chatTab.classList.remove('hidden');
                 btnChat.className = "bg-pink-600 text-white text-xs px-2.5 py-1.5 rounded-lg font-semibold transition";
@@ -534,28 +559,23 @@
         }
 
         function initAdminDashboard() {
-            const activityList = document.getElementById('adminActivityList');
-            activityList.innerHTML = '';
+            const userList = document.getElementById('adminUserList');
+            userList.innerHTML = '';
 
-            let totalMsgCount = 0;
-            let hasActivity = false;
+            document.getElementById('statUsers').innerText = profiles.length;
 
-            Object.keys(localMessages).forEach(roomId => {
-                const msgs = localMessages[roomId];
-                msgs.forEach(m => {
-                    hasActivity = true;
-                    totalMsgCount++;
-                    const p = document.createElement('p');
-                    p.className = "text-gray-300 border-b border-slate-800 pb-1 mb-1";
-                    p.innerHTML = `<span class="text-amber-400 font-semibold">[Room]</span> <span class="text-pink-400">${m.senderName}:</span> ${m.text}`;
-                    activityList.appendChild(p);
-                });
+            profiles.forEach(p => {
+                const div = document.createElement('div');
+                div.className = "p-2 bg-slate-800/80 rounded-lg border border-slate-700 flex justify-between items-center";
+                div.innerHTML = `
+                    <div>
+                        <p class="text-pink-400 font-bold">${p.name}</p>
+                        <p class="text-[10px] text-gray-400"><i class="fa-solid fa-location-dot mr-1"></i>${p.location}</p>
+                    </div>
+                    <span class="bg-emerald-500/20 text-emerald-300 text-[9px] px-2 py-0.5 rounded-full border border-emerald-500/30">Active</span>
+                `;
+                userList.appendChild(div);
             });
-
-            if(!hasActivity) {
-                activityList.innerHTML = `<p class="text-gray-400 text-center py-2">စကားပြောဆိုမှု မရှိသေးပါ။</p>`;
-            }
-            document.getElementById('statMessages').innerText = totalMsgCount;
         }
     </script>
 </body>
