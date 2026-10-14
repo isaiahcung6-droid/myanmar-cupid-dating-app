@@ -8,7 +8,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Firebase SDK (Compat Version) -->
+    <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
     <style>
@@ -19,7 +19,7 @@
             color: #f8fafc;
         }
         .glass-card {
-            background: rgba(30, 41, 59, 0.75);
+            background: rgba(30, 41, 59, 0.7);
             backdrop-filter: blur(12px);
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
@@ -51,14 +51,14 @@
                 <button onclick="switchTab('admin')" id="btnAdmin" class="bg-slate-800 text-amber-400 text-xs px-2.5 py-1.5 rounded-lg font-semibold border border-slate-700 transition hidden"><i class="fa-solid fa-lock mr-1"></i>Admin</button>
             </div>
 
-            <!-- Language Selector -->
+            <!-- Language Selector (Filtered) -->
             <select id="languageSelect" onchange="changeLanguage(this.value)" class="bg-slate-800 text-pink-400 text-xs font-semibold border border-pink-500/30 rounded-lg px-2 py-1.5 focus:outline-none cursor-pointer">
+                <option value="my">🇲🇲 မြန်မာ</option>
                 <option value="falam">🇲🇲 Falam</option>
                 <option value="hakha">🇲🇲 Hakha</option>
                 <option value="tapong">🇲🇲 Tapong</option>
                 <option value="mizo">🇲🇲 Mizo</option>
                 <option value="tidim">🇲🇲 Tidim</option>
-                <option value="my">🇲🇲 မြန်မာ</option>
                 <option value="en">🇺🇸 English</option>
             </select>
         </div>
@@ -70,14 +70,14 @@
         <!-- LOGIN / SIGN UP SECTION -->
         <div id="authSection" class="glass-card p-6 rounded-2xl shadow-2xl">
             <div class="text-center mb-6">
-                <h2 id="authTitle" class="text-2xl font-bold gradient-text mb-1">Na Dam Maw</h2>
-                <p id="authDesc" class="text-xs text-gray-300">Account lut aw / Account thar tuah aw</p>
+                <h2 id="authTitle" class="text-2xl font-bold gradient-text mb-1">Login page</h2>
+                <p id="authDesc" class="text-xs text-gray-300">အကောင့်ဝင်ပါ သို့မဟုတ် အကောင့်သစ်ပြုလုပ်ပါ</p>
             </div>
 
             <form onsubmit="handleAuth(event)" class="space-y-4">
                 <div>
                     <label id="labelName" class="block text-xs font-medium text-gray-300 mb-1">Hming (Name)</label>
-                    <input type="text" id="authName" required placeholder="Na hming ngan aw" class="w-full bg-slate-800 text-white text-xs px-4 py-3 rounded-xl border border-slate-700 focus:outline-none focus:border-pink-500">
+                    <input type="text" id="authName" required placeholder="သင့်နာမည်ရိုက်ပါ (Admin အတွက် Admin ဟုထည့်ပါ)" class="w-full bg-slate-800 text-white text-xs px-4 py-3 rounded-xl border border-slate-700 focus:outline-none focus:border-pink-500">
                 </div>
                 <div>
                     <label id="labelContact" class="block text-xs font-medium text-gray-300 mb-1">Phone or Email</label>
@@ -94,51 +94,37 @@
             </form>
         </div>
 
-        <!-- APP CONTENT -->
+        <!-- APP CONTENT (HIDDEN UNTIL LOGIN) -->
         <div id="appSection" class="hidden">
             <!-- DISCOVER TAB -->
             <div id="discoverTab">
-                <div class="text-center mb-4">
-                    <h2 id="heroTitle" class="text-2xl font-bold mb-1">Na Duhdawtmi Hawl Aw</h2>
-                    <p id="heroDesc" class="text-xs text-gray-200 font-medium px-2">Miphun dang le Midang hrang ah a him a thabik mi Cupid platform</p>
-                </div>
-
-                <!-- SEARCH & FILTER BOX -->
-                <div class="glass-card p-3 rounded-xl mb-4 shadow-md flex items-center space-x-2">
-                    <div class="relative flex-grow">
-                        <i class="fa-solid fa-magnifying-glass absolute left-3 top-3 text-gray-400 text-xs"></i>
-                        <input type="text" id="searchInput" oninput="filterProfiles()" placeholder="Hming hawlnak..." class="w-full bg-slate-800 text-white text-xs pl-8 pr-3 py-2 rounded-lg border border-slate-700 focus:outline-none focus:border-pink-500">
-                    </div>
-                    <select id="ethnicityFilter" onchange="filterProfiles()" class="bg-slate-800 text-pink-400 text-xs font-semibold border border-slate-700 rounded-lg px-2 py-2 focus:outline-none">
-                        <option id="optAll" value="all">Zapi in</option>
-                        <option value="falam">Falam</option>
-                        <option value="mizo">Mizo</option>
-                        <option value="myanmar">Myanmar</option>
-                    </select>
+                <div class="text-center mb-6">
+                    <h2 id="heroTitle" class="text-2xl font-bold mb-2">သင့်ဖူးစာရှင်ကို ရှာဖွေပါ</h2>
+                    <p id="heroDesc" class="text-xs text-gray-200 font-medium px-2">တိုင်းရင်းသား လူမျိုးစုပေါင်းစုံအတွက် လေးစားမှုရှိပြီး လုံခြုံသော Cupid Platform</p>
                 </div>
 
                 <!-- Rules Banner -->
-                <div class="glass-card border-l-4 border-rose-500 p-3 rounded-r-xl mb-5 shadow-md">
+                <div class="glass-card border-l-4 border-rose-500 p-4 rounded-r-xl mb-6 shadow-md">
                     <div class="flex items-start space-x-3">
-                        <i class="fa-solid fa-shield-halved text-rose-500 text-lg mt-0.5"></i>
+                        <i class="fa-solid fa-shield-halved text-rose-500 text-xl mt-0.5"></i>
                         <div>
-                            <h3 id="rulesTitle" class="font-semibold text-rose-400 text-xs">Thlunding mi le Zawmdingmi pawl</h3>
-                            <p id="rulesText" class="text-[11px] text-gray-200 mt-0.5 font-medium leading-relaxed">
-                                Tawngthalo le midang hnaihnawk zawng in le Cozah duh lo zawng thil tuah lo ding. zuk tar lo ding.
+                            <h3 id="rulesTitle" class="font-semibold text-rose-400 text-sm">အသိုင်းအဝိုင်း စည်းမျဉ်းစည်းကမ်းများ</h3>
+                            <p id="rulesText" class="text-xs text-gray-200 mt-1 font-medium">
+                                ညစ်ပတ်သော စာ/စကားများ ရေးသားခြင်း၊ ရိုင်းစိုင်းစွာ ပြောဆိုခြင်းနှင့် အနှောင့်အယှက်ပေးခြင်းများကို လုံးဝ ခွင့်မပြုပါ။
                             </p>
                         </div>
                     </div>
                 </div>
 
                 <!-- Profile Card -->
-                <div id="profileContainer" class="glass-card rounded-2xl overflow-hidden shadow-2xl relative mb-6">
+                <div class="glass-card rounded-2xl overflow-hidden shadow-2xl relative mb-6">
                     <div class="relative h-80 bg-slate-700">
                         <img id="profileImg" src="" alt="Profile" class="w-full h-full object-cover">
                         <div class="absolute bottom-0 inset-x-0 bg-gradient-to-t from-slate-950 via-slate-950/60 to-transparent p-4">
                             <div class="flex items-center justify-between">
                                 <div>
                                     <h3 id="profileName" class="text-xl font-bold text-white"></h3>
-                                    <p id="profileLocation" class="text-xs text-pink-400 font-medium"><i class="fa-solid fa-user-check mr-1"></i>Active Member</p>
+                                    <p id="profileLocation" class="text-xs text-pink-400 font-medium"><i class="fa-solid fa-location-dot mr-1"></i></p>
                                 </div>
                                 <span class="bg-pink-500/20 text-pink-300 text-xs px-2.5 py-1 rounded-full border border-pink-500/30">Verified</span>
                             </div>
@@ -159,50 +145,30 @@
                         </button>
                     </div>
                 </div>
-
-                <!-- No Profile Found State -->
-                <div id="noProfileMsg" class="hidden glass-card p-6 rounded-2xl text-center text-gray-400 text-xs">
-                    <i class="fa-solid fa-user-slash text-3xl mb-2 text-pink-500/60"></i>
-                    <p id="noProfileText">Profile zoh ding a um lo</p>
-                </div>
             </div>
 
-            <!-- CHAT TAB -->
-            <div id="chatTab" class="hidden flex flex-col h-[70vh]">
-                <!-- Chat Header -->
-                <div class="glass-card p-3 rounded-2xl flex items-center justify-between mb-3 shadow-md flex-shrink-0">
-                    <div class="flex items-center space-x-3">
-                        <div class="relative">
-                            <img id="chatAvatar" src="" class="w-10 h-10 rounded-full object-cover border border-pink-500/50">
-                            <span class="absolute bottom-0 right-0 w-3 h-3 bg-emerald-500 rounded-full border-2 border-slate-900"></span>
-                        </div>
-                        <div>
-                            <h3 id="chatName" class="font-bold text-sm text-white leading-tight"></h3>
-                            <p class="text-[10px] text-emerald-400 flex items-center"><i class="fa-solid fa-shield-halved text-[9px] mr-1"></i> Private & Secure</p>
-                        </div>
+            <!-- CHAT TAB (PRIVATE USER CHAT) -->
+            <div id="chatTab" class="hidden flex flex-col h-[75vh]">
+                <div class="glass-card p-3 rounded-t-xl flex items-center space-x-3 mb-2">
+                    <img id="chatAvatar" src="" class="w-10 h-10 rounded-full object-cover">
+                    <div>
+                        <h3 id="chatName" class="font-bold text-sm text-white"></h3>
+                        <p class="text-[10px] text-emerald-400"><i class="fa-solid fa-circle text-[8px] mr-1"></i> Private Chat Secure</p>
                     </div>
-                    <button onclick="switchTab('discover')" class="text-xs text-gray-400 hover:text-pink-400 px-2 py-1 rounded-lg bg-slate-800 border border-slate-700 transition">
-                        <i class="fa-solid fa-user-group mr-1"></i> Profiles
-                    </button>
                 </div>
 
-                <!-- Chat Messages Body -->
-                <div id="chatMessages" class="glass-card flex-grow p-4 rounded-2xl overflow-y-auto space-y-3 mb-3 flex flex-col border border-slate-800/80">
-                    <p class="text-gray-400 text-center text-xs my-auto">Connecting chat room...</p>
+                <div id="chatMessages" class="glass-card flex-grow p-4 rounded-xl overflow-y-auto space-y-3 mb-3 flex flex-col">
                 </div>
 
-                <!-- Chat Input Form -->
-                <form onsubmit="sendPrivateMessage(event)" class="flex items-center space-x-2 flex-shrink-0">
-                    <div class="relative flex-grow">
-                        <input type="text" id="messageInput" placeholder="Ca kuat ngan nak..." class="w-full bg-slate-800 text-white text-xs pl-4 pr-10 py-3 rounded-xl border border-slate-700 focus:outline-none focus:border-pink-500 shadow-inner">
-                    </div>
-                    <button type="submit" class="bg-gradient-to-r from-pink-500 to-rose-500 text-white w-11 h-11 rounded-xl text-xs font-semibold shadow-lg hover:opacity-90 transition flex items-center justify-center flex-shrink-0">
-                        <i class="fa-solid fa-paper-plane text-sm"></i>
+                <form onsubmit="sendPrivateMessage(event)" class="flex items-center space-x-2">
+                    <input type="text" id="messageInput" placeholder="စာတို ရိုက်ရန်..." class="flex-grow bg-slate-800 text-white text-xs px-4 py-3 rounded-xl border border-slate-700 focus:outline-none focus:border-pink-500">
+                    <button type="submit" class="bg-gradient-to-r from-pink-500 to-purple-600 text-white px-4 py-3 rounded-xl text-xs font-semibold shadow-md hover:opacity-90 transition">
+                        <i class="fa-solid fa-paper-plane"></i>
                     </button>
                 </form>
             </div>
 
-            <!-- ADMIN TAB -->
+            <!-- ADMIN TAB (MONITOR ALL CHATS & USERS) -->
             <div id="adminTab" class="hidden">
                 <div class="glass-card p-5 rounded-2xl shadow-xl">
                     <div class="flex items-center justify-between mb-4">
@@ -222,8 +188,8 @@
                     </div>
 
                     <div class="space-y-2">
-                        <h4 class="text-xs font-semibold text-gray-400 uppercase">Registered Users List</h4>
-                        <div id="adminUserList" class="bg-slate-900/60 p-3 rounded-xl text-xs space-y-2 border border-slate-800 max-h-60 overflow-y-auto">
+                        <h4 id="adminMonitorTitle" class="text-xs font-semibold text-gray-400 uppercase">All Customer Conversations (Monitor)</h4>
+                        <div id="adminActivityList" class="bg-slate-900/60 p-3 rounded-xl text-xs space-y-2 border border-slate-800 max-h-60 overflow-y-auto">
                         </div>
                     </div>
                 </div>
@@ -238,7 +204,7 @@
         <p class="mt-1 text-gray-400">Created with ❤️ by <span class="text-pink-400 font-medium">Isaiah Cung</span></p>
     </footer>
 
-    <!-- Firebase Realtime Logic & Fixed Chat System -->
+    <!-- JavaScript & Firebase Logic -->
     <script>
         const firebaseConfig = {
             databaseURL: "https://myanmar-dating-app-default-rtdb.firebaseio.com/"
@@ -247,26 +213,36 @@
         const db = firebase.database();
 
         let currentUser = null;
+        let currentChatRoomId = null;
         let currentActiveProfile = null;
         let chatListenerRef = null;
 
-        const defaultFallbackProfiles = [
-            { id: 'default_1', name: "Lian, 24", ethnicity: "falam", bio: "သီချင်းနားထောင်ရတာ ကြိုက်တယ်။ မိတ်ဆွေအသစ်များနဲ့ ခင်မင်ချင်ပါတယ်။", image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=600" },
-            { id: 'default_2', name: "Nuam, 22", ethnicity: "mizo", bio: "ဝါသနာကတော့ ခရီးသွားတာနဲ့ စာဖတ်တာပါ။", image: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&q=80&w=600" },
-            { id: 'default_3', name: "Hmuaki, 25", ethnicity: "mizo", bio: "တေးဂီတကို ချစ်မြတ်နိုးသူတစ်ဦးဖြစ်ပါတယ်။", image: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&q=80&w=600" }
+        const profiles = [
+            { id: 'profile_1', name: "Lian, 24", location: "Yangon • Falam / Myanmar", bio: "သီချင်းနားထောင်ရတာ ကြိုက်တယ်။ မိတ်ဆွေအသစ်များနဲ့ ခင်မင်ချင်ပါတယ်။", image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=600" },
+            { id: 'profile_2', name: "Nuam, 22", location: "Mandalay • Mizo / Myanmar", bio: "ဝါသနာကတော့ ခရီးသွားတာနဲ့ စာဖတ်တာပါ။", image: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&q=80&w=600" },
+            { id: 'profile_3', name: "Hmuaki, 25", location: "Aizawl • Mizo", bio: "တေးဂီတကို ချစ်မြတ်နိုးသူတစ်ဦးဖြစ်ပါတယ်။", image: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&q=80&w=600" }
         ];
-
-        let allProfilesList = [...defaultFallbackProfiles];
-        let filteredProfiles = [];
         let currentIndex = 0;
 
+        // အစ်ကို ကိုယ်တိုင်ပြင်ဆင်ပေးထားသော ဘာသာစကားအမှန် စာလုံးပေါင်းများ
         const translations = {
+            my: {
+                authTitle: "Login page",
+                authDesc: "အကောင့်ဝင်ပါ သို့မဟုတ် အကောင့်သစ်ပြုလုပ်ပါ",
+                labelName: "နာမည် (Name)",
+                phName: "သင့်နာမည်ရိုက်ပါ (Admin အတွက် Admin ဟုထည့်ပါ)",
+                labelContact: "ဖုန်း သို့မဟုတ် အီးမေးလ်",
+                phEmail: "09xxxxxxxxx",
+                labelPass: "စကားဝှက် (Password)",
+                phPass: "******",
+                btnAuth: "အကောင့်ဝင်မည် / Register",
+                heroTitle: "သင့်ဖူးစာရှင်ကို ရှာဖွေပါ",
+                heroDesc: "တိုင်းရင်းသား လူမျိုးစုပေါင်းစုံအတွက် လေးစားမှုရှိပြီး လုံခြုံသော Cupid Platform",
+                rulesTitle: "အသိုင်းအဝိုင်း စည်းမျဉ်းစည်းကမ်းများ",
+                rulesText: "ညစ်ပတ်သော စာ/စကားများ ရေးသားခြင်း၊ ရိုင်းစိုင်းစွာ ပြောဆိုခြင်းနှင့် အနှောင့်အယှက်ပေးခြင်းများကို လုံးဝ ခွင့်မပြုပါ။"
+            },
             falam: {
-                heroTitle: "Na Duhdawtmi Hawl Aw",
-                heroDesc: "Miphun dang le Midang hrang ah a him a thabik mi Cupid platform",
-                rulesTitle: "Thlunding mi le Zawmdingmi pawl",
-                rulesText: "Tawngthalo le midang hnaihnawk zawng in le Cozah duh lo zawng thil tuah lo ding. zuk tar lo ding.",
-                authTitle: "Na Dam Maw",
+                authTitle: "Login page",
                 authDesc: "Account lut aw / Account thar tuah aw",
                 labelName: "Hming (Name)",
                 phName: "Na hming ngan aw",
@@ -275,18 +251,14 @@
                 labelPass: "Ca thupmi",
                 phPass: "******",
                 btnAuth: "Lut aw",
-                phChatInput: "Ca kuat ngan nak",
-                phSearch: "Hming hawlnak...",
-                optAll: "Zapi in",
-                noProfileText: "Profile zoh ding a um lo"
+                heroTitle: "Na Duhdawtmi Hawl Aw",
+                heroDesc: "Miphun dang le Midang hrang ah a him a thabik mi Cupid platform",
+                rulesTitle: "Thlunding mi le Zawmdingmi pawl",
+                rulesText: "Tawngthalo le midang hnaihnawk zawng in le Cozah duh lo zawng thil tuah lo ding. zuk tar lo ding."
             },
             hakha: {
-                heroTitle: "Na Duhmi Zawn Ruah Hna",
-                heroDesc: "Miphun vialte ca ningcang le thliarhrang lo tein hman khawhmi cupid platform",
-                rulesTitle: "Hrinhrang le phung",
-                rulesText: "Cazin tha lo le mi hrokhrawl ti awk si lo",
-                authTitle: "Kan I Lawm",
-                authDesc: "Account thutnak/ Register",
+                authTitle: "Login page",
+                authDesc: "Kan I Lawm",
                 labelName: "Hmin (Name)",
                 phName: "Na hmin tial",
                 labelContact: "Phone or Email",
@@ -294,16 +266,12 @@
                 labelPass: "Biathup",
                 phPass: "******",
                 btnAuth: "Lut",
-                phChatInput: "Cakuat tial",
-                phSearch: "Hmin zawnin...",
-                optAll: "Vialte",
-                noProfileText: "Profile hmuh khawh um loh"
+                heroTitle: "Na Duhmi Zawn Ruah Hna",
+                heroDesc: "Miphun vialte ca ningcang le thliarhrang lo tein hman khawhmi cupid platform",
+                rulesTitle: "Hrinhrang le phung",
+                rulesText: "Cazin tha lo le mi hrokhrawl ti awk si lo"
             },
             tapong: {
-                heroTitle: "Na Hnakruh Le Lu Tuhah Thuai In",
-                heroDesc: "Mite ca le hnamdang te ca a him le phaber ah Cupid platform",
-                rulesTitle: "Hluntuh le Zawmtuh",
-                rulesText: "Uan pha ngua ai tuh ngua. Mi hnaihnawk zuang lai ngan tuh ngua. Cozah deih ngua zuk dah tuh ngua.",
                 authTitle: "Na Hmuak Ing",
                 authDesc: "Account lut in / Account Thiar Vauh in",
                 labelName: "Hming (Name)",
@@ -313,17 +281,13 @@
                 labelPass: "Na laithup",
                 phPass: "******",
                 btnAuth: "Lut tuh",
-                phChatInput: "Lai kuat ngan hmun",
-                phSearch: "Hming in thuai hmun.",
-                optAll: "Vasek in",
-                noProfileText: "Profile hmu tuh om ngua"
+                heroTitle: "Na Hnakruh Le Lu Tuhah Thuai In",
+                heroDesc: "Mite ca le hnamdang te ca a him le phaber ah Cupid platform",
+                rulesTitle: "Hluntuh le Zawmtuh",
+                rulesText: "Uan pha ngua ai tuh ngua. Mi hnaihnawk zuang lai ngan tuh ngua. Cozah deih ngua zuk dah tuh ngua."
             },
             mizo: {
-                heroTitle: "I Duhtak Zawng Rawh",
-                heroDesc: "Hnam hrang hrang te tana a him le zahawm Cupid platform",
-                rulesTitle: "Dan le Dun",
-                rulesText: "Thumal bawlhhlawh le inhnial buaina a awm tur ani lo. En mawi lo zawng thlalak te dah tur ani lo",
-                authTitle: "Chibai / Wecome",
+                authTitle: "Chibai / Welcome",
                 authDesc: "Account lut rawh / A thar siam rawh",
                 labelName: "Hming (Name)",
                 phName: "I hming ziak rawh",
@@ -332,16 +296,12 @@
                 labelPass: "Lehkhathup",
                 phPass: "******",
                 btnAuth: "Lut rawh",
-                phChatInput: "Thuchah ziak rawh",
-                phSearch: "Hmingin zawng rawh...",
-                optAll: "A vaiin",
-                noProfileText: "Profile hmuh tur a awm lo."
+                heroTitle: "I Duhtak Zawng Rawh",
+                heroDesc: "Hnam hrang hrang te tana a him le zahawm Cupid platform",
+                rulesTitle: "Dan le Dun",
+                rulesText: "Thumal bawlhhlawh le inhnial buaina a awm tur ani lo. En mawi lo zawng thlalak te dah tur ani lo"
             },
             tidim: {
-                heroTitle: "Nadeih Pen Zawng In",
-                heroDesc: "Mi khempeuh te a ding a ki lawm le a pha Cupid platform",
-                rulesTitle: "Thu ki zaksakna",
-                rulesText: "Kampau sia zang lo ding. Mite a ding buaina bawl lo ding. Kumpi phal lo mante tak lo ding",
                 authTitle: "Hong Dawn Ing / Hello",
                 authDesc: "Account lutin / Account thak bawl in",
                 labelName: "Ming (Name)",
@@ -351,53 +311,30 @@
                 labelPass: "Thuthup",
                 phPass: "******",
                 btnAuth: "Lut in",
-                phChatInput: "Lai gelh in",
-                phSearch: "Ming zawng in...",
-                optAll: "Khempeuh",
-                noProfileText: "Profile muzolo."
-            },
-            my: {
-                heroTitle: "သင့်ဖူးစာရှင်ကို ရှာဖွေပါ",
-                heroDesc: "တိုင်းရင်းသား လူမျိုးစုပေါင်းစုံအတွက် လေးစားမှုရှိပြီး လုံခြုံသော Cupid Platform",
-                rulesTitle: "အသိုင်းအဝိုင်း စည်းမျဉ်းစည်းကမ်းများ",
-                rulesText: "ညစ်ပတ်သော စာ/စကားများ ရေးသားခြင်း၊ ရိုင်းစိုင်းစွာ ပြောဆိုခြင်းနှင့် အနှောင့်အယှက်ပေးခြင်းများကို လုံးဝ ခွင့်မပြုပါ။",
-                authTitle: "မင်္ဂလာပါ",
-                authDesc: "အကောင့်ဝင်ပါ သို့မဟုတ် အကောင့်သစ်ပြုလုပ်ပါ",
-                labelName: "နာမည် (Name)",
-                phName: "သင့်နာမည်ရိုက်ပါ (Admin အတွက် Admin ဟုထည့်ပါ)",
-                labelContact: "ဖုန်း သို့မဟုတ် အီးမေးလ်",
-                phEmail: "09xxxxxxxxx",
-                labelPass: "စကားဝှက် (Password)",
-                phPass: "******",
-                btnAuth: "အကောင့်ဝင်မည် / Register",
-                phChatInput: "စာတို ရိုက်ရန်...",
-                phSearch: "နာမည်ဖြင့် ရှာရန်...",
-                optAll: "အားလုံး",
-                noProfileText: "ရှာဖွေမှုနှင့် ကိုက်ညီသော Profile မတွေ့ရှိပါ။"
+                heroTitle: "Nadeih Pen Zawng In",
+                heroDesc: "Mi khempeuh te a ding a ki lawm le a pha Cupid platform",
+                rulesTitle: "Thu ki zaksakna",
+                rulesText: "Kampau sia zang lo ding. Mite a ding buaina bawl lo ding. Kumpi phal lo mante tak lo ding"
             },
             en: {
-                heroTitle: "Find Your Match",
-                heroDesc: "A respectful and secure Cupid Platform for all ethnic groups",
-                rulesTitle: "Community Guidelines",
-                rulesText: "Inappropriate language, harassment, and abusive behavior are strictly prohibited.",
-                authTitle: "Welcome",
+                authTitle: "Login page",
                 authDesc: "Sign in or create a new account",
                 labelName: "Name",
-                phName: "Enter your name (Type Admin for Admin)",
+                phName: "Enter your name",
                 labelContact: "Phone or Email",
-                phEmail: "Enter phone or email",
+                phEmail: "Phone or Email",
                 labelPass: "Password",
                 phPass: "******",
-                btnAuth: "Sign In / Register",
-                phChatInput: "Type a message...",
-                phSearch: "Search by name...",
-                optAll: "All",
-                noProfileText: "No matching profiles found."
+                btnAuth: "Sign In",
+                heroTitle: "Find Your Match",
+                heroDesc: "A secure and respectful Cupid Platform",
+                rulesTitle: "Community Guidelines",
+                rulesText: "Inappropriate language and behavior are strictly prohibited."
             }
         };
 
         function changeLanguage(lang) {
-            const data = translations[lang] || translations['falam'];
+            const data = translations[lang] || translations['my'];
             
             const heroTitle = document.getElementById('heroTitle');
             const heroDesc = document.getElementById('heroDesc');
@@ -413,10 +350,6 @@
             const labelPass = document.getElementById('labelPass');
             const authPassword = document.getElementById('authPassword');
             const btnSubmitAuth = document.getElementById('btnSubmitAuth');
-            const messageInput = document.getElementById('messageInput');
-            const searchInput = document.getElementById('searchInput');
-            const optAll = document.getElementById('optAll');
-            const noProfileText = document.getElementById('noProfileText');
 
             if (heroTitle) heroTitle.innerText = data.heroTitle;
             if (heroDesc) heroDesc.innerText = data.heroDesc;
@@ -432,57 +365,6 @@
             if (labelPass) labelPass.innerText = data.labelPass;
             if (authPassword && data.phPass) authPassword.placeholder = data.phPass;
             if (btnSubmitAuth) btnSubmitAuth.innerText = data.btnAuth;
-            if (messageInput && data.phChatInput) messageInput.placeholder = data.phChatInput;
-            
-            if (searchInput && data.phSearch) searchInput.placeholder = data.phSearch;
-            if (optAll && data.optAll) optAll.innerText = data.optAll;
-            if (noProfileText) noProfileText.innerText = data.noProfileText;
-        }
-
-        function listenToProfiles() {
-            db.ref('users').on('value', (snapshot) => {
-                const usersData = snapshot.val();
-                let fetchedProfiles = [];
-
-                if (usersData) {
-                    Object.keys(usersData).forEach(key => {
-                        const u = usersData[key];
-                        if (!u.isAdmin && (!currentUser || key !== currentUser.id)) {
-                            fetchedProfiles.push({
-                                id: key,
-                                name: u.name || "Anonymous",
-                                ethnicity: u.ethnicity || "myanmar",
-                                bio: u.bio || "Cupid Platform မိတ်ဆွေအသစ်များနဲ့ ခင်မင်လိုပါသည်။",
-                                image: u.image || "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=600"
-                            });
-                        }
-                    });
-                }
-
-                allProfilesList = fetchedProfiles.length > 0 ? fetchedProfiles : defaultFallbackProfiles;
-                filterProfiles();
-            });
-        }
-
-        function filterProfiles() {
-            const query = document.getElementById('searchInput').value.toLowerCase().trim();
-            const selectedEth = document.getElementById('ethnicityFilter').value;
-
-            filteredProfiles = allProfilesList.filter(p => {
-                const matchesQuery = p.name ? p.name.toLowerCase().includes(query) : true;
-                const matchesEth = (selectedEth === 'all') || (p.ethnicity === selectedEth);
-                return matchesQuery && matchesEth;
-            });
-
-            currentIndex = 0;
-            if (filteredProfiles.length > 0) {
-                document.getElementById('profileContainer').classList.remove('hidden');
-                document.getElementById('noProfileMsg').classList.add('hidden');
-                loadProfile();
-            } else {
-                document.getElementById('profileContainer').classList.add('hidden');
-                document.getElementById('noProfileMsg').classList.remove('hidden');
-            }
         }
 
         function handleAuth(event) {
@@ -497,33 +379,21 @@
                 return;
             }
 
-            // Clean User ID based on name so it's consistent and valid
-            const cleanId = 'user_' + name.toLowerCase().replace(/[^a-z0-9]/g, '_');
             currentUser = {
-                id: cleanId,
+                id: isAdmin ? 'admin_owner' : 'user_' + Math.floor(Math.random() * 100000),
                 name: name,
                 isAdmin: isAdmin
             };
 
-            if (!isAdmin) {
-                db.ref('users/' + cleanId).set({
-                    name: name,
-                    joinedAt: Date.now(),
-                    isAdmin: false,
-                    ethnicity: "myanmar",
-                    bio: "Cupid Platform မိတ်ဆွေအသစ်များနဲ့ ခင်မင်လိုပါသည်။",
-                    image: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=600"
-                });
-            }
+            db.ref('users/' + currentUser.id).set({
+                name: currentUser.name,
+                joinedAt: Date.now(),
+                isAdmin: currentUser.isAdmin
+            });
 
             document.getElementById('authSection').classList.add('hidden');
             document.getElementById('appSection').classList.remove('hidden');
             document.getElementById('mainNavButtons').classList.remove('hidden');
-
-            listenToProfiles();
-
-            const selectedLang = document.getElementById('languageSelect').value;
-            changeLanguage(selectedLang);
 
             if (currentUser.isAdmin) {
                 document.getElementById('btnAdmin').classList.remove('hidden');
@@ -531,19 +401,24 @@
                 initAdminDashboard();
             } else {
                 switchTab('discover');
+                loadProfile();
             }
         }
 
         function loadProfile() {
-            if (filteredProfiles.length === 0) return;
-            const p = filteredProfiles[currentIndex];
+            const p = profiles[currentIndex];
             currentActiveProfile = p;
             document.getElementById('profileImg').src = p.image;
             document.getElementById('profileName').innerText = p.name;
+            document.getElementById('profileLocation').innerHTML = `<i class="fa-solid fa-location-dot mr-1"></i> ${p.location}`;
             document.getElementById('profileBio').innerText = p.bio;
 
             document.getElementById('chatAvatar').src = p.image;
             document.getElementById('chatName').innerText = p.name.split(',')[0];
+
+            if (currentUser) {
+                currentChatRoomId = [currentUser.id, p.id].sort().join('_');
+            }
         }
 
         function nextProfile(action) {
@@ -551,10 +426,8 @@
                 alert('❤️ Match တွေ့ပါပြီ! Private Chat သို့ ခေါ်ဆောင်သွားပါမည်။');
                 switchTab('chat');
             } else {
-                if (filteredProfiles.length > 0) {
-                    currentIndex = (currentIndex + 1) % filteredProfiles.length;
-                    loadProfile();
-                }
+                currentIndex = (currentIndex + 1) % profiles.length;
+                loadProfile();
             }
         }
 
@@ -576,22 +449,13 @@
             if(tab === 'discover') {
                 discoverTab.classList.remove('hidden');
                 btnDiscover.className = "bg-pink-600 text-white text-xs px-2.5 py-1.5 rounded-lg font-semibold transition";
-                filterProfiles();
             } else if(tab === 'chat') {
                 chatTab.classList.remove('hidden');
                 btnChat.className = "bg-pink-600 text-white text-xs px-2.5 py-1.5 rounded-lg font-semibold transition";
-                
-                // Fallback to first profile if none active
-                if (!currentActiveProfile && allProfilesList.length > 0) {
-                    currentActiveProfile = allProfilesList[0];
-                    document.getElementById('chatAvatar').src = currentActiveProfile.image;
-                    document.getElementById('chatName').innerText = currentActiveProfile.name.split(',')[0];
-                }
                 loadPrivateChatMessages();
             } else if(tab === 'admin' && currentUser && currentUser.isAdmin) {
                 adminTab.classList.remove('hidden');
                 btnAdmin.className = "bg-amber-600 text-white text-xs px-2.5 py-1.5 rounded-lg font-semibold transition";
-                initAdminDashboard();
             }
         }
 
@@ -599,39 +463,26 @@
             const chatMessages = document.getElementById('chatMessages');
             chatMessages.innerHTML = '';
 
-            if (!currentActiveProfile || !currentUser) {
-                chatMessages.innerHTML = `<p class="text-gray-400 text-center text-xs my-auto">Choose a profile to start chatting...</p>`;
-                return;
+            if (chatListenerRef) {
+                chatListenerRef.off();
             }
 
-            // Guaranteed sorting for unique roomId
-            const roomId = [currentUser.id, currentActiveProfile.id].sort().join('_');
+            if (!currentChatRoomId) return;
 
-            if (chatListenerRef) chatListenerRef.off();
+            chatListenerRef = db.ref('chats/' + currentChatRoomId + '/messages');
+            chatListenerRef.on('child_added', (snapshot) => {
+                const msg = snapshot.val();
+                const msgDiv = document.createElement('div');
 
-            chatListenerRef = db.ref('chats/' + roomId + '/messages');
-            chatListenerRef.on('value', (snapshot) => {
-                chatMessages.innerHTML = '';
-                const messagesData = snapshot.val();
-                
-                if (!messagesData) {
-                    chatMessages.innerHTML = `<p class="text-gray-400 text-center text-xs my-auto">Start the conversation with ${currentActiveProfile.name.split(',')[0]}...</p>`;
-                    return;
+                if(currentUser && msg.senderId === currentUser.id) {
+                    msgDiv.className = "self-end bg-pink-600 text-white text-xs px-3 py-2 rounded-2xl max-w-[75%]";
+                    msgDiv.innerText = msg.text;
+                } else {
+                    msgDiv.className = "self-start bg-slate-800 text-gray-200 text-xs px-3 py-2 rounded-2xl max-w-[75%] border border-slate-700";
+                    msgDiv.innerHTML = `<span class="text-[9px] text-pink-400 block mb-0.5">${msg.senderName || 'User'}</span>${msg.text}`;
                 }
 
-                Object.keys(messagesData).forEach(key => {
-                    const msg = messagesData[key];
-                    const msgDiv = document.createElement('div');
-                    
-                    if(msg.senderId === currentUser.id) {
-                        msgDiv.className = "self-end bg-gradient-to-r from-pink-500 to-rose-500 text-white text-xs px-3.5 py-2.5 rounded-2xl rounded-tr-none max-w-[80%] shadow-md my-1 break-words";
-                        msgDiv.innerText = msg.text;
-                    } else {
-                        msgDiv.className = "self-start bg-slate-800 text-gray-200 text-xs px-3.5 py-2.5 rounded-2xl rounded-tl-none max-w-[80%] border border-slate-700/80 shadow-md my-1 break-words";
-                        msgDiv.innerHTML = `<span class="text-[9px] text-pink-400 block mb-0.5 font-bold">${msg.senderName}</span>${msg.text}`;
-                    }
-                    chatMessages.appendChild(msgDiv);
-                });
+                chatMessages.appendChild(msgDiv);
                 chatMessages.scrollTop = chatMessages.scrollHeight;
             });
         }
@@ -640,46 +491,46 @@
             event.preventDefault();
             const input = document.getElementById('messageInput');
             const text = input.value.trim();
-            
-            if(!text || !currentUser || !currentActiveProfile) return;
+            if(!text || !currentUser || !currentChatRoomId) return;
 
-            const roomId = [currentUser.id, currentActiveProfile.id].sort().join('_');
-
-            db.ref('chats/' + roomId + '/messages').push({
+            db.ref('chats/' + currentChatRoomId + '/messages').push({
                 senderId: currentUser.id,
                 senderName: currentUser.name,
                 text: text,
                 timestamp: Date.now()
             });
-
             input.value = '';
         }
 
         function initAdminDashboard() {
-            const userList = document.getElementById('adminUserList');
-            userList.innerHTML = '';
-
             db.ref('users').on('value', (snapshot) => {
-                userList.innerHTML = '';
                 const users = snapshot.val();
-                let count = 0;
-                if (users) {
-                    Object.keys(users).forEach(key => {
-                        count++;
-                        const u = users[key];
-                        const div = document.createElement('div');
-                        div.className = "p-2 bg-slate-800/80 rounded-lg border border-slate-700 flex justify-between items-center";
-                        div.innerHTML = `
-                            <div>
-                                <p class="text-pink-400 font-bold">${u.name}</p>
-                                <p class="text-[10px] text-gray-400"><i class="fa-solid fa-user-check mr-1"></i>Active Account</p>
-                            </div>
-                            <span class="bg-emerald-500/20 text-emerald-300 text-[9px] px-2 py-0.5 rounded-full border border-emerald-500/30">Active</span>
-                        `;
-                        userList.appendChild(div);
+                document.getElementById('statUsers').innerText = users ? Object.keys(users).length : 0;
+            });
+
+            db.ref('chats').on('value', (snapshot) => {
+                const chatsData = snapshot.val();
+                const activityList = document.getElementById('adminActivityList');
+                activityList.innerHTML = '';
+
+                let totalMessagesCount = 0;
+
+                if (chatsData) {
+                    Object.keys(chatsData).forEach(roomId => {
+                        const room = chatsData[roomId];
+                        if (room && room.messages) {
+                            Object.keys(room.messages).forEach(msgKey => {
+                                totalMessagesCount++;
+                                const msg = room.messages[msgKey];
+                                const p = document.createElement('p');
+                                p.className = "text-gray-300 border-b border-slate-800 pb-1 mb-1";
+                                p.innerHTML = `<span class="text-amber-400 font-semibold">[Room: ${roomId.substring(0,10)}...]</span> <span class="text-pink-400">${msg.senderName}:</span> ${msg.text}`;
+                                activityList.appendChild(p);
+                            });
+                        }
                     });
                 }
-                document.getElementById('statUsers').innerText = count;
+                document.getElementById('statMessages').innerText = totalMessagesCount;
             });
         }
     </script>
