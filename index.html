@@ -68,57 +68,76 @@
     <main class="container mx-auto px-4 py-6 max-w-md flex-grow">
         
         <!-- LOGIN / SIGN UP SECTION -->
-        <div id="authSection" class="glass-card p-6 rounded-2xl shadow-2xl">
-            <div class="text-center mb-6">
-                <h2 id="authTitle" class="text-2xl font-bold gradient-text mb-1">မင်္ဂလာပါ / ကြိုဆိုပါ၏</h2>
-                <p id="authDesc" class="text-xs text-gray-300">အကောင့်ဝင်ပါ သို့မဟုတ် အကောင့်သစ်ပြုလုပ်ပါ</p>
+        <div id="authSection" class="space-y-4">
+            
+            <!-- Security Guarantee Banner -->
+            <div class="glass-card border border-emerald-500/30 bg-emerald-950/20 p-4 rounded-2xl shadow-lg">
+                <div class="flex items-start space-x-3">
+                    <div class="w-8 h-8 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0 mt-0.5">
+                        <i class="fa-solid fa-shield-check text-base"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-emerald-400 text-xs uppercase tracking-wide">100% Safe & Private Guarantee</h3>
+                        <p id="guaranteeText" class="text-[11px] text-gray-300 mt-1 leading-relaxed">
+                            သင့်ရဲ့ ကိုယ်ရေးအချက်အလက်များနှင့် မက်ဆေ့ဂျ်များကို အမြင့်ဆုံး လုံခြုံရေးစနစ်ဖြင့် ထိန်းသိမ်းပေးထားပြီး အခြားသူများထံ လုံးဝ မျှဝေခြင်း မရှိပါ။
+                        </p>
+                    </div>
+                </div>
             </div>
 
-            <form onsubmit="handleAuth(event)" class="space-y-4">
-                <div>
-                    <label id="labelName" class="block text-xs font-medium text-gray-300 mb-1">နာမည် (Name)</label>
-                    <input type="text" id="authName" oninput="checkAdminInput()" required placeholder="သင့်နာမည်ရိုက်ပါ (ဥပမာ - မောင်မောင်)" class="w-full bg-slate-800 text-white text-xs px-4 py-3 rounded-xl border border-slate-700 focus:outline-none focus:border-pink-500">
-                </div>
-                
-                <!-- Age Input Field -->
-                <div id="ageFieldContainer">
-                    <label id="labelAge" class="block text-xs font-medium text-gray-300 mb-1">အသက် (Age)</label>
-                    <input type="number" id="authAge" min="18" max="100" required placeholder="သင့်အသက်ထည့်ပါ (ဥပမာ - 22)" class="w-full bg-slate-800 text-white text-xs px-4 py-3 rounded-xl border border-slate-700 focus:outline-none focus:border-pink-500">
+            <!-- Form Card -->
+            <div class="glass-card p-6 rounded-2xl shadow-2xl">
+                <div class="text-center mb-6">
+                    <h2 id="authTitle" class="text-2xl font-bold gradient-text mb-1">မင်္ဂလာပါ / ကြိုဆိုပါ၏</h2>
+                    <p id="authDesc" class="text-xs text-gray-300">အကောင့်ဝင်ပါ သို့မဟုတ် အကောင့်သစ်ပြုလုပ်ပါ</p>
                 </div>
 
-                <!-- Location Input Field -->
-                <div id="locationFieldContainer">
-                    <label id="labelLocation" class="block text-xs font-medium text-gray-300 mb-1">နေရပ်လိပ်စာ (Location)</label>
-                    <input type="text" id="authLocation" required placeholder="သင့်မြို့/နေရပ်လိပ်စာ (ဥပမာ - Yangon)" class="w-full bg-slate-800 text-white text-xs px-4 py-3 rounded-xl border border-slate-700 focus:outline-none focus:border-pink-500">
-                </div>
+                <form onsubmit="handleAuth(event)" class="space-y-4">
+                    <div>
+                        <label id="labelName" class="block text-xs font-medium text-gray-300 mb-1">နာမည် (Name)</label>
+                        <input type="text" id="authName" oninput="checkAdminInput()" required placeholder="သင့်နာမည်ရိုက်ပါ (ဥပမာ - မောင်မောင်)" class="w-full bg-slate-800 text-white text-xs px-4 py-3 rounded-xl border border-slate-700 focus:outline-none focus:border-pink-500">
+                    </div>
+                    
+                    <!-- Age Input Field -->
+                    <div id="ageFieldContainer">
+                        <label id="labelAge" class="block text-xs font-medium text-gray-300 mb-1">အသက် (Age)</label>
+                        <input type="number" id="authAge" min="18" max="100" required placeholder="သင့်အသက်ထည့်ပါ (ဥပမာ - 22)" class="w-full bg-slate-800 text-white text-xs px-4 py-3 rounded-xl border border-slate-700 focus:outline-none focus:border-pink-500">
+                    </div>
 
-                <div>
-                    <label id="labelContact" class="block text-xs font-medium text-gray-300 mb-1">Phone or Email</label>
-                    <input type="text" id="authEmail" required placeholder="09xxxxxxxxx" class="w-full bg-slate-800 text-white text-xs px-4 py-3 rounded-xl border border-slate-700 focus:outline-none focus:border-pink-500">
-                </div>
-                <div>
-                    <label id="labelPass" class="block text-xs font-medium text-gray-300 mb-1">စကားဝှက် (Password)</label>
-                    <input type="password" id="authPassword" required placeholder="******" class="w-full bg-slate-800 text-white text-xs px-4 py-3 rounded-xl border border-slate-700 focus:outline-none focus:border-pink-500">
-                </div>
+                    <!-- Location Input Field -->
+                    <div id="locationFieldContainer">
+                        <label id="labelLocation" class="block text-xs font-medium text-gray-300 mb-1">နေရပ်လိပ်စာ (Location)</label>
+                        <input type="text" id="authLocation" required placeholder="သင့်မြို့/နေရပ်လိပ်စာ (ဥပမာ - Yangon)" class="w-full bg-slate-800 text-white text-xs px-4 py-3 rounded-xl border border-slate-700 focus:outline-none focus:border-pink-500">
+                    </div>
 
-                <!-- Language Selection at Registration/Login -->
-                <div id="langJoinContainer">
-                    <label id="labelLangJoin" class="block text-xs font-medium text-pink-400 mb-1"><i class="fa-solid fa-earth-americas mr-1"></i>Join ချင်သော ဘာသာစကား ရွေးပါ</label>
-                    <select id="authLanguage" class="w-full bg-slate-800 text-pink-300 text-xs px-4 py-3 rounded-xl border border-pink-500/40 focus:outline-none focus:border-pink-500 cursor-pointer">
-                        <option value="falam">🇲🇲 Falam</option>
-                        <option value="hakha">🇲🇲 Hakha</option>
-                        <option value="tapong">🇲🇲 Tapong</option>
-                        <option value="mizo">🇲🇲 Mizo</option>
-                        <option value="tidim">🇲🇲 Tidim</option>
-                        <option value="my">🇲🇲 မြန်မာ</option>
-                        <option value="en">🇺🇸 English</option>
-                    </select>
-                </div>
+                    <div>
+                        <label id="labelContact" class="block text-xs font-medium text-gray-300 mb-1">Phone or Email</label>
+                        <input type="text" id="authEmail" required placeholder="09xxxxxxxxx" class="w-full bg-slate-800 text-white text-xs px-4 py-3 rounded-xl border border-slate-700 focus:outline-none focus:border-pink-500">
+                    </div>
+                    <div>
+                        <label id="labelPass" class="block text-xs font-medium text-gray-300 mb-1">စကားဝှက် (Password)</label>
+                        <input type="password" id="authPassword" required placeholder="******" class="w-full bg-slate-800 text-white text-xs px-4 py-3 rounded-xl border border-slate-700 focus:outline-none focus:border-pink-500">
+                    </div>
 
-                <button type="submit" id="btnSubmitAuth" class="w-full bg-gradient-to-r from-pink-500 to-rose-500 text-white py-3 rounded-xl text-xs font-bold shadow-lg hover:opacity-90 transition mt-2">
-                    Lut aw
-                </button>
-            </form>
+                    <!-- Language Selection at Registration/Login -->
+                    <div id="langJoinContainer">
+                        <label id="labelLangJoin" class="block text-xs font-medium text-pink-400 mb-1"><i class="fa-solid fa-earth-americas mr-1"></i>Join ချင်သော ဘာသာစကား ရွေးပါ</label>
+                        <select id="authLanguage" class="w-full bg-slate-800 text-pink-300 text-xs px-4 py-3 rounded-xl border border-pink-500/40 focus:outline-none focus:border-pink-500 cursor-pointer">
+                            <option value="falam">🇲🇲 Falam</option>
+                            <option value="hakha">🇲🇲 Hakha</option>
+                            <option value="tapong">🇲🇲 Tapong</option>
+                            <option value="mizo">🇲🇲 Mizo</option>
+                            <option value="tidim">🇲🇲 Tidim</option>
+                            <option value="my">🇲🇲 မြန်မာ</option>
+                            <option value="en">🇺🇸 English</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" id="btnSubmitAuth" class="w-full bg-gradient-to-r from-pink-500 to-rose-500 text-white py-3 rounded-xl text-xs font-bold shadow-lg hover:opacity-90 transition mt-2">
+                        Lut aw
+                    </button>
+                </form>
+            </div>
         </div>
 
         <!-- APP CONTENT (HIDDEN UNTIL LOGIN) -->
@@ -153,7 +172,7 @@
                                     <h3 id="profileName" class="text-xl font-bold text-white"></h3>
                                     <p id="profileLocation" class="text-xs text-pink-400 font-medium"><i class="fa-solid fa-location-dot mr-1"></i></p>
                                 </div>
-                                <span class="bg-pink-500/20 text-pink-300 text-xs px-2.5 py-1 rounded-full border border-pink-500/30">Verified</span>
+                                <span class="bg-pink-500/20 text-pink-300 text-xs px-2.5 py-1 rounded-full border border-pink-500/30"><i class="fa-solid fa-circle-check mr-1"></i>Verified</span>
                             </div>
                             <p id="profileBio" class="text-xs text-gray-300 mt-2"></p>
                         </div>
@@ -291,6 +310,7 @@
             my: {
                 authTitle: "မင်္ဂလာပါ / ကြိုဆိုပါ၏",
                 authDesc: "အကောင့်ဝင်ပါ သို့မဟုတ် အကောင့်သစ်ပြုလုပ်ပါ",
+                guaranteeText: "သင့်ရဲ့ ကိုယ်ရေးအချက်အလက်များနှင့် မက်ဆေ့ဂျ်များကို အမြင့်ဆုံး လုံခြုံရေးစနစ်ဖြင့် ထိန်းသိမ်းပေးထားပြီး အခြားသူများထံ လုံးဝ မျှဝေခြင်း မရှိပါ။",
                 labelName: "နာမည် (Name)",
                 phName: "သင့်နာမည်ရိုက်ပါ (ဥပမာ - မောင်မောင်)",
                 labelAge: "အသက် (Age)",
@@ -313,6 +333,7 @@
             falam: {
                 authTitle: "Na Dam Maw",
                 authDesc: "Account lut aw / Account thar tuah aw",
+                guaranteeText: "Na cathup le na bia relmi pawl hi a him bik in kan thuap piak hna, midang hnen ah pek darh a si lo.",
                 labelName: "Hming (Name)",
                 phName: "Na hming ngan aw",
                 labelAge: "Kum (Age)",
@@ -335,6 +356,7 @@
             hakha: {
                 authTitle: "Kan I Lawm",
                 authDesc: "Account thutnak/ Register",
+                guaranteeText: "Na bia le na tuahmi pawl hi a him bik in kilven a si.",
                 labelName: "Hmin (Name)",
                 phName: "Na hmin tial",
                 labelAge: "Kum (Age)",
@@ -357,6 +379,7 @@
             tapong: {
                 authTitle: "Na Hmuak Ing",
                 authDesc: "Account lut in / Account Thiar Vauh in",
+                guaranteeText: "Na biat le na tuahmi pawl hi a him le phaber ah kilven a si.",
                 labelName: "Hming (Name)",
                 phName: "Na hming ngan in",
                 labelAge: "Kum (Age)",
@@ -379,6 +402,7 @@
             mizo: {
                 authTitle: "Chibai / Welcome",
                 authDesc: "Account lut rawh / A thar siam rawh",
+                guaranteeText: "I thu leh hla te, i hming leh hmunhma te hi venghim a ni a, midang hnenah pek chhuah a ni lo.",
                 labelName: "Hming (Name)",
                 phName: "I hming ziak rawh",
                 labelAge: "Kum (Age)",
@@ -401,6 +425,7 @@
             tidim: {
                 authTitle: "Hong Dawn Ing / Hello",
                 authDesc: "Account lutin / Account thak bawl in",
+                guaranteeText: "Na thute leh na septe hoih takin kilven a hi a, mi dang kiangah kipuakkhia lo hi.",
                 labelName: "Ming (Name)",
                 phName: "Na Ming gelh in",
                 labelAge: "Kum (Age)",
@@ -423,6 +448,7 @@
             en: {
                 authTitle: "Welcome",
                 authDesc: "Sign in or create a new account",
+                guaranteeText: "Your personal data and messages are securely protected and will never be shared with others.",
                 labelName: "Name",
                 phName: "Enter your name (e.g. John)",
                 labelAge: "Age",
@@ -479,6 +505,7 @@
             const rulesText = document.getElementById('rulesText');
             const authTitle = document.getElementById('authTitle');
             const authDesc = document.getElementById('authDesc');
+            const guaranteeText = document.getElementById('guaranteeText');
 
             const labelName = document.getElementById('labelName');
             const authName = document.getElementById('authName');
@@ -501,6 +528,7 @@
             if (rulesText) rulesText.innerText = data.rulesText;
             if (authTitle) authTitle.innerText = data.authTitle;
             if (authDesc) authDesc.innerText = data.authDesc;
+            if (guaranteeText) guaranteeText.innerText = data.guaranteeText;
 
             if (labelName) labelName.innerText = data.labelName;
             if (authName && data.phName) authName.placeholder = data.phName;
