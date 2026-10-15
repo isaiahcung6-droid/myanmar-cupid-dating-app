@@ -5,8 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Myanmar Cupid Dating App - Created by Isaiah Cung</title>
     <!-- Tailwind CSS CDN -->
-    <meta name="google-site-verification" content="Rekv01tTLNo73l6WyqvR4bE2fLX4GzXIObZFI-o9HlE" />
-ဘယ်မှာထည့်ရမလည်း
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -47,12 +45,6 @@
         </div>
 
         <div class="flex items-center space-x-2">
-            <div id="mainNavButtons" class="hidden flex space-x-1">
-                <button onclick="switchTab('discover')" id="btnDiscover" class="bg-pink-600 text-white text-xs px-2.5 py-1.5 rounded-lg font-semibold transition">Discover</button>
-                <button onclick="switchTab('chat')" id="btnChat" class="bg-slate-800 text-gray-300 text-xs px-2.5 py-1.5 rounded-lg font-semibold border border-slate-700 transition">Chat</button>
-                <button onclick="switchTab('admin')" id="btnAdmin" class="bg-slate-800 text-amber-400 text-xs px-2.5 py-1.5 rounded-lg font-semibold border border-slate-700 transition hidden"><i class="fa-solid fa-lock mr-1"></i>Admin</button>
-            </div>
-
             <!-- Language Selector (Header) -->
             <select id="languageSelect" onchange="changeLanguage(this.value)" class="bg-slate-800 text-pink-400 text-xs font-semibold border border-pink-500/30 rounded-lg px-2 py-1.5 focus:outline-none cursor-pointer">
                 <option value="my">🇲🇲 မြန်မာ</option>
@@ -127,6 +119,15 @@
 
         <!-- APP CONTENT (HIDDEN UNTIL LOGIN) -->
         <div id="appSection" class="hidden">
+            <!-- Navigation Tabs Bar (In-App) -->
+            <div id="mainNavButtons" class="glass-card p-2 rounded-xl mb-4 flex justify-between items-center shadow-lg">
+                <div class="flex space-x-1 w-full justify-around">
+                    <button onclick="switchTab('discover')" id="btnDiscover" class="bg-pink-600 text-white text-xs px-4 py-2 rounded-lg font-semibold transition flex-1 mr-1">Discover</button>
+                    <button onclick="switchTab('chat')" id="btnChat" class="bg-slate-800 text-gray-300 text-xs px-4 py-2 rounded-lg font-semibold border border-slate-700 transition flex-1">Chat</button>
+                    <button onclick="switchTab('admin')" id="btnAdmin" class="bg-slate-800 text-amber-400 text-xs px-3 py-2 rounded-lg font-semibold border border-slate-700 transition hidden ml-1"><i class="fa-solid fa-lock mr-1"></i>Admin</button>
+                </div>
+            </div>
+
             <!-- DISCOVER TAB -->
             <div id="discoverTab">
                 <div class="text-center mb-6">
@@ -315,7 +316,7 @@
                 phAge: "သင့်အသက်ထည့်ပါ (ဥပမာ - 22)",
                 labelLocation: "နေရပ်လိပ်စာ (Location)",
                 phLocation: "သင့်မြို့/နေရပ်လိပ်စာ (ဥပမာ - Yangon)",
-                labelContact: "ဖုန်း သို့မဟုတ် အီးမေးလ်",
+                labelContact: "Phone or Email",
                 phEmail: "09xxxxxxxxx",
                 labelPass: "စကားဝှက် (Password)",
                 phPass: "******",
@@ -507,7 +508,7 @@
 
         function changeLanguage(lang) {
             const data = translations[lang] || translations['my'];
-            
+
             document.getElementById('languageSelect').value = lang;
             const authLanguage = document.getElementById('authLanguage');
             if (authLanguage) authLanguage.value = lang;
@@ -612,7 +613,6 @@
 
             document.getElementById('authSection').classList.add('hidden');
             document.getElementById('appSection').classList.remove('hidden');
-            document.getElementById('mainNavButtons').classList.remove('hidden');
 
             if (currentUser.isAdmin) {
                 document.getElementById('btnAdmin').classList.remove('hidden');
@@ -660,20 +660,20 @@
             discoverTab.classList.add('hidden');
             chatTab.classList.add('hidden');
             adminTab.classList.add('hidden');
-            btnDiscover.className = "bg-slate-800 text-gray-300 text-xs px-2.5 py-1.5 rounded-lg font-semibold border border-slate-700 transition";
-            btnChat.className = "bg-slate-800 text-gray-300 text-xs px-2.5 py-1.5 rounded-lg font-semibold border border-slate-700 transition";
-            if(currentUser && currentUser.isAdmin) btnAdmin.className = "bg-slate-800 text-amber-400 text-xs px-2.5 py-1.5 rounded-lg font-semibold border border-slate-700 transition";
+            btnDiscover.className = "bg-slate-800 text-gray-300 text-xs px-4 py-2 rounded-lg font-semibold border border-slate-700 transition flex-1 mr-1";
+            btnChat.className = "bg-slate-800 text-gray-300 text-xs px-4 py-2 rounded-lg font-semibold border border-slate-700 transition flex-1";
+            if(currentUser && currentUser.isAdmin) btnAdmin.className = "bg-slate-800 text-amber-400 text-xs px-3 py-2 rounded-lg font-semibold border border-slate-700 transition ml-1";
 
             if(tab === 'discover') {
                 discoverTab.classList.remove('hidden');
-                btnDiscover.className = "bg-pink-600 text-white text-xs px-2.5 py-1.5 rounded-lg font-semibold transition";
+                btnDiscover.className = "bg-pink-600 text-white text-xs px-4 py-2 rounded-lg font-semibold transition flex-1 mr-1";
             } else if(tab === 'chat') {
                 chatTab.classList.remove('hidden');
-                btnChat.className = "bg-pink-600 text-white text-xs px-2.5 py-1.5 rounded-lg font-semibold transition";
+                btnChat.className = "bg-pink-600 text-white text-xs px-4 py-2 rounded-lg font-semibold transition flex-1";
                 loadCommunityChatMessages();
             } else if(tab === 'admin' && currentUser && currentUser.isAdmin) {
                 adminTab.classList.remove('hidden');
-                btnAdmin.className = "bg-amber-600 text-white text-xs px-2.5 py-1.5 rounded-lg font-semibold transition";
+                btnAdmin.className = "bg-amber-600 text-white text-xs px-3 py-2 rounded-lg font-semibold transition ml-1";
                 initAdminDashboard();
             }
         }
@@ -686,7 +686,7 @@
                 chatListenerRef.off();
             }
 
-            const targetLang = (currentUser && currentUser.isAdmin && activeAdminRoom) ? activeAdminRoom : document.getElementById('languageSelect').value;
+            const targetLang = (currentUser && currentUser.isAdmin && activeAdminRoom) ? activeAdminRoom : document.getElementById('authLanguage').value;
             const currentRoomId = 'community_room_' + targetLang;
 
             chatListenerRef = db.ref('rooms/' + currentRoomId + '/messages');
@@ -713,7 +713,7 @@
             const text = input.value.trim();
             if(!text || !currentUser) return;
 
-            const targetLang = (currentUser && currentUser.isAdmin && activeAdminRoom) ? activeAdminRoom : document.getElementById('languageSelect').value;
+            const targetLang = (currentUser && currentUser.isAdmin && activeAdminRoom) ? activeAdminRoom : document.getElementById('authLanguage').value;
             const currentRoomId = 'community_room_' + targetLang;
 
             db.ref('rooms/' + currentRoomId + '/messages').push({
