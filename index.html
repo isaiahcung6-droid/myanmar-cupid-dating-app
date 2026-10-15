@@ -92,10 +92,12 @@
                     <input type="text" id="authLocation" required placeholder="သင့်မြို့/နေရပ်လိပ်စာ (ဥပမာ - Yangon)" class="w-full bg-slate-800 text-white text-xs px-4 py-3 rounded-xl border border-slate-700 focus:outline-none focus:border-pink-500">
                 </div>
 
-                <div>
+                <!-- Contact Field Container -->
+                <div id="contactFieldContainer">
                     <label id="labelContact" class="block text-xs font-medium text-gray-300 mb-1">Phone or Email</label>
                     <input type="text" id="authEmail" required placeholder="09xxxxxxxxx" class="w-full bg-slate-800 text-white text-xs px-4 py-3 rounded-xl border border-slate-700 focus:outline-none focus:border-pink-500">
                 </div>
+
                 <div>
                     <label id="labelPass" class="block text-xs font-medium text-gray-300 mb-1">စကားဝှက် (Password)</label>
                     <input type="password" id="authPassword" required placeholder="******" class="w-full bg-slate-800 text-white text-xs px-4 py-3 rounded-xl border border-slate-700 focus:outline-none focus:border-pink-500">
@@ -468,21 +470,36 @@
             const nameVal = document.getElementById('authName').value.trim().toLowerCase();
             const ageContainer = document.getElementById('ageFieldContainer');
             const locContainer = document.getElementById('locationFieldContainer');
+            const contactContainer = document.getElementById('contactFieldContainer');
+            const langContainer = document.getElementById('langJoinContainer');
+            
             const ageInput = document.getElementById('authAge');
             const locInput = document.getElementById('authLocation');
+            const contactInput = document.getElementById('authEmail');
 
             if (nameVal === 'admin') {
                 ageContainer.style.display = 'none';
                 locContainer.style.display = 'none';
+                contactContainer.style.display = 'none';
+                langContainer.style.display = 'none';
+
                 ageInput.removeAttribute('required');
                 locInput.removeAttribute('required');
+                contactInput.removeAttribute('required');
+
                 ageInput.value = '';
                 locInput.value = '';
+                contactInput.value = 'admin@system.com';
             } else {
                 ageContainer.style.display = 'block';
                 locContainer.style.display = 'block';
+                contactContainer.style.display = 'block';
+                langContainer.style.display = 'block';
+
                 ageInput.setAttribute('required', 'true');
                 locInput.setAttribute('required', 'true');
+                contactInput.setAttribute('required', 'true');
+                contactInput.value = '';
             }
         }
 
