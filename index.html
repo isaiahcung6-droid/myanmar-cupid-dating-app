@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Myanmar Cupid Dating App - Created by Isaiah Cung</title>
+    <title>Myanmar Cupid Dating App</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome Icons -->
@@ -40,7 +40,7 @@
             </div>
             <div>
                 <h1 class="font-bold text-sm leading-tight gradient-text">Myanmar Cupid Dating App</h1>
-                <p class="text-[10px] text-gray-400">By Isaiah Cung</p>
+                <p id="subHeaderTag" class="text-[10px] text-pink-400 font-medium">ယုံကြည်စိတ်ချရသော အိမ်ထောင်ဖက် ရှာဖွေရေး</p>
             </div>
         </div>
 
@@ -283,7 +283,6 @@
     <!-- Footer -->
     <footer class="text-center py-4 border-t border-slate-800 text-xs text-gray-500">
         <p>© 2026 <strong>Myanmar Cupid Dating App</strong>. All rights reserved.</p>
-        <p class="mt-1 text-gray-400">Created with ❤️ by <span class="text-pink-400 font-medium">Isaiah Cung</span></p>
     </footer>
 
     <!-- JavaScript & Firebase Logic -->
@@ -307,6 +306,7 @@
 
         const translations = {
             my: {
+                tagline: "ယုံကြည်စိတ်ချရသော အိမ်ထောင်ဖက် ရှာဖွေရေး",
                 authTitle: "မင်္ဂလာပါ / ကြိုဆိုပါ၏",
                 authDesc: "အကောင့်ဝင်ပါ သို့မဟုတ် အကောင့်သစ်ပြုလုပ်ပါ",
                 guaranteeText: "သင့်ရဲ့ ကိုယ်ရေးအချက်အလက်များနှင့် မက်ဆေ့ဂျ်များကို အမြင့်ဆုံး လုံခြုံရေးစနစ်ဖြင့် ထိန်းသိမ်းပေးထားပြီး အခြားသူများထံ လုံးဝ မျှဝေခြင်း မရှိပါ။",
@@ -330,6 +330,7 @@
                 labelLangJoin: "Join ချင်သော ဘာသာစကား ရွေးပါ"
             },
             falam: {
+                tagline: "A himbik nupa hawlnak hmun",
                 authTitle: "Na Dam Maw",
                 authDesc: "Account lut aw / Account thar tuah aw",
                 guaranteeText: "Na thu le hla na hming le umnak pawl le hi app ih nang mah thawn pehpar mi hmauh hmuah a thabik le a him thei bik in kan lo ret sak",
@@ -353,6 +354,7 @@
                 labelLangJoin: "Join duh mi ṭawng hril aw"
             },
             hakha: {
+                tagline: "A himbik mi nupa kawlnak",
                 authTitle: "Kan I Lawm",
                 authDesc: "Account thutnak/ Register",
                 guaranteeText: "Na biarel mi pawl hi a him bik in kan thup piak hna",
@@ -376,6 +378,7 @@
                 labelLangJoin: "Join duh mi holh thim"
             },
             tapong: {
+                tagline: "A him thei ber tuh nupa hawlnak",
                 authTitle: "Na Hmuak Ing",
                 authDesc: "Account lut in / Account Thiar Vauh in",
                 guaranteeText: "Na thu le hla na hming le na om hmun hi app thaw pehzawmhnak hmuah teh a him thei ber tuh in na dah sak si ung",
@@ -399,6 +402,7 @@
                 labelLangJoin: "Join na deihhak uan hril in"
             },
             mizo: {
+                tagline: "A him ber nupa zawnna",
                 authTitle: "Chibai / Welcome",
                 authDesc: "Account lut rawh / A thar siam rawh",
                 guaranteeText: "I thu le hla I hming le i chenna hei app nen in pumbelhna zawng zawng a him thei bera dah sak ani e",
@@ -422,6 +426,7 @@
                 labelLangJoin: "Join duh mi tawng thlang rawh"
             },
             tidim: {
+                tagline: "A him pen zi le pasal zonna",
                 authTitle: "Hong Dawn Ing / Hello",
                 authDesc: "Account lutin / Account thak bawl in",
                 guaranteeText: "Na thu le la na omna mun te hi app tawh na ki zawmna khem peuh hong kem sak ung",
@@ -445,6 +450,7 @@
                 labelLangJoin: "Join nopna pau teel in"
             },
             en: {
+                tagline: "Secure Matchmaking & Dating",
                 authTitle: "Welcome",
                 authDesc: "Sign in or create a new account",
                 guaranteeText: "Your personal data and messages are securely protected and will never be shared with others.",
@@ -513,6 +519,7 @@
             const authLanguage = document.getElementById('authLanguage');
             if (authLanguage) authLanguage.value = lang;
 
+            const subHeaderTag = document.getElementById('subHeaderTag');
             const heroTitle = document.getElementById('heroTitle');
             const heroDesc = document.getElementById('heroDesc');
             const rulesTitle = document.getElementById('rulesTitle');
@@ -536,6 +543,7 @@
             const roomTitleDisplay = document.getElementById('roomTitleDisplay');
             const labelLangJoin = document.getElementById('labelLangJoin');
 
+            if (subHeaderTag && data.tagline) subHeaderTag.innerText = data.tagline;
             if (heroTitle) heroTitle.innerText = data.heroTitle;
             if (heroDesc) heroDesc.innerText = data.heroDesc;
             if (rulesTitle) rulesTitle.innerText = data.rulesTitle;
