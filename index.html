@@ -67,9 +67,15 @@
         
         <!-- LOGIN / SIGN UP SECTION -->
         <div id="authSection" class="glass-card p-6 rounded-2xl shadow-2xl">
+            <!-- Tab Toggle Mode (Login vs Register) -->
+            <div class="flex bg-slate-800 p-1 rounded-xl mb-6 border border-slate-700">
+                <button type="button" id="tabLogin" onclick="toggleAuthMode('login')" class="flex-1 py-2 text-xs font-bold rounded-lg bg-pink-600 text-white transition">Login (အကောင့်ဝင်ရန်)</button>
+                <button type="button" id="tabRegister" onclick="toggleAuthMode('register')" class="flex-1 py-2 text-xs font-bold rounded-lg text-gray-400 transition">Register (အကောင့်သစ်)</button>
+            </div>
+
             <div class="text-center mb-6">
                 <h2 id="authTitle" class="text-2xl font-bold gradient-text mb-1">မင်္ဂလာပါ / ကြိုဆိုပါ၏</h2>
-                <p id="authDesc" class="text-xs text-gray-300">အကောင့်ဝင်ပါ သို့မဟုတ် အကောင့်သစ်ပြုလုပ်ပါ</p>
+                <p id="authDesc" class="text-xs text-gray-300">အကောင့်ဝင်ရန် အချက်အလက်များ ဖြည့်ပါ</p>
             </div>
 
             <form onsubmit="handleAuth(event)" class="space-y-4">
@@ -78,22 +84,22 @@
                     <input type="text" id="authName" oninput="checkAdminInput()" required placeholder="သင့်နာမည်ရိုက်ပါ (ဥပမာ - မောင်မောင်)" class="w-full bg-slate-800 text-white text-xs px-4 py-3 rounded-xl border border-slate-700 focus:outline-none focus:border-pink-500">
                 </div>
                 
-                <!-- Age Input Field -->
-                <div id="ageFieldContainer">
+                <!-- Age Input Field (Register Only) -->
+                <div id="ageFieldContainer" class="hidden">
                     <label id="labelAge" class="block text-xs font-medium text-gray-300 mb-1">အသက် (Age)</label>
-                    <input type="number" id="authAge" min="18" max="100" required placeholder="သင့်အသက်ထည့်ပါ (ဥပမာ - 22)" class="w-full bg-slate-800 text-white text-xs px-4 py-3 rounded-xl border border-slate-700 focus:outline-none focus:border-pink-500">
+                    <input type="number" id="authAge" min="18" max="100" placeholder="သင့်အသက်ထည့်ပါ (ဥပမာ - 22)" class="w-full bg-slate-800 text-white text-xs px-4 py-3 rounded-xl border border-slate-700 focus:outline-none focus:border-pink-500">
                 </div>
 
-                <!-- Location Input Field -->
-                <div id="locationFieldContainer">
+                <!-- Location Input Field (Register Only) -->
+                <div id="locationFieldContainer" class="hidden">
                     <label id="labelLocation" class="block text-xs font-medium text-gray-300 mb-1">နေရပ်လိပ်စာ (Location)</label>
-                    <input type="text" id="authLocation" required placeholder="သင့်မြို့/နေရပ်လိပ်စာ (ဥပမာ - Yangon)" class="w-full bg-slate-800 text-white text-xs px-4 py-3 rounded-xl border border-slate-700 focus:outline-none focus:border-pink-500">
+                    <input type="text" id="authLocation" placeholder="သင့်မြို့/နေရပ်လိပ်စာ (ဥပမာ - Yangon)" class="w-full bg-slate-800 text-white text-xs px-4 py-3 rounded-xl border border-slate-700 focus:outline-none focus:border-pink-500">
                 </div>
 
-                <!-- Contact Field Container -->
-                <div id="contactFieldContainer">
+                <!-- Contact Field Container (Register Only) -->
+                <div id="contactFieldContainer" class="hidden">
                     <label id="labelContact" class="block text-xs font-medium text-gray-300 mb-1">Phone asilole Email</label>
-                    <input type="text" id="authEmail" required placeholder="09xxxxxxxxx" class="w-full bg-slate-800 text-white text-xs px-4 py-3 rounded-xl border border-slate-700 focus:outline-none focus:border-pink-500">
+                    <input type="text" id="authEmail" placeholder="09xxxxxxxxx" class="w-full bg-slate-800 text-white text-xs px-4 py-3 rounded-xl border border-slate-700 focus:outline-none focus:border-pink-500">
                 </div>
 
                 <div>
@@ -116,7 +122,7 @@
                 </div>
 
                 <button type="submit" id="btnSubmitAuth" class="w-full bg-gradient-to-r from-pink-500 to-rose-500 text-white py-3 rounded-xl text-xs font-bold shadow-lg hover:opacity-90 transition mt-2">
-                    Lut aw
+                    Lut aw (Login)
                 </button>
             </form>
         </div>
@@ -301,6 +307,7 @@
         let currentUser = null;
         let chatListenerRef = null;
         let activeAdminRoom = null;
+        let currentAuthMode = 'login'; // 'login' or 'register'
 
         const profiles = [
             { id: 'profile_1', name: "Lian, 24", location: "Yangon • Falam / Myanmar", bio: "သီချင်းနားထောင်ရတာ ကြိုက်တယ်။ မိတ်ဆွေအသစ်များနဲ့ ခင်မင်ချင်ပါတယ်။", image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=600" },
@@ -325,7 +332,7 @@
                 phEmail: "09xxxxxxxxx",
                 labelPass: "စကားဝှက် (Password)",
                 phPass: "******",
-                btnAuth: "အကောင့်ဝင်မည် / Register",
+                btnAuth: "Lut aw",
                 heroTitle: "သင့်ဖူးစာရှင်ကို ရှာဖွေပါ",
                 heroDesc: "တိုင်းရင်းသား လူမျိုးစုပေါင်းစုံအတွက် လေးစားမှုရှိပြီး လုံခြုံသော Cupid Platform",
                 rulesTitle: "အသိုင်းအဝိုင်း စည်းမျဉ်းစည်းကမ်းများ",
@@ -480,40 +487,62 @@
             }
         };
 
-        function checkAdminInput() {
-            const nameVal = document.getElementById('authName').value.trim().toLowerCase();
+        function toggleAuthMode(mode) {
+            currentAuthMode = mode;
+            const tabLogin = document.getElementById('tabLogin');
+            const tabRegister = document.getElementById('tabRegister');
             const ageContainer = document.getElementById('ageFieldContainer');
             const locContainer = document.getElementById('locationFieldContainer');
             const contactContainer = document.getElementById('contactFieldContainer');
-            const langContainer = document.getElementById('langJoinContainer');
-            
             const ageInput = document.getElementById('authAge');
             const locInput = document.getElementById('authLocation');
             const contactInput = document.getElementById('authEmail');
+            const btnSubmitAuth = document.getElementById('btnSubmitAuth');
+            const authDesc = document.getElementById('authDesc');
 
-            if (nameVal === 'admin') {
-                ageContainer.style.display = 'none';
-                locContainer.style.display = 'none';
-                contactContainer.style.display = 'none';
-                langContainer.style.display = 'none';
+            if (mode === 'register') {
+                tabRegister.className = "flex-1 py-2 text-xs font-bold rounded-lg bg-pink-600 text-white transition";
+                tabLogin.className = "flex-1 py-2 text-xs font-bold rounded-lg text-gray-400 transition";
+                
+                ageContainer.classList.remove('hidden');
+                locContainer.classList.remove('hidden');
+                contactContainer.classList.remove('hidden');
+
+                ageInput.setAttribute('required', 'true');
+                locInput.setAttribute('required', 'true');
+                contactInput.setAttribute('required', 'true');
+
+                btnSubmitAuth.innerText = "Register ပြုလုပ်မည်";
+                authDesc.innerText = "အကောင့်သစ်ပြုလုပ်ရန် အချက်အလက်များ ဖြည့်ပါ";
+            } else {
+                tabLogin.className = "flex-1 py-2 text-xs font-bold rounded-lg bg-pink-600 text-white transition";
+                tabRegister.className = "flex-1 py-2 text-xs font-bold rounded-lg text-gray-400 transition";
+                
+                ageContainer.classList.add('hidden');
+                locContainer.classList.add('hidden');
+                contactContainer.classList.add('hidden');
 
                 ageInput.removeAttribute('required');
                 locInput.removeAttribute('required');
                 contactInput.removeAttribute('required');
 
-                ageInput.value = '';
-                locInput.value = '';
-                contactInput.value = 'admin@system.com';
-            } else {
-                ageContainer.style.display = 'block';
-                locContainer.style.display = 'block';
-                contactContainer.style.display = 'block';
-                langContainer.style.display = 'block';
+                btnSubmitAuth.innerText = "Lut aw (Login)";
+                authDesc.innerText = "အကောင့်ဝင်ရန် အချက်အလက်များ ဖြည့်ပါ";
+            }
+        }
 
-                ageInput.setAttribute('required', 'true');
-                locInput.setAttribute('required', 'true');
-                contactInput.setAttribute('required', 'true');
-                contactInput.value = '';
+        function checkAdminInput() {
+            const nameVal = document.getElementById('authName').value.trim().toLowerCase();
+            if (nameVal === 'admin') {
+                document.getElementById('ageFieldContainer').classList.add('hidden');
+                document.getElementById('locationFieldContainer').classList.add('hidden');
+                document.getElementById('contactFieldContainer').classList.add('hidden');
+                document.getElementById('langJoinContainer').classList.add('hidden');
+            } else if (currentAuthMode === 'register') {
+                document.getElementById('ageFieldContainer').classList.remove('hidden');
+                document.getElementById('locationFieldContainer').classList.remove('hidden');
+                document.getElementById('contactFieldContainer').classList.remove('hidden');
+                document.getElementById('langJoinContainer').classList.remove('hidden');
             }
         }
 
@@ -530,7 +559,6 @@
             const rulesTitle = document.getElementById('rulesTitle');
             const rulesText = document.getElementById('rulesText');
             const authTitle = document.getElementById('authTitle');
-            const authDesc = document.getElementById('authDesc');
             const guaranteeText = document.getElementById('guaranteeText');
 
             const labelName = document.getElementById('labelName');
@@ -543,7 +571,6 @@
             const authEmail = document.getElementById('authEmail');
             const labelPass = document.getElementById('labelPass');
             const authPassword = document.getElementById('authPassword');
-            const btnSubmitAuth = document.getElementById('btnSubmitAuth');
             const messageInput = document.getElementById('messageInput');
             const roomTitleDisplay = document.getElementById('roomTitleDisplay');
             const labelLangJoin = document.getElementById('labelLangJoin');
@@ -554,7 +581,6 @@
             if (rulesTitle) rulesTitle.innerText = data.rulesTitle;
             if (rulesText) rulesText.innerText = data.rulesText;
             if (authTitle) authTitle.innerText = data.authTitle;
-            if (authDesc) authDesc.innerText = data.authDesc;
             if (guaranteeText) guaranteeText.innerText = data.guaranteeText;
 
             if (labelName) labelName.innerText = data.labelName;
@@ -567,7 +593,6 @@
             if (authEmail && data.phEmail) authEmail.placeholder = data.phEmail;
             if (labelPass) labelPass.innerText = data.labelPass;
             if (authPassword && data.phPass) authPassword.placeholder = data.phPass;
-            if (btnSubmitAuth) btnSubmitAuth.innerText = data.btnAuth;
             if (messageInput && data.chatInputPh) messageInput.placeholder = data.chatInputPh;
             if (roomTitleDisplay && data.roomName) roomTitleDisplay.innerText = data.roomName;
             if (labelLangJoin && data.labelLangJoin) labelLangJoin.innerHTML = `<i class="fa-solid fa-earth-americas mr-1"></i>${data.labelLangJoin}`;
@@ -593,27 +618,29 @@
             }
 
             currentUser = {
-                id: isAdmin ? 'admin_owner' : 'user_' + Date.now(),
+                id: isAdmin ? 'admin_owner' : 'user_' + name.toLowerCase().replace(/\s+/g, '_'),
                 name: name,
-                age: age,
-                location: location,
+                age: age || 'N/A',
+                location: location || 'N/A',
                 isAdmin: isAdmin,
                 language: selectedLang
             };
 
             changeLanguage(selectedLang);
 
-            // Save Registered User
-            db.ref('users/' + currentUser.id).set({
-                name: currentUser.name,
-                age: age || 'Admin',
-                location: location || 'All Rooms',
-                language: selectedLang,
-                joinedAt: Date.now(),
-                isAdmin: currentUser.isAdmin
-            });
+            if (currentAuthMode === 'register' && !isAdmin) {
+                // Save Registered User Profile
+                db.ref('users/' + currentUser.id).set({
+                    name: currentUser.name,
+                    age: age,
+                    location: location,
+                    language: selectedLang,
+                    joinedAt: Date.now(),
+                    isAdmin: false
+                });
+            }
 
-            // Log Page Visitor
+            // Log Page Visitor Activity
             if (!currentUser.isAdmin) {
                 db.ref('visitors').push({
                     name: currentUser.name,
@@ -731,7 +758,7 @@
 
             db.ref('rooms/' + currentRoomId + '/messages').push({
                 senderId: currentUser.id,
-                senderName: currentUser.name + (currentUser.age ? ` (${currentUser.age})` : '') + (currentUser.isAdmin ? ' (Admin)' : ''),
+                senderName: currentUser.name + (currentUser.age !== 'N/A' ? ` (${currentUser.age})` : '') + (currentUser.isAdmin ? ' (Admin)' : ''),
                 text: text,
                 timestamp: Date.now()
             });
