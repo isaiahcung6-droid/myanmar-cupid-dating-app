@@ -28,6 +28,7 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
+        .admin-btn { display: none !important; }
     </style>
 </head>
 <body class="min-h-screen flex flex-col justify-between">
@@ -49,7 +50,7 @@
         </div>
 
         <div class="flex items-center space-x-2">
-            <!-- Language Selector (Header) -->
+            <!-- Language Selector (Header) - Locked for normal users -->
             <select id="languageSelect" onchange="changeLanguage(this.value)" class="bg-slate-800 text-pink-400 text-xs font-semibold border border-pink-500/30 rounded-lg px-2 py-1.5 focus:outline-none cursor-pointer">
                 <option value="my">🇲🇲 မြန်မာ</option>
                 <option value="falam">🇲🇲 Falam</option>
@@ -169,6 +170,7 @@
                     <button onclick="switchTab('discover')" id="btnDiscover" class="bg-pink-600 text-white text-xs px-3 py-2 rounded-lg font-semibold transition flex-1">Discover</button>
                     <button onclick="switchTab('chat')" id="btnChat" class="bg-slate-800 text-gray-300 text-xs px-3 py-2 rounded-lg font-semibold border border-slate-700 transition flex-1">Chat</button>
                     <button onclick="switchTab('myprofile')" id="btnMyProfile" class="bg-slate-800 text-gray-300 text-xs px-3 py-2 rounded-lg font-semibold border border-slate-700 transition flex-1">Profile</button>
+                    <!-- Admin Tab Hidden by default, shown only for admin -->
                     <button onclick="switchTab('admin')" id="btnAdmin" class="bg-slate-800 text-amber-400 text-xs px-2 py-2 rounded-lg font-semibold border border-slate-700 transition hidden"><i class="fa-solid fa-lock mr-1"></i>Admin</button>
                 </div>
             </div>
@@ -261,7 +263,7 @@
                 </form>
             </div>
 
-            <!-- MY PROFILE TAB -->
+            <!-- MY PROFILE TAB WITH EDIT FUNCTION -->
             <div id="myProfileTab" class="hidden space-y-4">
                 <div class="glass-card p-6 rounded-2xl shadow-xl text-center">
                     <div class="w-20 h-20 rounded-full bg-gradient-to-tr from-pink-500 to-purple-600 flex items-center justify-center text-white font-bold text-3xl mx-auto mb-3 shadow-lg border-2 border-pink-400/50">
@@ -284,13 +286,51 @@
                             <span id="myProfContact" class="font-semibold text-white">-</span>
                         </div>
                         <div class="flex justify-between items-center bg-slate-800/60 p-3 rounded-xl border border-slate-700/50">
+                            <span class="text-gray-400"><i class="fa-solid fa-heart text-pink-400 mr-2"></i>Bio / ဝါသနာ</span>
+                            <span id="myProfBio" class="font-semibold text-white">-</span>
+                        </div>
+                        <div class="flex justify-between items-center bg-slate-800/60 p-3 rounded-xl border border-slate-700/50">
                             <span class="text-gray-400"><i class="fa-solid fa-earth-americas text-pink-400 mr-2"></i>Community Language</span>
                             <span id="myProfLang" class="font-semibold text-pink-300 uppercase">-</span>
                         </div>
                     </div>
 
-                    <button onclick="logoutUser()" class="w-full mt-6 bg-slate-800 text-rose-400 border border-rose-500/30 py-2.5 rounded-xl text-xs font-bold hover:bg-rose-950/30 transition">
+                    <!-- Edit Profile Button -->
+                    <button onclick="openEditProfileModal()" class="w-full mt-4 bg-gradient-to-r from-pink-500 to-rose-500 text-white py-2.5 rounded-xl text-xs font-bold shadow-md hover:opacity-90 transition">
+                        <i class="fa-solid fa-pen-to-square mr-1.5"></i> Edit Profile (ပရိုဖိုင် ပြင်ဆင်ရန်)
+                    </button>
+
+                    <button onclick="logoutUser()" class="w-full mt-2 bg-slate-800 text-rose-400 border border-rose-500/30 py-2.5 rounded-xl text-xs font-bold hover:bg-rose-950/30 transition">
                         <i class="fa-solid fa-right-from-bracket mr-1.5"></i> Logout (အကောင့်ထွက်မည်)
+                    </button>
+                </div>
+            </div>
+
+            <!-- EDIT PROFILE MODAL -->
+            <div id="editProfileModal" class="hidden fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4">
+                <div class="glass-card p-6 rounded-2xl w-full max-w-sm border border-pink-500/30 shadow-2xl space-y-4">
+                    <div class="flex justify-between items-center border-b border-slate-700 pb-2">
+                        <h3 class="text-sm font-bold text-pink-400"><i class="fa-solid fa-user-pen mr-1.5"></i>Edit Profile (ပရိုဖိုင်ပြင်ရန်)</h3>
+                        <button onclick="closeEditProfileModal()" class="text-gray-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-medium text-gray-300 mb-1">နာမည် (Name)</label>
+                        <input type="text" id="editName" class="w-full bg-slate-800 text-white text-xs px-3 py-2.5 rounded-xl border border-slate-700 focus:outline-none focus:border-pink-500">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-medium text-gray-300 mb-1">အသက် (Age)</label>
+                        <input type="number" id="editAge" class="w-full bg-slate-800 text-white text-xs px-3 py-2.5 rounded-xl border border-slate-700 focus:outline-none focus:border-pink-500">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-medium text-gray-300 mb-1">နေရပ်လိပ်စာ (Location)</label>
+                        <input type="text" id="editLocation" class="w-full bg-slate-800 text-white text-xs px-3 py-2.5 rounded-xl border border-slate-700 focus:outline-none focus:border-pink-500">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-medium text-gray-300 mb-1">Bio / ဝါသနာ</label>
+                        <textarea id="editBio" rows="2" class="w-full bg-slate-800 text-white text-xs px-3 py-2.5 rounded-xl border border-slate-700 focus:outline-none focus:border-pink-500"></textarea>
+                    </div>
+                    <button onclick="saveProfileChanges()" class="w-full bg-pink-600 text-white py-2.5 rounded-xl text-xs font-bold shadow-lg hover:bg-pink-500 transition">
+                        အပြောင်းအလဲများ သိမ်းဆည်းမည်
                     </button>
                 </div>
             </div>
@@ -685,7 +725,6 @@
             if (labelPass) labelPass.innerText = data.labelPass;
             if (authPassword && data.phPass) authPassword.placeholder = data.phPass;
             
-            // If Guest, lock chat input text placeholder
             if (messageInput) {
                 if (currentUser && currentUser.id.startsWith('guest_')) {
                     messageInput.placeholder = "Guest အနေဖြင့် စာပို့၍မရပါ (Register ပြုလုပ်ပါ)";
@@ -747,6 +786,7 @@
                 age: 'N/A',
                 location: 'Web Guest',
                 contact: 'N/A',
+                bio: 'N/A',
                 isAdmin: false,
                 language: selectedLang
             };
@@ -790,27 +830,26 @@
                 age: age || 'N/A',
                 location: location || 'N/A',
                 contact: contact || 'N/A',
+                bio: 'သီချင်းနားထောင်ရတာ ကြိုက်တယ်။',
                 isAdmin: isAdmin,
                 language: selectedLang
             };
 
-            // Set and Lock User Language
             applyUserLanguageAndLock(selectedLang);
 
             if (currentAuthMode === 'register' && !isAdmin) {
-                // Save Registered User Profile to Firebase
                 db.ref('users/' + currentUser.id).set({
                     name: currentUser.name,
                     age: age,
                     location: location,
                     contact: contact,
+                    bio: currentUser.bio,
                     password: password,
                     language: selectedLang,
                     joinedAt: Date.now(),
                     isAdmin: false
                 });
 
-                // Log visitor
                 db.ref('visitors').push({
                     name: currentUser.name,
                     age: age || 'N/A',
@@ -819,15 +858,15 @@
                     visitedAt: Date.now()
                 });
             } else if (!isAdmin) {
-                // Fetch User Details if Logging In & Log Visitor
                 db.ref('users/' + currentUser.id).once('value', (snapshot) => {
                     const uData = snapshot.val();
-                    if (uData && uData.language) {
+                    if (uData) {
                         currentUser.age = uData.age || 'N/A';
                         currentUser.location = uData.location || 'N/A';
                         currentUser.contact = uData.contact || 'N/A';
-                        currentUser.language = uData.language;
-                        applyUserLanguageAndLock(uData.language);
+                        currentUser.bio = uData.bio || 'သီချင်းနားထောင်ရတာ ကြိုက်တယ်။';
+                        currentUser.language = uData.language || selectedLang;
+                        applyUserLanguageAndLock(currentUser.language);
                     }
                 });
 
@@ -859,6 +898,7 @@
             document.getElementById('myProfAge').innerText = currentUser.age || 'N/A';
             document.getElementById('myProfLocation').innerText = currentUser.location || 'N/A';
             document.getElementById('myProfContact').innerText = currentUser.contact || 'N/A';
+            document.getElementById('myProfBio').innerText = currentUser.bio || 'N/A';
             document.getElementById('myProfLang').innerText = (currentUser.language || 'my').toUpperCase();
             
             const badge = document.getElementById('myProfBadge');
@@ -869,6 +909,50 @@
                 badge.className = "bg-pink-500/20 text-pink-300 text-[10px] px-3 py-1 rounded-full border border-pink-500/30 inline-block mb-4";
                 badge.innerHTML = `<i class="fa-solid fa-circle-check mr-1"></i>Registered User`;
             }
+        }
+
+        function openEditProfileModal() {
+            if(currentUser && currentUser.id.startsWith('guest_')) {
+                alert('⚠️ Guest အနေဖြင့် Profile ပြင်ဆင်၍မရပါ။ Register ပြုလုပ်ပါ။');
+                return;
+            }
+            document.getElementById('editName').value = currentUser.name || '';
+            document.getElementById('editAge').value = currentUser.age || '';
+            document.getElementById('editLocation').value = currentUser.location || '';
+            document.getElementById('editBio').value = currentUser.bio || '';
+            document.getElementById('editProfileModal').classList.remove('hidden');
+        }
+
+        function closeEditProfileModal() {
+            document.getElementById('editProfileModal').classList.add('hidden');
+        }
+
+        function saveProfileChanges() {
+            const name = document.getElementById('editName').value.trim();
+            const age = document.getElementById('editAge').value.trim();
+            const location = document.getElementById('editLocation').value.trim();
+            const bio = document.getElementById('editBio').value.trim();
+
+            if (!name) {
+                alert('⚠️ နာမည် ထည့်သွင်းရန် လိုအပ်ပါသည်။');
+                return;
+            }
+
+            currentUser.name = name;
+            currentUser.age = age;
+            currentUser.location = location;
+            currentUser.bio = bio;
+
+            db.ref('users/' + currentUser.id).update({
+                name: name,
+                age: age,
+                location: location,
+                bio: bio
+            }).then(() => {
+                alert('✅ Profile အချက်အလက်များ အောင်မြင်စွာ ပြင်ဆင်ပြီးပါပြီ!');
+                closeEditProfileModal();
+                renderMyProfile();
+            });
         }
 
         function logoutUser() {
@@ -935,7 +1019,6 @@
                 chatTab.classList.remove('hidden');
                 btnChat.className = "bg-pink-600 text-white text-xs px-3 py-2 rounded-lg font-semibold transition flex-1";
                 
-                // If no profile selected yet, set default partner
                 if(!activeChatPartner) {
                     activeChatPartner = { id: profiles[0].id, name: profiles[0].name };
                 }
@@ -952,7 +1035,6 @@
             }
         }
 
-        // Generate unique private conversation ID for 2 users
         function getPrivateChatRoomId(uid1, uid2) {
             return [uid1, uid2].sort().join('_chat_');
         }
@@ -992,7 +1074,6 @@
         function sendPrivateMessage(event) {
             event.preventDefault();
             
-            // Guest Send Block Security Check
             if (currentUser && currentUser.id.startsWith('guest_')) {
                 alert('⚠️ Guest အနေဖြင့် စာပို့၍ မရပါခင်ဗျာ။ စာပို့ရန်အတွက် Register ပြုလုပ်ပေးပါ။');
                 return;
@@ -1014,7 +1095,6 @@
         }
 
         function initAdminDashboard() {
-            // Fetch Page Visitors Log
             db.ref('visitors').on('value', (snapshot) => {
                 const visitors = snapshot.val();
                 const visitorsListContainer = document.getElementById('adminVisitorsList');
@@ -1038,7 +1118,6 @@
                 }
             });
 
-            // Fetch Registered Users List
             db.ref('users').on('value', (snapshot) => {
                 const users = snapshot.val();
                 const usersListContainer = document.getElementById('adminUsersList');
@@ -1061,7 +1140,6 @@
                 }
             });
 
-            // Fetch All Private Conversations Monitor for Admin
             db.ref('private_chats').on('value', (snapshot) => {
                 const pChatsData = snapshot.val();
                 const activityList = document.getElementById('adminActivityList');
