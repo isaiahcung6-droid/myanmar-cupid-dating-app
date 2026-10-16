@@ -76,7 +76,7 @@
             <form onsubmit="handleAuth(event)" class="space-y-4">
                 <div>
                     <label id="labelName" class="block text-xs font-medium text-gray-300 mb-1">နာမည် (Name)</label>
-                    <input type="text" id="authName" required placeholder="သင့်နာမည်ရိုက်ပါ" class="w-full bg-slate-800 text-white text-xs px-4 py-3 rounded-xl border border-slate-700 focus:outline-none focus:border-pink-500">
+                    <input type="text" id="authName" oninput="checkAdminInput()" required placeholder="သင့်နာမည်ရိုက်ပါ" class="w-full bg-slate-800 text-white text-xs px-4 py-3 rounded-xl border border-slate-700 focus:outline-none focus:border-pink-500">
                 </div>
                 
                 <div id="ageFieldContainer" class="hidden">
@@ -89,8 +89,16 @@
                     <input type="text" id="authLocation" placeholder="သင့်မြို့/နေရပ်လိပ်စာ" class="w-full bg-slate-800 text-white text-xs px-4 py-3 rounded-xl border border-slate-700 focus:outline-none focus:border-pink-500">
                 </div>
 
+                <div id="contactFieldContainer" class="hidden">
+                    <label id="labelContact" class="block text-xs font-medium text-gray-300 mb-1">Phone / Email</label>
+                    <input type="text" id="authEmail" placeholder="09xxxxxxxxx" class="w-full bg-slate-800 text-white text-xs px-4 py-3 rounded-xl border border-slate-700 focus:outline-none focus:border-pink-500">
+                </div>
+
                 <div id="passwordFieldContainer">
-                    <label id="labelPass" class="block text-xs font-medium text-gray-300 mb-1">စကားဝှက် (Password)</label>
+                    <div class="flex justify-between items-center mb-1">
+                        <label id="labelPass" class="block text-xs font-medium text-gray-300">စကားဝှက် (Password)</label>
+                        <button type="button" onclick="showForgotPasswordModal()" id="btnForgot" class="text-[10px] text-pink-400 hover:underline">Forgot Password?</button>
+                    </div>
                     <input type="password" id="authPassword" required placeholder="******" class="w-full bg-slate-800 text-white text-xs px-4 py-3 rounded-xl border border-slate-700 focus:outline-none focus:border-pink-500">
                 </div>
 
@@ -110,7 +118,37 @@
                 <button type="submit" id="btnSubmitAuth" class="w-full bg-gradient-to-r from-pink-500 to-rose-500 text-white py-3 rounded-xl text-xs font-bold shadow-lg hover:opacity-90 transition mt-2">
                     အကောင့်ဝင်ရန် (Login)
                 </button>
+
+                <button type="button" onclick="continueAsGuest()" class="w-full bg-slate-800 text-cyan-400 border border-cyan-500/40 py-2.5 rounded-xl text-xs font-bold hover:bg-cyan-950/30 transition mt-2">
+                    <i class="fa-solid fa-eye mr-1"></i> Guest အနေဖြင့် ဝင်ရောက်ကြည့်ရှုရန် (Browse as Guest)
+                </button>
             </form>
+        </div>
+
+        <!-- FORGOT PASSWORD MODAL -->
+        <div id="forgotModal" class="hidden fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4">
+            <div class="glass-card p-6 rounded-2xl w-full max-w-sm border border-pink-500/30 shadow-2xl space-y-4">
+                <div class="flex justify-between items-center border-b border-slate-700 pb-2">
+                    <h3 class="text-sm font-bold text-pink-400"><i class="fa-solid fa-key mr-1.5"></i>Reset Password</h3>
+                    <button onclick="closeForgotModal()" class="text-gray-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+                <p class="text-[11px] text-gray-300">အကောင့်ဖွင့်စဉ်က ဖြည့်သွင်းခဲ့သော နာမည်နှင့် ဖုန်း/အီးမေးလ် ရိုက်ထည့်ပါ -</p>
+                <div>
+                    <label class="block text-[11px] font-medium text-gray-300 mb-1">နာမည် (Name)</label>
+                    <input type="text" id="resetName" placeholder="အကောင့်ဖွင့်ထားသော နာမည်" class="w-full bg-slate-800 text-white text-xs px-3 py-2.5 rounded-xl border border-slate-700 focus:outline-none focus:border-pink-500">
+                </div>
+                <div>
+                    <label class="block text-[11px] font-medium text-gray-300 mb-1">Phone / Email</label>
+                    <input type="text" id="resetContact" placeholder="09xxxxxxxxx" class="w-full bg-slate-800 text-white text-xs px-3 py-2.5 rounded-xl border border-slate-700 focus:outline-none focus:border-pink-500">
+                </div>
+                <div>
+                    <label class="block text-[11px] font-medium text-pink-400 mb-1">စကားဝှက် အသစ် (New Password)</label>
+                    <input type="password" id="resetNewPass" placeholder="******" class="w-full bg-slate-800 text-white text-xs px-3 py-2.5 rounded-xl border border-slate-700 focus:outline-none focus:border-pink-500">
+                </div>
+                <button onclick="handleResetPassword()" class="w-full bg-pink-600 text-white py-2.5 rounded-xl text-xs font-bold shadow-lg hover:bg-pink-500 transition">
+                    Password အသစ် ပြင်ဆင်မည်
+                </button>
+            </div>
         </div>
 
         <!-- APP CONTENT SECTION -->
@@ -130,7 +168,6 @@
                     <h2 id="heroTitle" class="text-2xl font-bold mb-2">သင့်ဖူးစာရှင်ကို ရှာဖွေပါ</h2>
                     <p id="heroDesc" class="text-xs text-gray-200 font-medium px-2">တိုင်းရင်းသား လူမျိုးစုပေါင်းစုံအတွက် လေးစားမှုရှိပြီး လုံခြုံသော Cupid Platform</p>
                 </div>
-                <!-- Profile Card -->
                 <div class="glass-card rounded-2xl overflow-hidden shadow-2xl relative mb-6">
                     <div class="relative h-80 bg-slate-700">
                         <img id="profileImg" src="" alt="Profile" class="w-full h-full object-cover">
@@ -168,22 +205,61 @@
             
             <!-- MY PROFILE TAB -->
             <div id="myProfileTab" class="hidden space-y-4">
-                <div class="glass-card p-6 rounded-2xl text-center">
+                <div class="glass-card p-6 rounded-2xl text-center shadow-xl">
                     <h3 id="myProfName" class="text-xl font-bold text-white mb-1">-</h3>
                     <p id="myProfLocation" class="text-xs text-pink-400 mb-4">-</p>
+                    <div class="space-y-2 text-left text-xs mb-4">
+                        <div class="flex justify-between bg-slate-800 p-2.5 rounded-xl"><span>Age:</span> <span id="myProfAge">-</span></div>
+                        <div class="flex justify-between bg-slate-800 p-2.5 rounded-xl"><span>Contact:</span> <span id="myProfContact">-</span></div>
+                        <div class="flex justify-between bg-slate-800 p-2.5 rounded-xl"><span>Language:</span> <span id="myProfLang" class="uppercase text-pink-300">-</span></div>
+                    </div>
+                    <button onclick="openEditProfileModal()" class="w-full bg-pink-600 text-white py-2.5 rounded-xl text-xs font-bold mb-2">Edit Profile</button>
                     <button onclick="logoutUser()" class="w-full bg-slate-800 text-rose-400 border border-rose-500/30 py-2.5 rounded-xl text-xs font-bold">Logout</button>
+                </div>
+            </div>
+
+            <!-- EDIT PROFILE MODAL -->
+            <div id="editProfileModal" class="hidden fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4">
+                <div class="glass-card p-6 rounded-2xl w-full max-w-sm border border-pink-500/30 shadow-2xl space-y-4">
+                    <div class="flex justify-between items-center border-b border-slate-700 pb-2">
+                        <h3 class="text-sm font-bold text-pink-400">Edit Profile</h3>
+                        <button onclick="closeEditProfileModal()" class="text-gray-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+                    </div>
+                    <div><label class="block text-[11px] text-gray-300 mb-1">Name</label><input type="text" id="editName" class="w-full bg-slate-800 text-white text-xs px-3 py-2.5 rounded-xl border border-slate-700"></div>
+                    <div><label class="block text-[11px] text-gray-300 mb-1">Age</label><input type="number" id="editAge" class="w-full bg-slate-800 text-white text-xs px-3 py-2.5 rounded-xl border border-slate-700"></div>
+                    <div><label class="block text-[11px] text-gray-300 mb-1">Location</label><input type="text" id="editLocation" class="w-full bg-slate-800 text-white text-xs px-3 py-2.5 rounded-xl border border-slate-700"></div>
+                    <button onclick="saveProfileChanges()" class="w-full bg-pink-600 text-white py-2.5 rounded-xl text-xs font-bold">Save Changes</button>
                 </div>
             </div>
 
             <!-- ADMIN TAB -->
             <div id="adminTab" class="hidden space-y-4">
-                <div class="glass-card p-5 rounded-2xl">
-                    <h3 class="font-bold text-base text-amber-400 mb-4">Admin Safety Dashboard</h3>
-                    <div id="adminActivityList" class="bg-slate-900/60 p-3 rounded-xl text-xs space-y-2 border border-slate-800 max-h-48 overflow-y-auto"></div>
+                <div class="glass-card p-5 rounded-2xl shadow-xl">
+                    <h3 class="font-bold text-base text-amber-400 mb-4"><i class="fa-solid fa-gauge mr-2"></i>Admin Safety Dashboard</h3>
+                    <div class="grid grid-cols-3 gap-2 mb-4 text-center">
+                        <div class="bg-slate-800 p-2 rounded-xl"><p class="text-[10px] text-gray-400">Users</p><h4 id="statUsers" class="text-lg font-bold text-white">0</h4></div>
+                        <div class="bg-slate-800 p-2 rounded-xl"><p class="text-[10px] text-gray-400">Visitors</p><h4 id="statVisitors" class="text-lg font-bold text-cyan-400">0</h4></div>
+                        <div class="bg-slate-800 p-2 rounded-xl"><p class="text-[10px] text-gray-400">Messages</p><h4 id="statMessages" class="text-lg font-bold text-pink-400">0</h4></div>
+                    </div>
+                    <div class="space-y-3">
+                        <h4 class="text-xs font-semibold text-cyan-400 uppercase">Page Visitors</h4>
+                        <div id="adminVisitorsList" class="bg-slate-900 p-3 rounded-xl text-xs space-y-2 max-h-32 overflow-y-auto"><p class="text-gray-500 text-center italic">မရှိသေးပါ</p></div>
+                        <h4 class="text-xs font-semibold text-gray-400 uppercase">Registered Users</h4>
+                        <div id="adminUsersList" class="bg-slate-900 p-3 rounded-xl text-xs space-y-2 max-h-32 overflow-y-auto"><p class="text-gray-500 text-center italic">မရှိသေးပါ</p></div>
+                        <h4 class="text-xs font-semibold text-gray-400 uppercase">Chat Monitor (All Conversations)</h4>
+                        <div id="adminActivityList" class="bg-slate-900 p-3 rounded-xl text-xs space-y-2 max-h-40 overflow-y-auto"><p class="text-gray-500 text-center italic">စာတိုများ မရှိသေးပါ</p></div>
+                    </div>
                 </div>
             </div>
         </div>
     </main>
+
+    <!-- Footer -->
+    <footer class="text-center py-4 border-t border-slate-800 text-xs text-gray-500">
+        <p>© 2026 <strong>Myanmar Cupid Dating App</strong>. All rights reserved.</p>
+        <p class="mt-1 text-gray-400">Created with ❤️ by <span class="text-pink-400 font-medium">Isaiah Cung</span></p>
+        <p class="mt-0.5 text-[11px] text-purple-400 font-semibold tracking-wide">@Rising Star Music Studio</p>
+    </footer>
 
     <!-- JavaScript & Firebase Logic -->
     <script>
@@ -215,7 +291,7 @@
         let currentIndex = 0;
 
         function userSelectLanguage(lang) {
-            applyLanguage(lang);
+            if (currentUser && currentUser.isAdmin) applyLanguage(lang);
         }
 
         function applyLanguage(lang) {
@@ -240,64 +316,141 @@
             const tabRegister = document.getElementById('tabRegister');
             const ageContainer = document.getElementById('ageFieldContainer');
             const locContainer = document.getElementById('locationFieldContainer');
+            const contactContainer = document.getElementById('contactFieldContainer');
+            const btnForgot = document.getElementById('btnForgot');
 
             if (mode === 'register') {
                 tabRegister.className = "flex-1 py-2 text-xs font-bold rounded-lg bg-pink-600 text-white transition";
                 tabLogin.className = "flex-1 py-2 text-xs font-bold rounded-lg text-gray-400 transition";
                 ageContainer.classList.remove('hidden');
                 locContainer.classList.remove('hidden');
+                contactContainer.classList.remove('hidden');
+                btnForgot.classList.add('hidden');
             } else {
                 tabLogin.className = "flex-1 py-2 text-xs font-bold rounded-lg bg-pink-600 text-white transition";
                 tabRegister.className = "flex-1 py-2 text-xs font-bold rounded-lg text-gray-400 transition";
                 ageContainer.classList.add('hidden');
                 locContainer.classList.add('hidden');
+                contactContainer.classList.add('hidden');
+                btnForgot.classList.remove('hidden');
             }
+        }
+
+        function checkAdminInput() {
+            const nameVal = document.getElementById('authName').value.trim().toLowerCase();
+            const ageC = document.getElementById('ageFieldContainer');
+            const locC = document.getElementById('locationFieldContainer');
+            const conC = document.getElementById('contactFieldContainer');
+            const langC = document.getElementById('langJoinContainer');
+            if (nameVal === 'admin') {
+                ageC.classList.add('hidden'); locC.classList.add('hidden'); conC.classList.add('hidden'); langC.classList.add('hidden');
+            } else if (currentAuthMode === 'register') {
+                ageC.classList.remove('hidden'); locC.classList.remove('hidden'); conC.classList.remove('hidden'); langC.classList.remove('hidden');
+            }
+        }
+
+        function showForgotPasswordModal() { document.getElementById('forgotModal').classList.remove('hidden'); }
+        function closeForgotModal() { document.getElementById('forgotModal').classList.add('hidden'); }
+
+        function handleResetPassword() {
+            const name = document.getElementById('resetName').value.trim();
+            const contact = document.getElementById('resetContact').value.trim();
+            const newPass = document.getElementById('resetNewPass').value.trim();
+            if (!name || !contact || !newPass) { alert('⚠️ အချက်အလက်အပြည့်အစုံ ဖြည့်ပါ'); return; }
+            const userId = 'user_' + name.toLowerCase().replace(/\s+/g, '_');
+            db.ref('users/' + userId).once('value', (snap) => {
+                if (snap.val()) {
+                    db.ref('users/' + userId).update({ password: newPass }).then(() => {
+                        alert('✅ Password အသစ်ပြင်ပြီးပါပြီ'); closeForgotModal();
+                    });
+                } else { alert('⚠️ အကောင့်ရှာမတွေ့ပါ'); }
+            });
         }
 
         function handleAuth(event) {
             event.preventDefault();
             const name = document.getElementById('authName').value.trim();
+            const age = document.getElementById('authAge').value.trim();
+            const location = document.getElementById('authLocation').value.trim();
+            const contact = document.getElementById('authEmail').value.trim();
             const password = document.getElementById('authPassword').value.trim();
             const selectedLang = document.getElementById('authLanguage').value || 'my';
 
-            const isAdmin = (name.toLowerCase() === 'admin' && (password.toLowerCase() === 'sawhai11'));
-
-            if (name.toLowerCase() === 'admin' && !isAdmin) {
-                alert('⚠️ Admin Password မှားယွင်းနေပါသည်။');
-                return;
-            }
+            const isAdmin = (name.toLowerCase() === 'admin' && password.toLowerCase() === 'sawhai11');
+            if (name.toLowerCase() === 'admin' && !isAdmin) { alert('⚠️ Admin Password မှားနေပါသည်'); return; }
 
             const userId = isAdmin ? 'admin_owner' : 'user_' + name.toLowerCase().replace(/\s+/g, '_');
 
-            currentUser = {
-                id: userId,
-                name: name,
-                isAdmin: isAdmin,
-                language: selectedLang
-            };
-
-            completeLoginProcess(selectedLang);
+            if (currentAuthMode === 'register' && !isAdmin) {
+                currentUser = { id: userId, name, age: age || 'N/A', location: location || 'N/A', contact: contact || 'N/A', bio: 'သီချင်းကြိုက်သူ', isAdmin: false, language: selectedLang };
+                db.ref('users/' + userId).set({ name, age, location, contact, bio: currentUser.bio, password, language: selectedLang, isAdmin: false }).then(() => completeLogin(selectedLang));
+            } else {
+                if (isAdmin) {
+                    currentUser = { id: 'admin_owner', name: 'Admin', age: 'N/A', location: 'System', contact: 'N/A', bio: 'Owner', isAdmin: true, language: selectedLang };
+                    completeLogin(selectedLang);
+                } else {
+                    db.ref('users/' + userId).once('value', (snap) => {
+                        const u = snap.val();
+                        const finalLang = u ? (u.language || 'my') : selectedLang;
+                        currentUser = { id: userId, name: u ? u.name : name, age: u ? u.age : 'N/A', location: u ? u.location : 'N/A', contact: u ? u.contact : 'N/A', bio: u ? u.bio : 'သီချင်းကြိုက်သူ', isAdmin: false, language: finalLang };
+                        completeLogin(finalLang);
+                    }, () => {
+                        currentUser = { id: userId, name, age: 'N/A', location: 'N/A', contact: 'N/A', bio: 'သီချင်းကြိုက်သူ', isAdmin: false, language: selectedLang };
+                        completeLogin(selectedLang);
+                    });
+                }
+            }
         }
 
-        function completeLoginProcess(lang) {
+        function completeLogin(lang) {
             document.getElementById('authSection').classList.add('hidden');
             document.getElementById('appSection').classList.remove('hidden');
-
             applyLanguage(lang);
 
             const langSelect = document.getElementById('languageSelect');
-            if (!currentUser.isAdmin && langSelect) {
+            if (!currentUser.isAdmin) {
                 langSelect.disabled = true;
                 langSelect.classList.add('opacity-60', 'cursor-not-allowed');
-            }
-
-            if (currentUser.isAdmin) {
-                document.getElementById('btnAdmin').classList.remove('hidden');
-                switchTab('admin');
+                db.ref('visitors').push({ name: currentUser.name, age: currentUser.age, location: currentUser.location, language: lang, visitedAt: Date.now() });
+                switchTab('discover'); loadProfile();
             } else {
-                switchTab('discover');
-                loadProfile();
+                document.getElementById('btnAdmin').classList.remove('hidden');
+                switchTab('admin'); initAdminDashboard();
             }
+        }
+
+        function continueAsGuest() {
+            const lang = document.getElementById('authLanguage').value || 'my';
+            currentUser = { id: 'guest_' + Date.now(), name: 'Visitor (ဧည့်သည်)', age: 'N/A', location: 'Web', contact: 'N/A', bio: 'N/A', isAdmin: false, language: lang };
+            document.getElementById('authSection').classList.add('hidden');
+            document.getElementById('appSection').classList.remove('hidden');
+            applyLanguage(lang);
+            const langSelect = document.getElementById('languageSelect');
+            langSelect.disabled = true; langSelect.classList.add('opacity-60', 'cursor-not-allowed');
+            db.ref('visitors').push({ name: 'Visitor', age: 'N/A', location: 'Web', language: lang, visitedAt: Date.now() });
+            switchTab('discover'); loadProfile();
+            const msgInput = document.getElementById('messageInput');
+            if(msgInput) { msgInput.disabled = true; msgInput.placeholder = "Guest အနေဖြင့် စာပို့၍မရပါ"; }
+        }
+
+        function renderMyProfile() {
+            if(!currentUser) return;
+            document.getElementById('myProfName').innerText = currentUser.name;
+            document.getElementById('myProfLocation').innerText = currentUser.location;
+            document.getElementById('myProfAge').innerText = currentUser.age;
+            document.getElementById('myProfContact').innerText = currentUser.contact;
+            document.getElementById('myProfLang').innerText = currentUser.language;
+        }
+
+        function openEditProfileModal() { document.getElementById('editProfileModal').classList.remove('hidden'); document.getElementById('editName').value = currentUser.name; document.getElementById('editAge').value = currentUser.age; document.getElementById('editLocation').value = currentUser.location; }
+        function closeEditProfileModal() { document.getElementById('editProfileModal').classList.add('hidden'); }
+        function saveProfileChanges() {
+            const name = document.getElementById('editName').value.trim();
+            const age = document.getElementById('editAge').value.trim();
+            const location = document.getElementById('editLocation').value.trim();
+            if(!name) return;
+            currentUser.name = name; currentUser.age = age; currentUser.location = location;
+            db.ref('users/' + currentUser.id).update({ name, age, location }).then(() => { alert('✅ ပြင်ဆင်ပြီးပါပြီ'); closeEditProfileModal(); renderMyProfile(); });
         }
 
         function loadProfile() {
@@ -327,39 +480,58 @@
             if(tab === 'discover') document.getElementById('discoverTab').classList.remove('hidden');
             if(tab === 'chat') {
                 document.getElementById('chatTab').classList.remove('hidden');
-                if(!activeChatPartner) activeChatPartner = profiles[0];
-                loadPrivateChatMessages();
+                if(currentUser && currentUser.isAdmin) loadAdminChatMonitor();
+                else { if(!activeChatPartner) activeChatPartner = profiles[0]; loadPrivateChatMessages(); }
             }
-            if(tab === 'myprofile') {
-                document.getElementById('myProfileTab').classList.remove('hidden');
-                document.getElementById('myProfName').innerText = currentUser.name;
-            }
-            if(tab === 'admin') document.getElementById('adminTab').classList.remove('hidden');
+            if(tab === 'myprofile') { document.getElementById('myProfileTab').classList.remove('hidden'); renderMyProfile(); }
+            if(tab === 'admin' && currentUser && currentUser.isAdmin) { document.getElementById('adminTab').classList.remove('hidden'); initAdminDashboard(); }
         }
 
-        function getPrivateChatRoomId(uid1, uid2) {
-            return [uid1, uid2].sort().join('_chat_');
+        function loadAdminChatMonitor() {
+            const chatMessages = document.getElementById('chatMessages');
+            const chatForm = document.getElementById('chatFormContainer');
+            if(chatForm) chatForm.classList.add('hidden');
+            document.getElementById('chatPartnerName').innerText = "Admin Chat Monitor (All Conversations)";
+            chatMessages.innerHTML = '';
+            if (chatListenerRef) chatListenerRef.off();
+            chatListenerRef = db.ref('private_chats');
+            chatListenerRef.on('value', (snap) => {
+                const data = snap.val(); chatMessages.innerHTML = ''; let count = 0;
+                if(data) {
+                    Object.keys(data).forEach(roomId => {
+                        if(data[roomId].messages) {
+                            Object.keys(data[roomId].messages).forEach(mKey => {
+                                count++; const msg = data[roomId].messages[mKey];
+                                const box = document.createElement('div');
+                                box.className = "bg-slate-800 border border-pink-500/30 p-3 rounded-xl mb-2 text-xs space-y-1";
+                                box.innerHTML = `<strong class="text-pink-400">${msg.senderName || 'User'}</strong> <span class="text-amber-300 text-[10px]">Room: ${roomId.substring(0,8)}</span><p class="text-white">${msg.text}</p>`;
+                                chatMessages.appendChild(box);
+                            });
+                        }
+                    });
+                }
+                if(count === 0) chatMessages.innerHTML = '<p class="text-gray-500 text-center italic">စာတိုများ မရှိသေးပါ</p>';
+            });
         }
+
+        function getPrivateChatRoomId(uid1, uid2) { return [uid1, uid2].sort().join('_chat_'); }
 
         function loadPrivateChatMessages() {
             const chatMessages = document.getElementById('chatMessages');
+            const chatForm = document.getElementById('chatFormContainer');
+            if(chatForm) chatForm.classList.remove('hidden');
             chatMessages.innerHTML = '';
             if (!currentUser || !activeChatPartner) return;
-
             document.getElementById('chatPartnerName').innerText = `${activeChatPartner.name} (Private)`;
             const roomId = getPrivateChatRoomId(currentUser.id, activeChatPartner.id);
-
             if (chatListenerRef) chatListenerRef.off();
-
             chatListenerRef = db.ref('private_chats/' + roomId + '/messages');
-            chatListenerRef.on('child_added', (snapshot) => {
-                const msg = snapshot.val();
-                const msgDiv = document.createElement('div');
-                msgDiv.className = (currentUser && msg.senderId === currentUser.id) 
-                    ? "self-end bg-pink-600 text-white text-xs px-3 py-2 rounded-2xl max-w-[75%]"
-                    : "self-start bg-slate-800 text-gray-200 text-xs px-3 py-2 rounded-2xl max-w-[75%] border border-slate-700";
-                msgDiv.innerText = msg.text;
-                chatMessages.appendChild(msgDiv);
+            chatListenerRef.on('child_added', (snap) => {
+                const msg = snap.val();
+                const div = document.createElement('div');
+                div.className = (currentUser && msg.senderId === currentUser.id) ? "self-end bg-pink-600 text-white text-xs px-3 py-2 rounded-2xl max-w-[75%]" : "self-start bg-slate-800 text-gray-200 text-xs px-3 py-2 rounded-2xl max-w-[75%] border border-slate-700";
+                div.innerText = msg.text;
+                chatMessages.appendChild(div);
                 chatMessages.scrollTop = chatMessages.scrollHeight;
             });
         }
@@ -369,21 +541,55 @@
             const input = document.getElementById('messageInput');
             const text = input.value.trim();
             if(!text || !currentUser || !activeChatPartner) return;
-
             const roomId = getPrivateChatRoomId(currentUser.id, activeChatPartner.id);
-
-            db.ref('private_chats/' + roomId + '/messages').push({
-                senderId: currentUser.id,
-                senderName: currentUser.name,
-                text: text,
-                timestamp: Date.now()
-            });
+            db.ref('private_chats/' + roomId + '/messages').push({ senderId: currentUser.id, senderName: currentUser.name, text, timestamp: Date.now() });
             input.value = '';
         }
 
-        function logoutUser() {
-            location.reload();
+        function initAdminDashboard() {
+            db.ref('visitors').on('value', (snap) => {
+                const visitors = snap.val(); const list = document.getElementById('adminVisitorsList'); list.innerHTML = '';
+                if(visitors) {
+                    const keys = Object.keys(visitors); document.getElementById('statVisitors').innerText = keys.length;
+                    keys.reverse().forEach(k => {
+                        const v = visitors[k]; const d = document.createElement('div');
+                        d.className = "flex justify-between border-b border-slate-800 pb-1";
+                        d.innerHTML = `<span class="text-cyan-400">${v.name} (${v.location})</span> <span class="text-pink-400">[${v.language.toUpperCase()}]</span>`;
+                        list.appendChild(d);
+                    });
+                }
+            });
+            db.ref('users').on('value', (snap) => {
+                const users = snap.val(); const list = document.getElementById('adminUsersList'); list.innerHTML = '';
+                if(users) {
+                    const keys = Object.keys(users); document.getElementById('statUsers').innerText = keys.length;
+                    keys.forEach(k => {
+                        const u = users[k]; const d = document.createElement('div');
+                        d.className = "flex justify-between border-b border-slate-800 pb-1";
+                        d.innerHTML = `<span class="text-white">${u.name}</span> <span class="text-pink-400">[${(u.language || 'my').toUpperCase()}]</span>`;
+                        list.appendChild(d);
+                    });
+                }
+            });
+            db.ref('private_chats').on('value', (snap) => {
+                const data = snap.val(); const list = document.getElementById('adminActivityList'); list.innerHTML = ''; let tCount = 0;
+                if(data) {
+                    Object.keys(data).forEach(r => {
+                        if(data[r].messages) {
+                            Object.keys(data[r].messages).forEach(m => {
+                                tCount++; const msg = data[r].messages[m];
+                                const d = document.createElement('div'); d.className = "border-b border-slate-800 pb-1";
+                                d.innerHTML = `<span class="text-pink-400 font-semibold">${msg.senderName}:</span> <span>${msg.text}</span>`;
+                                list.appendChild(d);
+                            });
+                        }
+                    });
+                }
+                document.getElementById('statMessages').innerText = tCount;
+            });
         }
+
+        function logoutUser() { location.reload(); }
     </script>
 </body>
 </html>
