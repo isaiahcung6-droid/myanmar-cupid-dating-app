@@ -49,7 +49,7 @@
         </div>
 
         <div class="flex items-center space-x-2">
-            <!-- Language Selector (Header) - Locked for normal users -->
+            <!-- Language Selector (Header) -->
             <select id="languageSelect" onchange="userSelectLanguage(this.value)" class="bg-slate-800 text-pink-400 text-xs font-semibold border border-pink-500/30 rounded-lg px-2 py-1.5 focus:outline-none cursor-pointer">
                 <option value="my">🇲🇲 မြန်မာ</option>
                 <option value="falam">🇲🇲 Falam</option>
@@ -869,6 +869,8 @@
                     isAdmin: false
                 }).then(() => {
                     completeLoginProcess(selectedLang);
+                }).catch((error) => {
+                    alert('⚠️ အကောင့်ဖွင့်ရာတွင် အမှားအယွင်းရှိပါသည်: မိနစ်အနည်းငယ်ကြာမှ ထပ်ကြိုးစားပါ။');
                 });
 
             } else {
@@ -885,12 +887,13 @@
                     };
                     completeLoginProcess(selectedLang);
                 } else {
+                    // Safe Login Query
                     db.ref('users/' + userId).once('value', (snapshot) => {
                         const uData = snapshot.val();
                         let finalLang = selectedLang;
 
                         if (uData) {
-                            finalLang = uData.language || 'my'; // Strict lock to saved user language
+                            finalLang = uData.language || 'my';
                             currentUser = {
                                 id: userId,
                                 name: uData.name || name,
@@ -902,6 +905,7 @@
                                 language: finalLang
                             };
                         } else {
+                            // Fallback if user document doesn't exist yet
                             currentUser = {
                                 id: userId,
                                 name: name,
@@ -915,6 +919,19 @@
                         }
 
                         completeLoginProcess(finalLang);
+                    }, (error) => {
+                        // Fallback in case network/database read fails so Enter still works
+                        currentUser = {
+                            id: userId,
+                            name: name,
+                            age: 'N/A',
+                            location: 'N/A',
+                            contact: 'N/A',
+                            bio: 'သီချင်းနားထောင်ရတာ ကြိုက်တယ်။',
+                            isAdmin: false,
+                            language: selectedLang
+                        };
+                        completeLoginProcess(selectedLang);
                     });
                 }
             }
