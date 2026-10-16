@@ -102,8 +102,11 @@
                     <input type="text" id="authEmail" placeholder="09xxxxxxxxx" class="w-full bg-slate-800 text-white text-xs px-4 py-3 rounded-xl border border-slate-700 focus:outline-none focus:border-pink-500">
                 </div>
 
-                <div>
-                    <label id="labelPass" class="block text-xs font-medium text-gray-300 mb-1">စကားဝှက် (Password)</label>
+                <div id="passwordFieldContainer">
+                    <div class="flex justify-between items-center mb-1">
+                        <label id="labelPass" class="block text-xs font-medium text-gray-300">စကားဝှက် (Password)</label>
+                        <button type="button" onclick="showForgotPasswordModal()" id="btnForgot" class="text-[10px] text-pink-400 hover:underline">Forgot Password?</button>
+                    </div>
                     <input type="password" id="authPassword" required placeholder="******" class="w-full bg-slate-800 text-white text-xs px-4 py-3 rounded-xl border border-slate-700 focus:outline-none focus:border-pink-500">
                 </div>
 
@@ -127,9 +130,35 @@
 
                 <!-- Guest Browse Button (No Register Required) -->
                 <button type="button" onclick="continueAsGuest()" class="w-full bg-slate-800 text-cyan-400 border border-cyan-500/40 py-2.5 rounded-xl text-xs font-bold hover:bg-cyan-950/30 transition mt-2">
-                    <i class="fa-solid fa-eye mr-1"></i> Guest အနေဖြင့် ဝင်ရောက်ကြည့်ရှုရန် (Browse as Guest)
+                    <i class="fa-solid fa-eye mr-1"></i> Guest အနဖြင့် ဝင်ရောက်ကြည့်ရှုရန် (Browse as Guest)
                 </button>
             </form>
+        </div>
+
+        <!-- FORGOT PASSWORD MODAL SECTION -->
+        <div id="forgotModal" class="hidden fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4">
+            <div class="glass-card p-6 rounded-2xl w-full max-w-sm border border-pink-500/30 shadow-2xl space-y-4">
+                <div class="flex justify-between items-center border-b border-slate-700 pb-2">
+                    <h3 class="text-sm font-bold text-pink-400"><i class="fa-solid fa-key mr-1.5"></i>Reset Password (စကားဝှက် ပြန်ယူရန်)</h3>
+                    <button onclick="closeForgotModal()" class="text-gray-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+                <p class="text-[11px] text-gray-300">အကောင့်ဖွင့်စဉ်က ဖြည့်သွင်းခဲ့သော နာမည်နှင့် ဖုန်း/အီးမေးလ် ရိုက်ထည့်ပါ -</p>
+                <div>
+                    <label class="block text-[11px] font-medium text-gray-300 mb-1">နာမည် (Name)</label>
+                    <input type="text" id="resetName" placeholder="အကောင့်ဖွင့်ထားသော နာမည်" class="w-full bg-slate-800 text-white text-xs px-3 py-2.5 rounded-xl border border-slate-700 focus:outline-none focus:border-pink-500">
+                </div>
+                <div>
+                    <label class="block text-[11px] font-medium text-gray-300 mb-1">Phone သို့မဟုတ် Email</label>
+                    <input type="text" id="resetContact" placeholder="09xxxxxxxxx သို့မဟုတ် email" class="w-full bg-slate-800 text-white text-xs px-3 py-2.5 rounded-xl border border-slate-700 focus:outline-none focus:border-pink-500">
+                </div>
+                <div>
+                    <label class="block text-[11px] font-medium text-pink-400 mb-1">စကားဝှက် အသစ် (New Password)</label>
+                    <input type="password" id="resetNewPass" placeholder="******" class="w-full bg-slate-800 text-white text-xs px-3 py-2.5 rounded-xl border border-slate-700 focus:outline-none focus:border-pink-500">
+                </div>
+                <button onclick="handleResetPassword()" class="w-full bg-pink-600 text-white py-2.5 rounded-xl text-xs font-bold shadow-lg hover:bg-pink-500 transition">
+                    Password အသစ် ပြင်ဆင်မည်
+                </button>
+            </div>
         </div>
 
         <!-- APP CONTENT (HIDDEN UNTIL LOGIN) -->
@@ -500,6 +529,7 @@
             const ageContainer = document.getElementById('ageFieldContainer');
             const locContainer = document.getElementById('locationFieldContainer');
             const contactContainer = document.getElementById('contactFieldContainer');
+            const btnForgot = document.getElementById('btnForgot');
             const ageInput = document.getElementById('authAge');
             const locInput = document.getElementById('authLocation');
             const contactInput = document.getElementById('authEmail');
@@ -513,6 +543,7 @@
                 ageContainer.classList.remove('hidden');
                 locContainer.classList.remove('hidden');
                 contactContainer.classList.remove('hidden');
+                btnForgot.classList.add('hidden');
 
                 ageInput.setAttribute('required', 'true');
                 locInput.setAttribute('required', 'true');
@@ -527,6 +558,7 @@
                 ageContainer.classList.add('hidden');
                 locContainer.classList.add('hidden');
                 contactContainer.classList.add('hidden');
+                btnForgot.classList.remove('hidden');
 
                 ageInput.removeAttribute('required');
                 locInput.removeAttribute('required');
@@ -550,6 +582,41 @@
                 document.getElementById('contactFieldContainer').classList.remove('hidden');
                 document.getElementById('langJoinContainer').classList.remove('hidden');
             }
+        }
+
+        function showForgotPasswordModal() {
+            document.getElementById('forgotModal').classList.remove('hidden');
+        }
+
+        function closeForgotModal() {
+            document.getElementById('forgotModal').classList.add('hidden');
+        }
+
+        function handleResetPassword() {
+            const name = document.getElementById('resetName').value.trim();
+            const contact = document.getElementById('resetContact').value.trim();
+            const newPass = document.getElementById('resetNewPass').value.trim();
+
+            if (!name || !contact || !newPass) {
+                alert('⚠️ အချက်အလက်များကို အပြည့်အစုံ ဖြည့်စွက်ပါ');
+                return;
+            }
+
+            const userId = 'user_' + name.toLowerCase().replace(/\s+/g, '_');
+            
+            db.ref('users/' + userId).once('value', (snapshot) => {
+                const userData = snapshot.val();
+                if (userData && (userData.contact === contact || userData.contact === undefined)) {
+                    db.ref('users/' + userId).update({
+                        password: newPass
+                    }).then(() => {
+                        alert('✅ စကားဝှက် အသစ်ပြင်ဆင်ပြီးပါပြီ! Login ပြန်ဝင်နိုင်ပါပြီ။');
+                        closeForgotModal();
+                    });
+                } else {
+                    alert('⚠️ နာမည် သို့မဟုတ် ဖုန်း/အီးမေးလ် မှားယွင်းနေပါသည်။ အကောင့်ရှာမတွေ့ပါ။');
+                }
+            });
         }
 
         function changeLanguage(lang) {
@@ -642,6 +709,7 @@
             const name = document.getElementById('authName').value.trim();
             const age = document.getElementById('authAge').value.trim();
             const location = document.getElementById('authLocation').value.trim();
+            const contact = document.getElementById('authEmail').value.trim();
             const password = document.getElementById('authPassword').value.trim();
             const selectedLang = document.getElementById('authLanguage').value;
 
@@ -669,6 +737,8 @@
                     name: currentUser.name,
                     age: age,
                     location: location,
+                    contact: contact,
+                    password: password,
                     language: selectedLang,
                     joinedAt: Date.now(),
                     isAdmin: false
