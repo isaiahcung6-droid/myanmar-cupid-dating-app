@@ -49,7 +49,7 @@
         </div>
 
         <div class="flex items-center space-x-2">
-            <!-- Language Selector (Header) - Locked for normal users -->
+            <!-- Language Selector (Header) -->
             <select id="languageSelect" onchange="userSelectLanguage(this.value)" class="bg-slate-800 text-pink-400 text-xs font-semibold border border-pink-500/30 rounded-lg px-2 py-1.5 focus:outline-none cursor-pointer">
                 <option value="my">🇲🇲 မြန်မာ</option>
                 <option value="falam">🇲🇲 Falam</option>
@@ -585,9 +585,7 @@
         };
 
         function userSelectLanguage(lang) {
-            if (currentUser && currentUser.isAdmin) {
-                changeLanguage(lang);
-            }
+            changeLanguage(lang);
         }
 
         function toggleAuthMode(mode) {
@@ -757,7 +755,7 @@
             if (labelLangJoin && data.labelLangJoin) labelLangJoin.innerHTML = `<i class="fa-solid fa-earth-americas mr-1"></i>${data.labelLangJoin}`;
         }
 
-        // Apply Language & Lock Dropdown for Normal Users strictly
+        // Apply Language & Lock Dropdown for Normal Users
         function applyUserLanguageAndLock(lang) {
             changeLanguage(lang);
             const langSelect = document.getElementById('languageSelect');
@@ -890,7 +888,7 @@
                         let finalLang = selectedLang;
 
                         if (uData) {
-                            finalLang = uData.language || 'my'; // Strict lock to saved user language
+                            finalLang = uData.language || selectedLang;
                             currentUser = {
                                 id: userId,
                                 name: uData.name || name,
@@ -1100,7 +1098,7 @@
             const chatPartnerStatus = document.getElementById('chatPartnerStatus');
             const chatHeaderIcon = document.getElementById('chatHeaderIcon');
 
-            chatFormContainer.classList.add('hidden');
+            chatFormContainer.classList.add('hidden'); // Hide typing input for admin monitor
             chatPartnerName.innerText = "Admin Chat Monitor (All Conversations)";
             chatPartnerStatus.innerText = "Monitoring all user conversations across multi-languages";
             chatHeaderIcon.className = "fa-solid fa-shield-halved";
