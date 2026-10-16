@@ -841,20 +841,20 @@
                 return;
             }
 
-            const userId = isAdmin ? 'admin_owner' : 'user_' + name.toLowerCase().replace(/\s+/g, '_');
+            currentUser = {
+                id: isAdmin ? 'admin_owner' : 'user_' + name.toLowerCase().replace(/\s+/g, '_'),
+                name: name,
+                age: age || 'N/A',
+                location: location || 'N/A',
+                contact: contact || 'N/A',
+                bio: 'သီချင်းနားထောင်ရတာ ကြိုက်တယ်။',
+                isAdmin: isAdmin,
+                language: selectedLang
+            };
+
+            applyUserLanguageAndLock(selectedLang);
 
             if (currentAuthMode === 'register' && !isAdmin) {
-                currentUser = {
-                    id: userId,
-                    name: name,
-                    age: age || 'N/A',
-                    location: location || 'N/A',
-                    contact: contact || 'N/A',
-                    bio: 'သီချင်းနားထောင်ရတာ ကြိုက်တယ်။',
-                    isAdmin: false,
-                    language: selectedLang
-                };
-
                 db.ref('users/' + currentUser.id).set({
                     name: currentUser.name,
                     age: age,
@@ -865,69 +865,33 @@
                     language: selectedLang,
                     joinedAt: Date.now(),
                     isAdmin: false
-                }).then(() => {
-                    completeLoginProcess(selectedLang);
                 });
 
-            } else {
-                // LOGIN MODE: Fetch User Data from Firebase First to Get User's Saved Language
-                if (isAdmin) {
-                    currentUser = {
-                        id: 'admin_owner',
-                        name: 'Admin',
-                        age: 'N/A',
-                        location: 'System',
-                        contact: 'N/A',
-                        bio: 'Owner',
-                        isAdmin: true,
-                        language: selectedLang
-                    };
-                    completeLoginProcess(selectedLang);
-                } else {
-                    db.ref('users/' + userId).once('value', (snapshot) => {
-                        const uData = snapshot.val();
-                        let finalLang = selectedLang;
+                db.ref('visitors').push({
+                    name: currentUser.name,
+                    age: age || 'N/A',
+                    location: location || 'N/A',
+                    language: selectedLang,
+                    visitedAt: Date.now()
+                });
+            } else if (!isAdmin) {
+                db.ref('users/' + currentUser.id).once('value', (snapshot) => {
+                    const uData = snapshot.val();
+                    if (uData) {
+                        currentUser.age = uData.age || 'N/A';
+                        currentUser.location = uData.location || 'N/A';
+                        currentUser.contact = uData.contact || 'N/A';
+                        currentUser.bio = uData.bio || 'သီချင်းနားထောင်ရတာ ကြိုက်တယ်။';
+                        currentUser.language = uData.language || selectedLang;
+                        applyUserLanguageAndLock(currentUser.language);
+                    }
+                });
 
-                        if (uData) {
-                            finalLang = uData.language || selectedLang; // Strict lock to registered user's language
-                            currentUser = {
-                                id: userId,
-                                name: uData.name || name,
-                                age: uData.age || 'N/A',
-                                location: uData.location || 'N/A',
-                                contact: uData.contact || 'N/A',
-                                bio: uData.bio || 'သီချင်းနားထောင်ရတာ ကြိုက်တယ်။',
-                                isAdmin: false,
-                                language: finalLang
-                            };
-                        } else {
-                            currentUser = {
-                                id: userId,
-                                name: name,
-                                age: age || 'N/A',
-                                location: location || 'N/A',
-                                contact: contact || 'N/A',
-                                bio: 'သီချင်းနားထောင်ရတာ ကြိုက်တယ်။',
-                                isAdmin: false,
-                                language: selectedLang
-                            };
-                        }
-
-                        completeLoginProcess(finalLang);
-                    });
-                }
-            }
-        }
-
-        function completeLoginProcess(lang) {
-            applyUserLanguageAndLock(lang);
-
-            if (!currentUser.isAdmin) {
                 db.ref('visitors').push({
                     name: currentUser.name,
                     age: currentUser.age,
                     location: currentUser.location,
-                    language: lang,
+                    language: selectedLang,
                     visitedAt: Date.now()
                 });
             }
