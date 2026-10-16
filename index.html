@@ -76,7 +76,7 @@
             <form onsubmit="handleAuth(event)" class="space-y-4">
                 <div>
                     <label id="labelName" class="block text-xs font-medium text-gray-300 mb-1">နာမည် (Name)</label>
-                    <input type="text" id="authName" oninput="checkAdminInput()" required placeholder="သင့်နာမည်ရိုက်ပါ" class="w-full bg-slate-800 text-white text-xs px-4 py-3 rounded-xl border border-slate-700 focus:outline-none focus:border-pink-500">
+                    <input type="text" id="authName" required placeholder="သင့်နာမည်ရိုက်ပါ" class="w-full bg-slate-800 text-white text-xs px-4 py-3 rounded-xl border border-slate-700 focus:outline-none focus:border-pink-500">
                 </div>
                 
                 <div id="ageFieldContainer" class="hidden">
@@ -89,22 +89,14 @@
                     <input type="text" id="authLocation" placeholder="သင့်မြို့/နေရပ်လိပ်စာ" class="w-full bg-slate-800 text-white text-xs px-4 py-3 rounded-xl border border-slate-700 focus:outline-none focus:border-pink-500">
                 </div>
 
-                <div id="contactFieldContainer" class="hidden">
-                    <label id="labelContact" class="block text-xs font-medium text-gray-300 mb-1">Phone asilole Email</label>
-                    <input type="text" id="authEmail" placeholder="09xxxxxxxxx" class="w-full bg-slate-800 text-white text-xs px-4 py-3 rounded-xl border border-slate-700 focus:outline-none focus:border-pink-500">
-                </div>
-
                 <div id="passwordFieldContainer">
-                    <div class="flex justify-between items-center mb-1">
-                        <label id="labelPass" class="block text-xs font-medium text-gray-300">စကားဝှက် (Password)</label>
-                        <button type="button" onclick="showForgotPasswordModal()" id="btnForgot" class="text-[10px] text-pink-400 hover:underline">Forgot Password?</button>
-                    </div>
+                    <label id="labelPass" class="block text-xs font-medium text-gray-300 mb-1">စကားဝှက် (Password)</label>
                     <input type="password" id="authPassword" required placeholder="******" class="w-full bg-slate-800 text-white text-xs px-4 py-3 rounded-xl border border-slate-700 focus:outline-none focus:border-pink-500">
                 </div>
 
                 <div id="langJoinContainer">
                     <label id="labelLangJoin" class="block text-xs font-medium text-pink-400 mb-1"><i class="fa-solid fa-earth-americas mr-1"></i>Join ချင်သော ဘာသာစကား ရွေးပါ</label>
-                    <select id="authLanguage" onchange="userSelectLanguage(this.value)" class="w-full bg-slate-800 text-pink-300 text-xs px-4 py-3 rounded-xl border border-pink-500/40 focus:outline-none focus:border-pink-500 cursor-pointer">
+                    <select id="authLanguage" class="w-full bg-slate-800 text-pink-300 text-xs px-4 py-3 rounded-xl border border-pink-500/40 focus:outline-none focus:border-pink-500 cursor-pointer">
                         <option value="my">🇲🇲 မြန်မာ</option>
                         <option value="falam">🇲🇲 Falam</option>
                         <option value="hakha">🇲🇲 Hakha</option>
@@ -117,10 +109,6 @@
 
                 <button type="submit" id="btnSubmitAuth" class="w-full bg-gradient-to-r from-pink-500 to-rose-500 text-white py-3 rounded-xl text-xs font-bold shadow-lg hover:opacity-90 transition mt-2">
                     အကောင့်ဝင်ရန် (Login)
-                </button>
-
-                <button type="button" onclick="continueAsGuest()" class="w-full bg-slate-800 text-cyan-400 border border-cyan-500/40 py-2.5 rounded-xl text-xs font-bold hover:bg-cyan-950/30 transition mt-2">
-                    <i class="fa-solid fa-eye mr-1"></i> Guest အနေဖြင့် ဝင်ရောက်ကြည့်ရှုရန် (Browse as Guest)
                 </button>
             </form>
         </div>
@@ -196,6 +184,7 @@
             </div>
         </div>
     </main>
+
     <!-- JavaScript & Firebase Logic -->
     <script>
         const firebaseConfig = {
@@ -209,11 +198,41 @@
         let chatListenerRef = null;
         let currentAuthMode = 'login';
 
+        const translations = {
+            my: { taglineMy: "ယုံကြည်စိတ်ချရသော အိမ်ထောင်ဖက် ရှာဖွေရေး", heroTitle: "သင့်ဖူးစာရှင်ကို ရှာဖွေပါ", heroDesc: "တိုင်းရင်းသား လူမျိုးစုပေါင်းစုံအတွက် လေးစားမှုရှိပြီး လုံခြုံသော Cupid Platform", chatInputPh: "သီးသန့် စာတို ရိုက်ရန်..." },
+            falam: { taglineMy: "Rinsan Tlakbik Mi Kawppi Hawlnak", heroTitle: "Na Duhdawtmi Hawl Aw", heroDesc: "Miphun dang le Midang hrang ah a him a thabik mi Cupid platform", chatInputPh: "Private Ca kuat ngan nak..." },
+            hakha: { taglineMy: "Rinsantlak Mi Kawppi Kawlnak", heroTitle: "Na Duhmi Zawn Ruah Hna", heroDesc: "Miphun vialte ca ningcang le thliarhrang lo tein hman khawhmi cupid platform", chatInputPh: "Private Cakuat tial..." },
+            tapong: { taglineMy: "Rinsantlak Ber Kawppui Thuai Hmun", heroTitle: "Na Hnakruh Le Lu Tuhah Thuai In", heroDesc: "Mite ca le hnamdang te ca a him le phaber ah Cupid platform", chatInputPh: "Private Lai kuat ngan hmun..." },
+            mizo: { taglineMy: "Kawppui Tur Zawnna", heroTitle: "I Duhtak Zawng Rawh", heroDesc: "Hnam hrang hrang te tana a him le zahawm Cupid platform", chatInputPh: "Private Thuchah ziak rawh..." },
+            tidim: { taglineMy: "Muanguai Zi Le Pasal Zawnna", heroTitle: "Nadeih Pen Zawng In", heroDesc: "Mi khempeuh te a ding a ki lawm le a pha Cupid platform", chatInputPh: "Private Lai gelh in..." },
+            en: { taglineMy: "Finding A Trustworthy Spouse", heroTitle: "Find Your Match", heroDesc: "A secure and respectful Cupid Platform", chatInputPh: "Type a private message..." }
+        };
+
         const profiles = [
             { id: 'profile_1', name: "Lian, 24", location: "Yangon • Falam / Myanmar", bio: "သီချင်းနားထောင်ရတာ ကြိုက်တယ်။", image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=600" },
             { id: 'profile_2', name: "Nuam, 22", location: "Mandalay • Mizo / Myanmar", bio: "ဝါသနာကတော့ ခရီးသွားတာပါ။", image: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&q=80&w=600" }
         ];
         let currentIndex = 0;
+
+        function userSelectLanguage(lang) {
+            applyLanguage(lang);
+        }
+
+        function applyLanguage(lang) {
+            const data = translations[lang] || translations['my'];
+            const subHeaderTagMy = document.getElementById('subHeaderTagMy');
+            const heroTitle = document.getElementById('heroTitle');
+            const heroDesc = document.getElementById('heroDesc');
+            const messageInput = document.getElementById('messageInput');
+
+            if (subHeaderTagMy) subHeaderTagMy.innerText = data.taglineMy;
+            if (heroTitle) heroTitle.innerText = data.heroTitle;
+            if (heroDesc) heroDesc.innerText = data.heroDesc;
+            if (messageInput) messageInput.placeholder = data.chatInputPh;
+
+            const langSelect = document.getElementById('languageSelect');
+            if (langSelect) langSelect.value = lang;
+        }
 
         function toggleAuthMode(mode) {
             currentAuthMode = mode;
@@ -221,20 +240,17 @@
             const tabRegister = document.getElementById('tabRegister');
             const ageContainer = document.getElementById('ageFieldContainer');
             const locContainer = document.getElementById('locationFieldContainer');
-            const contactContainer = document.getElementById('contactFieldContainer');
 
             if (mode === 'register') {
                 tabRegister.className = "flex-1 py-2 text-xs font-bold rounded-lg bg-pink-600 text-white transition";
                 tabLogin.className = "flex-1 py-2 text-xs font-bold rounded-lg text-gray-400 transition";
                 ageContainer.classList.remove('hidden');
                 locContainer.classList.remove('hidden');
-                contactContainer.classList.remove('hidden');
             } else {
                 tabLogin.className = "flex-1 py-2 text-xs font-bold rounded-lg bg-pink-600 text-white transition";
                 tabRegister.className = "flex-1 py-2 text-xs font-bold rounded-lg text-gray-400 transition";
                 ageContainer.classList.add('hidden');
                 locContainer.classList.add('hidden');
-                contactContainer.classList.add('hidden');
             }
         }
 
@@ -266,6 +282,8 @@
         function completeLoginProcess(lang) {
             document.getElementById('authSection').classList.add('hidden');
             document.getElementById('appSection').classList.remove('hidden');
+
+            applyLanguage(lang);
 
             const langSelect = document.getElementById('languageSelect');
             if (!currentUser.isAdmin && langSelect) {
