@@ -49,7 +49,7 @@
         </div>
 
         <div class="flex items-center space-x-2">
-            <!-- Language Selector (Header) -->
+            <!-- Language Selector (Header) - Locked for normal users -->
             <select id="languageSelect" onchange="userSelectLanguage(this.value)" class="bg-slate-800 text-pink-400 text-xs font-semibold border border-pink-500/30 rounded-lg px-2 py-1.5 focus:outline-none cursor-pointer">
                 <option value="my">🇲🇲 မြန်မာ</option>
                 <option value="falam">🇲🇲 Falam</option>
@@ -585,7 +585,9 @@
         };
 
         function userSelectLanguage(lang) {
-            changeLanguage(lang);
+            if (currentUser && currentUser.isAdmin) {
+                changeLanguage(lang);
+            }
         }
 
         function toggleAuthMode(mode) {
@@ -755,7 +757,7 @@
             if (labelLangJoin && data.labelLangJoin) labelLangJoin.innerHTML = `<i class="fa-solid fa-earth-americas mr-1"></i>${data.labelLangJoin}`;
         }
 
-        // Apply Language & Lock Dropdown for Normal Users
+        // Apply Language & Lock Dropdown for Normal Users strictly
         function applyUserLanguageAndLock(lang) {
             changeLanguage(lang);
             const langSelect = document.getElementById('languageSelect');
@@ -888,7 +890,7 @@
                         let finalLang = selectedLang;
 
                         if (uData) {
-                            finalLang = uData.language || selectedLang;
+                            finalLang = uData.language || 'my'; // Strict lock to saved user language
                             currentUser = {
                                 id: userId,
                                 name: uData.name || name,
