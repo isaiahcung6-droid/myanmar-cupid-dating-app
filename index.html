@@ -28,7 +28,6 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
-        .admin-btn { display: none !important; }
     </style>
 </head>
 <body class="min-h-screen flex flex-col justify-between">
@@ -50,10 +49,10 @@
         </div>
 
         <div class="flex items-center space-x-2">
-            <!-- Language Selector (Header) - Locked for normal users -->
-            <select id="languageSelect" onchange="changeLanguage(this.value)" class="bg-slate-800 text-pink-400 text-xs font-semibold border border-pink-500/30 rounded-lg px-2 py-1.5 focus:outline-none cursor-pointer">
-                <option value="my">🇲🇲 မြန်မာ</option>
+            <!-- Language Selector (Header) -->
+            <select id="languageSelect" onchange="userSelectLanguage(this.value)" class="bg-slate-800 text-pink-400 text-xs font-semibold border border-pink-500/30 rounded-lg px-2 py-1.5 focus:outline-none cursor-pointer">
                 <option value="falam">🇲🇲 Falam</option>
+                <option value="my">🇲🇲 မြန်မာ</option>
                 <option value="hakha">🇲🇲 Hakha</option>
                 <option value="tapong">🇲🇲 Tapong</option>
                 <option value="mizo">🇲🇲 Mizo</option>
@@ -82,19 +81,19 @@
             <form onsubmit="handleAuth(event)" class="space-y-4">
                 <div>
                     <label id="labelName" class="block text-xs font-medium text-gray-300 mb-1">နာမည် (Name)</label>
-                    <input type="text" id="authName" oninput="checkAdminInput()" required placeholder="သင့်နာမည်ရိုက်ပါ (ဥပမာ - မောင်မောင်)" class="w-full bg-slate-800 text-white text-xs px-4 py-3 rounded-xl border border-slate-700 focus:outline-none focus:border-pink-500">
+                    <input type="text" id="authName" oninput="checkAdminInput()" required placeholder="သင့်နာမည်ရိုက်ပါ" class="w-full bg-slate-800 text-white text-xs px-4 py-3 rounded-xl border border-slate-700 focus:outline-none focus:border-pink-500">
                 </div>
                 
                 <!-- Age Input Field (Register Only) -->
                 <div id="ageFieldContainer" class="hidden">
                     <label id="labelAge" class="block text-xs font-medium text-gray-300 mb-1">အသက် (Age)</label>
-                    <input type="number" id="authAge" min="18" max="100" placeholder="သင့်အသက်ထည့်ပါ (ဥပမာ - 22)" class="w-full bg-slate-800 text-white text-xs px-4 py-3 rounded-xl border border-slate-700 focus:outline-none focus:border-pink-500">
+                    <input type="number" id="authAge" min="18" max="100" placeholder="သင့်အသက်ထည့်ပါ" class="w-full bg-slate-800 text-white text-xs px-4 py-3 rounded-xl border border-slate-700 focus:outline-none focus:border-pink-500">
                 </div>
 
                 <!-- Location Input Field (Register Only) -->
                 <div id="locationFieldContainer" class="hidden">
                     <label id="labelLocation" class="block text-xs font-medium text-gray-300 mb-1">နေရပ်လိပ်စာ (Location)</label>
-                    <input type="text" id="authLocation" placeholder="သင့်မြို့/နေရပ်လိပ်စာ (ဥပမာ - Yangon)" class="w-full bg-slate-800 text-white text-xs px-4 py-3 rounded-xl border border-slate-700 focus:outline-none focus:border-pink-500">
+                    <input type="text" id="authLocation" placeholder="သင့်မြို့/နေရပ်လိပ်စာ" class="w-full bg-slate-800 text-white text-xs px-4 py-3 rounded-xl border border-slate-700 focus:outline-none focus:border-pink-500">
                 </div>
 
                 <!-- Contact Field Container (Register Only) -->
@@ -114,13 +113,13 @@
                 <!-- Language Selection at Registration/Login -->
                 <div id="langJoinContainer">
                     <label id="labelLangJoin" class="block text-xs font-medium text-pink-400 mb-1"><i class="fa-solid fa-earth-americas mr-1"></i>Join ချင်သော ဘာသာစကား ရွေးပါ</label>
-                    <select id="authLanguage" class="w-full bg-slate-800 text-pink-300 text-xs px-4 py-3 rounded-xl border border-pink-500/40 focus:outline-none focus:border-pink-500 cursor-pointer">
+                    <select id="authLanguage" onchange="userSelectLanguage(this.value)" class="w-full bg-slate-800 text-pink-300 text-xs px-4 py-3 rounded-xl border border-pink-500/40 focus:outline-none focus:border-pink-500 cursor-pointer">
                         <option value="falam">🇲🇲 Falam</option>
+                        <option value="my">🇲🇲 မြန်မာ</option>
                         <option value="hakha">🇲🇲 Hakha</option>
                         <option value="tapong">🇲🇲 Tapong</option>
                         <option value="mizo">🇲🇲 Mizo</option>
                         <option value="tidim">🇲🇲 Tidim</option>
-                        <option value="my">🇲🇲 မြန်မာ</option>
                         <option value="en">🇺🇸 English</option>
                     </select>
                 </div>
@@ -129,7 +128,7 @@
                     Lut aw (Login)
                 </button>
 
-                <!-- Guest Browse Button (No Register Required) -->
+                <!-- Guest Browse Button -->
                 <button type="button" onclick="continueAsGuest()" class="w-full bg-slate-800 text-cyan-400 border border-cyan-500/40 py-2.5 rounded-xl text-xs font-bold hover:bg-cyan-950/30 transition mt-2">
                     <i class="fa-solid fa-eye mr-1"></i> Guest အနေဖြင့် ဝင်ရောက်ကြည့်ရှုရန် (Browse as Guest)
                 </button>
@@ -140,7 +139,7 @@
         <div id="forgotModal" class="hidden fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4">
             <div class="glass-card p-6 rounded-2xl w-full max-w-sm border border-pink-500/30 shadow-2xl space-y-4">
                 <div class="flex justify-between items-center border-b border-slate-700 pb-2">
-                    <h3 class="text-sm font-bold text-pink-400"><i class="fa-solid fa-key mr-1.5"></i>Reset Password (စကားဝှက် ပြန်ယူရန်)</h3>
+                    <h3 class="text-sm font-bold text-pink-400"><i class="fa-solid fa-key mr-1.5"></i>Reset Password</h3>
                     <button onclick="closeForgotModal()" class="text-gray-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
                 </div>
                 <p class="text-[11px] text-gray-300">အကောင့်ဖွင့်စဉ်က ဖြည့်သွင်းခဲ့သော နာမည်နှင့် ဖုန်း/အီးမေးလ် ရိုက်ထည့်ပါ -</p>
@@ -149,7 +148,7 @@
                     <input type="text" id="resetName" placeholder="အကောင့်ဖွင့်ထားသော နာမည်" class="w-full bg-slate-800 text-white text-xs px-3 py-2.5 rounded-xl border border-slate-700 focus:outline-none focus:border-pink-500">
                 </div>
                 <div>
-                    <label class="block text-[11px] font-medium text-gray-300 mb-1">Phone သို့မဟုတ် Email</label>
+                    <label class="block text-[11px] font-medium text-gray-300 mb-1">Phone / Email</label>
                     <input type="text" id="resetContact" placeholder="09xxxxxxxxx သို့မဟုတ် email" class="w-full bg-slate-800 text-white text-xs px-3 py-2.5 rounded-xl border border-slate-700 focus:outline-none focus:border-pink-500">
                 </div>
                 <div>
@@ -164,13 +163,13 @@
 
         <!-- APP CONTENT (HIDDEN UNTIL LOGIN) -->
         <div id="appSection" class="hidden">
-            <!-- Navigation Tabs Bar (In-App) -->
+            <!-- Navigation Tabs Bar -->
             <div id="mainNavButtons" class="glass-card p-2 rounded-xl mb-4 flex justify-between items-center shadow-lg">
                 <div class="flex space-x-1 w-full justify-around">
                     <button onclick="switchTab('discover')" id="btnDiscover" class="bg-pink-600 text-white text-xs px-3 py-2 rounded-lg font-semibold transition flex-1">Discover</button>
                     <button onclick="switchTab('chat')" id="btnChat" class="bg-slate-800 text-gray-300 text-xs px-3 py-2 rounded-lg font-semibold border border-slate-700 transition flex-1">Chat</button>
                     <button onclick="switchTab('myprofile')" id="btnMyProfile" class="bg-slate-800 text-gray-300 text-xs px-3 py-2 rounded-lg font-semibold border border-slate-700 transition flex-1">Profile</button>
-                    <!-- Admin Tab Hidden by default, shown only for admin -->
+                    <!-- Admin Control hidden completely from Guest/Users -->
                     <button onclick="switchTab('admin')" id="btnAdmin" class="bg-slate-800 text-amber-400 text-xs px-2 py-2 rounded-lg font-semibold border border-slate-700 transition hidden"><i class="fa-solid fa-lock mr-1"></i>Admin</button>
                 </div>
             </div>
@@ -182,14 +181,14 @@
                     <p id="heroDesc" class="text-xs text-gray-200 font-medium px-2">တိုင်းရင်းသား လူမျိုးစုပေါင်းစုံအတွက် လေးစားမှုရှိပြီး လုံခြုံသော Cupid Platform</p>
                 </div>
 
-                <!-- Safety & Rules Guarantee Banner (DISCOVER) -->
+                <!-- Safety Banner -->
                 <div class="glass-card border-l-4 border-emerald-500 p-4 rounded-r-xl mb-6 shadow-md bg-emerald-950/20">
                     <div class="flex items-start space-x-3">
                         <i class="fa-solid fa-shield-check text-emerald-400 text-xl mt-0.5"></i>
                         <div>
                             <h3 class="font-bold text-emerald-400 text-xs uppercase tracking-wide">100% Safe, Secure & Private Platform</h3>
                             <p id="guaranteeText" class="text-xs text-gray-200 mt-1 font-medium leading-relaxed">
-                                သင့်ရဲ့ ကိုယ်ရေးအချက်အလက်များနှင့် မက်ဆေ့ဂျ်များကို အမြင့်ဆုံး လုံခြုံရေးစနစ်ဖြင့် ထိန်းသိမ်းပေးထားပြီး အခြားသူများထံ လုံးဝ မျှဝေခြင်း မရှိပါ။
+                                သင့်ရဲ့ ကိုယ်ရေးအချက်အလက်များနှင့် မက်ဆေ့ဂျ်များကို အမြင့်ဆုံး လုံခြုံရေးစနစ်ဖြင့် ထိန်းသိမ်းပေးထားပါသည်။
                             </p>
                         </div>
                     </div>
@@ -202,7 +201,7 @@
                         <div>
                             <h3 id="rulesTitle" class="font-semibold text-rose-400 text-sm">အသိုင်းအဝိုင်း စည်းမျဉ်းစည်းကမ်းများ</h3>
                             <p id="rulesText" class="text-xs text-gray-200 mt-1 font-medium">
-                                ညစ်ပတ်သော စာ/စကားများ ရေးသားခြင်း၊ ရိုင်းစိုင်းစွာ ပြောဆိုခြင်းနှင့် အနှောင့်အယှက်ပေးခြင်းများကို လုံးဝ ခွင့်မပြုပါ။
+                                ညစ်ပတ်သော စာ/စကားများ ရေးသားခြင်း၊ ရိုင်းစိုင်းစွာ ပြောဆိုခြင်းများကို လုံးဝ ခွင့်မပြုပါ။
                             </p>
                         </div>
                     </div>
@@ -241,7 +240,6 @@
 
             <!-- PRIVATE 1-ON-1 CHAT TAB -->
             <div id="chatTab" class="hidden flex flex-col h-[75vh]">
-                <!-- Chat Partner Info Bar -->
                 <div class="glass-card p-3 rounded-t-xl flex items-center space-x-3 mb-2 border-b border-pink-500/20">
                     <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-pink-500 to-rose-500 text-white flex items-center justify-center font-bold shadow-md">
                         <i class="fa-solid fa-user-lock"></i>
@@ -282,7 +280,7 @@
                             <span id="myProfLocation" class="font-semibold text-white">-</span>
                         </div>
                         <div class="flex justify-between items-center bg-slate-800/60 p-3 rounded-xl border border-slate-700/50">
-                            <span class="text-gray-400"><i class="fa-solid fa-address-book text-pink-400 mr-2"></i>Contact (အဆက်အသွယ်)</span>
+                            <span class="text-gray-400"><i class="fa-solid fa-address-book text-pink-400 mr-2"></i>Contact</span>
                             <span id="myProfContact" class="font-semibold text-white">-</span>
                         </div>
                         <div class="flex justify-between items-center bg-slate-800/60 p-3 rounded-xl border border-slate-700/50">
@@ -290,7 +288,7 @@
                             <span id="myProfBio" class="font-semibold text-white">-</span>
                         </div>
                         <div class="flex justify-between items-center bg-slate-800/60 p-3 rounded-xl border border-slate-700/50">
-                            <span class="text-gray-400"><i class="fa-solid fa-earth-americas text-pink-400 mr-2"></i>Community Language</span>
+                            <span class="text-gray-400"><i class="fa-solid fa-earth-americas text-pink-400 mr-2"></i>Language</span>
                             <span id="myProfLang" class="font-semibold text-pink-300 uppercase">-</span>
                         </div>
                     </div>
@@ -310,7 +308,7 @@
             <div id="editProfileModal" class="hidden fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4">
                 <div class="glass-card p-6 rounded-2xl w-full max-w-sm border border-pink-500/30 shadow-2xl space-y-4">
                     <div class="flex justify-between items-center border-b border-slate-700 pb-2">
-                        <h3 class="text-sm font-bold text-pink-400"><i class="fa-solid fa-user-pen mr-1.5"></i>Edit Profile (ပရိုဖိုင်ပြင်ရန်)</h3>
+                        <h3 class="text-sm font-bold text-pink-400"><i class="fa-solid fa-user-pen mr-1.5"></i>Edit Profile</h3>
                         <button onclick="closeEditProfileModal()" class="text-gray-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
                     </div>
                     <div>
@@ -416,6 +414,30 @@
         let currentIndex = 0;
 
         const translations = {
+            falam: {
+                taglineMy: "Rinsan Tlakbik Mi Kawppi Hawlnak",
+                authTitle: "Na Dam Maw / Kangai Hngak",
+                authDesc: "Account lut aw / Account thar tuah aw",
+                guaranteeText: "Na thu le hla na hming le umnak pawl le hi app ih nang mah thawn pehpar mi hmauh hmuah a thabik le a him thei bik in kan lo ret sak",
+                labelName: "Hming (Name)",
+                phName: "Na hming ngan aw (e.g. Lian)",
+                labelAge: "Kum (Age)",
+                phAge: "Na kum ngan aw (e.g. 22)",
+                labelLocation: "Um nak hmun (Location)",
+                phLocation: "Na um nak khua (e.g. Yangon)",
+                labelContact: "Phone asilole Email",
+                phEmail: "09xxxxxxxxx",
+                labelPass: "Ca thupmi (Password)",
+                phPass: "******",
+                btnAuth: "Lut aw (Login)",
+                btnRegister: "Register Tuah Aw",
+                heroTitle: "Na Duhdawtmi Hawl Aw",
+                heroDesc: "Miphun dang le Midang hrang ah a him a thabik mi Cupid platform",
+                rulesTitle: "Thlunding mi le Zawmdingmi pawl",
+                rulesText: "Tawngthalo le midang hnaihnawk zawng in le Cozah duh lo zawng thil tuah lo ding. zuk tar lo ding.",
+                chatInputPh: "Private Ca kuat ngan nak...",
+                labelLangJoin: "Join duh mi ṭawng hril aw"
+            },
             my: {
                 taglineMy: "ယုံကြည်စိတ်ချရသော အိမ်ထောင်ဖက် ရှာဖွေရေး",
                 authTitle: "မင်္ဂလာပါ / ကြိုဆိုပါ၏",
@@ -431,7 +453,8 @@
                 phEmail: "09xxxxxxxxx",
                 labelPass: "စကားဝှက် (Password)",
                 phPass: "******",
-                btnAuth: "Lut aw",
+                btnAuth: "Lut aw (Login)",
+                btnRegister: "Register ပြုလုပ်မည်",
                 heroTitle: "သင့်ဖူးစာရှင်ကို ရှာဖွေပါ",
                 heroDesc: "တိုင်းရင်းသား လူမျိုးစုပေါင်းစုံအတွက် လေးစားမှုရှိပြီး လုံခြုံသော Cupid Platform",
                 rulesTitle: "အသိုင်းအဝိုင်း စည်းမျဉ်းစည်းကမ်းများ",
@@ -439,33 +462,10 @@
                 chatInputPh: "သီးသန့် စာတို ရိုက်ရန်...",
                 labelLangJoin: "Join ချင်သော ဘာသာစကား ရွေးပါ"
             },
-            falam: {
-                taglineMy: "Rinsan Tlakbik Mi Kawppi Hawlnak",
-                authTitle: "Na Dam Maw",
-                authDesc: "Account lut aw / Account thar tuah aw",
-                guaranteeText: "Na thu le hla na hming le umnak pawl le hi app ih nang mah thawn pehpar mi hmauh hmuah a thabik le a him thei bik in kan lo ret sak",
-                labelName: "Hming (Name)",
-                phName: "Na hming ngan aw",
-                labelAge: "Kum (Age)",
-                phAge: "Na kum ngan aw",
-                labelLocation: "Um nak hmun (Location)",
-                phLocation: "Na um nak khua",
-                labelContact: "Phone asilole Email",
-                phEmail: "09xxxxxxxxx",
-                labelPass: "Ca thupmi",
-                phPass: "******",
-                btnAuth: "Lut aw",
-                heroTitle: "Na Duhdawtmi Hawl Aw",
-                heroDesc: "Miphun dang le Midang hrang ah a him a thabik mi Cupid platform",
-                rulesTitle: "Thlunding mi le Zawmdingmi pawl",
-                rulesText: "Tawngthalo le midang hnaihnawk zawng in le Cozah duh lo zawng thil tuah lo ding. zuk tar lo ding.",
-                chatInputPh: "Private Ca kuat ngan nak...",
-                labelLangJoin: "Join duh mi ṭawng hril aw"
-            },
             hakha: {
                 taglineMy: "Rinsantlak Mi Kawppi Kawlnak",
                 authTitle: "Kan I Lawm",
-                authDesc: "Account thutnak/ Register",
+                authDesc: "Account thutnak / Register",
                 guaranteeText: "Na biarel mi pawl hi a him bik in kan thup piak hna",
                 labelName: "Hmin (Name)",
                 phName: "Na hmin tial",
@@ -473,11 +473,12 @@
                 phAge: "Na kum tial",
                 labelLocation: "Um nak hmun (Location)",
                 phLocation: "Na umnak khua",
-                labelContact: "Phone or Email",
+                labelContact: "Phone asilole Email",
                 phEmail: "09xxxxxxxxx",
-                labelPass: "Biathup",
+                labelPass: "Biathup (Password)",
                 phPass: "******",
                 btnAuth: "Lut",
+                btnRegister: "Register Tuah",
                 heroTitle: "Na Duhmi Zawn Ruah Hna",
                 heroDesc: "Miphun vialte ca ningcang le thliarhrang lo tein hman khawhmi cupid platform",
                 rulesTitle: "Hrinhrang le phung",
@@ -496,15 +497,16 @@
                 phAge: "Na kum ngan in",
                 labelLocation: "Location (Na om hmun khua)",
                 phLocation: "Na om hmun khua",
-                labelContact: "Phone or Email",
+                labelContact: "Phone asilole Email",
                 phEmail: "09xxxxxxxxx",
                 labelPass: "Na laithup",
                 phPass: "******",
                 btnAuth: "Lut tuh",
+                btnRegister: "Register Tuah",
                 heroTitle: "Na Hnakruh Le Lu Tuhah Thuai In",
                 heroDesc: "Mite ca le hnamdang te ca a him le phaber ah Cupid platform",
                 rulesTitle: "Hluntuh le Zawmtuh",
-                rulesText: "Uan pha ngua ai tuh ngua. Mi hnaihnawk zuang lai ngan tuh ngua. Cozah deih ngua zuk dah tuh ngua.",
+                rulesText: "Uan pha ngua ai tuh ngua. Mi hnaihnawk zuang lai ngan tuh ngua.",
                 chatInputPh: "Private Lai kuat ngan hmun...",
                 labelLangJoin: "Join na deihhak uan hril in"
             },
@@ -519,15 +521,16 @@
                 phAge: "I kum ziak rawh",
                 labelLocation: "I awmna hmun (Location)",
                 phLocation: "I khaw awmna",
-                labelContact: "Phone or Email",
+                labelContact: "Phone asilole Email",
                 phEmail: "09xxxxxxxxx",
                 labelPass: "Lehkhathup",
                 phPass: "******",
                 btnAuth: "Lut rawh",
+                btnRegister: "Register Siam Rawh",
                 heroTitle: "I Duhtak Zawng Rawh",
                 heroDesc: "Hnam hrang hrang te tana a him le zahawm Cupid platform",
                 rulesTitle: "Dan le Dun",
-                rulesText: "Thumal bawlhhlawh le inhnial buaina a awm tur ani lo. En mawi lo zawng thlalak te dah tur ani lo",
+                rulesText: "Thumal bawlhhlawh le inhnial buaina a awm tur ani lo.",
                 chatInputPh: "Private Thuchah ziak rawh...",
                 labelLangJoin: "Join duh mi tawng thlang rawh"
             },
@@ -542,15 +545,16 @@
                 phAge: "Na kum gelh in",
                 labelLocation: "Na omna mun (Location)",
                 phLocation: "Na omna khua",
-                labelContact: "Phone or Email",
+                labelContact: "Phone asilole Email",
                 phEmail: "09xxxxxxxxx",
                 labelPass: "Thuthup",
                 phPass: "******",
                 btnAuth: "Lut in",
+                btnRegister: "Register Bawl In",
                 heroTitle: "Nadeih Pen Zawng In",
                 heroDesc: "Mi khempeuh te a ding a ki lawm le a pha Cupid platform",
                 rulesTitle: "Thu ki zaksakna",
-                rulesText: "Kampau sia zang lo ding. Mite a ding buaina bawl lo ding. Kumpi phal lo mante tak lo ding",
+                rulesText: "Kampau sia zang lo ding. Mite a ding buaina bawl lo ding.",
                 chatInputPh: "Private Lai gelh in...",
                 labelLangJoin: "Join nopna pau teel in"
             },
@@ -570,6 +574,7 @@
                 labelPass: "Password",
                 phPass: "******",
                 btnAuth: "Sign In",
+                btnRegister: "Register",
                 heroTitle: "Find Your Match",
                 heroDesc: "A secure and respectful Cupid Platform",
                 rulesTitle: "Community Guidelines",
@@ -578,6 +583,10 @@
                 labelLangJoin: "Select Language to Join"
             }
         };
+
+        function userSelectLanguage(lang) {
+            changeLanguage(lang);
+        }
 
         function toggleAuthMode(mode) {
             currentAuthMode = mode;
@@ -593,6 +602,9 @@
             const btnSubmitAuth = document.getElementById('btnSubmitAuth');
             const authDesc = document.getElementById('authDesc');
 
+            const currentLang = document.getElementById('authLanguage').value || 'falam';
+            const data = translations[currentLang] || translations['falam'];
+
             if (mode === 'register') {
                 tabRegister.className = "flex-1 py-2 text-xs font-bold rounded-lg bg-pink-600 text-white transition";
                 tabLogin.className = "flex-1 py-2 text-xs font-bold rounded-lg text-gray-400 transition";
@@ -606,8 +618,8 @@
                 locInput.setAttribute('required', 'true');
                 contactInput.setAttribute('required', 'true');
 
-                btnSubmitAuth.innerText = "Register ပြုလုပ်မည်";
-                authDesc.innerText = "အကောင့်သစ်ပြုလုပ်ရန် အချက်အလက်များ ဖြည့်ပါ";
+                btnSubmitAuth.innerText = data.btnRegister || "Register";
+                authDesc.innerText = data.authDesc || "Account thar tuah aw";
             } else {
                 tabLogin.className = "flex-1 py-2 text-xs font-bold rounded-lg bg-pink-600 text-white transition";
                 tabRegister.className = "flex-1 py-2 text-xs font-bold rounded-lg text-gray-400 transition";
@@ -621,8 +633,8 @@
                 locInput.removeAttribute('required');
                 contactInput.removeAttribute('required');
 
-                btnSubmitAuth.innerText = "Lut aw (Login)";
-                authDesc.innerText = "အကောင့်ဝင်ရန် အချက်အလက်များ ဖြည့်ပါ";
+                btnSubmitAuth.innerText = data.btnAuth || "Lut aw (Login)";
+                authDesc.innerText = data.authDesc || "Account lut aw";
             }
         }
 
@@ -677,10 +689,10 @@
         }
 
         function changeLanguage(lang) {
-            const data = translations[lang] || translations['my'];
+            const data = translations[lang] || translations['falam'];
 
             const langSelect = document.getElementById('languageSelect');
-            langSelect.value = lang;
+            if (langSelect) langSelect.value = lang;
 
             const authLanguage = document.getElementById('authLanguage');
             if (authLanguage) authLanguage.value = lang;
@@ -691,6 +703,7 @@
             const rulesTitle = document.getElementById('rulesTitle');
             const rulesText = document.getElementById('rulesText');
             const authTitle = document.getElementById('authTitle');
+            const authDesc = document.getElementById('authDesc');
             const guaranteeText = document.getElementById('guaranteeText');
 
             const labelName = document.getElementById('labelName');
@@ -705,6 +718,7 @@
             const authPassword = document.getElementById('authPassword');
             const messageInput = document.getElementById('messageInput');
             const labelLangJoin = document.getElementById('labelLangJoin');
+            const btnSubmitAuth = document.getElementById('btnSubmitAuth');
 
             if (subHeaderTagMy && data.taglineMy) subHeaderTagMy.innerText = data.taglineMy;
             if (heroTitle) heroTitle.innerText = data.heroTitle;
@@ -712,6 +726,7 @@
             if (rulesTitle) rulesTitle.innerText = data.rulesTitle;
             if (rulesText) rulesText.innerText = data.rulesText;
             if (authTitle) authTitle.innerText = data.authTitle;
+            if (authDesc) authDesc.innerText = data.authDesc;
             if (guaranteeText) guaranteeText.innerText = data.guaranteeText;
 
             if (labelName) labelName.innerText = data.labelName;
@@ -725,6 +740,10 @@
             if (labelPass) labelPass.innerText = data.labelPass;
             if (authPassword && data.phPass) authPassword.placeholder = data.phPass;
             
+            if (btnSubmitAuth) {
+                btnSubmitAuth.innerText = (currentAuthMode === 'register') ? (data.btnRegister || "Register") : (data.btnAuth || "Lut aw (Login)");
+            }
+
             if (messageInput) {
                 if (currentUser && currentUser.id.startsWith('guest_')) {
                     messageInput.placeholder = "Guest အနေဖြင့် စာပို့၍မရပါ (Register ပြုလုပ်ပါ)";
@@ -777,9 +796,8 @@
             }
         }
 
-        // Direct Guest Access Function
         function continueAsGuest() {
-            const selectedLang = document.getElementById('authLanguage').value;
+            const selectedLang = document.getElementById('authLanguage').value || 'falam';
             currentUser = {
                 id: 'guest_' + Date.now(),
                 name: 'Visitor (ဧည့်သည်)',
@@ -793,7 +811,6 @@
 
             applyUserLanguageAndLock(selectedLang);
 
-            // Log Visitor to Firebase
             db.ref('visitors').push({
                 name: 'Visitor (ဧည့်သည်)',
                 age: 'N/A',
@@ -815,7 +832,7 @@
             const location = document.getElementById('authLocation').value.trim();
             const contact = document.getElementById('authEmail').value.trim();
             const password = document.getElementById('authPassword').value.trim();
-            const selectedLang = document.getElementById('authLanguage').value;
+            const selectedLang = document.getElementById('authLanguage').value || 'falam';
 
             const isAdmin = (name.toLowerCase() === 'admin' && (password.toLowerCase() === 'sawhai11'));
 
@@ -899,7 +916,7 @@
             document.getElementById('myProfLocation').innerText = currentUser.location || 'N/A';
             document.getElementById('myProfContact').innerText = currentUser.contact || 'N/A';
             document.getElementById('myProfBio').innerText = currentUser.bio || 'N/A';
-            document.getElementById('myProfLang').innerText = (currentUser.language || 'my').toUpperCase();
+            document.getElementById('myProfLang').innerText = (currentUser.language || 'falam').toUpperCase();
             
             const badge = document.getElementById('myProfBadge');
             if(currentUser.id.startsWith('guest_')) {
@@ -1109,7 +1126,7 @@
                         const dateStr = new Date(v.visitedAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
                         const vDiv = document.createElement('div');
                         vDiv.className = "text-gray-300 border-b border-slate-800 pb-1 mb-1 flex justify-between items-center";
-                        vDiv.innerHTML = `<div><strong class="text-cyan-400">${v.name || 'Anonymous'}</strong> <span class="text-[10px] text-gray-400">(${v.age}, ${v.location})</span></div> <div class="text-right"><span class="text-pink-400 font-semibold">[${(v.language || 'my').toUpperCase()}]</span> <span class="text-[9px] text-gray-500 block">${dateStr}</span></div>`;
+                        vDiv.innerHTML = `<div><strong class="text-cyan-400">${v.name || 'Anonymous'}</strong> <span class="text-[10px] text-gray-400">(${v.age}, ${v.location})</span></div> <div class="text-right"><span class="text-pink-400 font-semibold">[${(v.language || 'falam').toUpperCase()}]</span> <span class="text-[9px] text-gray-500 block">${dateStr}</span></div>`;
                         visitorsListContainer.appendChild(vDiv);
                     });
                 } else {
@@ -1131,7 +1148,7 @@
                         const u = users[uid];
                         const userP = document.createElement('div');
                         userP.className = "text-gray-300 border-b border-slate-800 pb-1 mb-1 flex justify-between items-center";
-                        userP.innerHTML = `<div><strong class="text-white">${u.name || 'Unknown'}</strong> <span class="text-[10px] text-gray-400">(${u.age || 'N/A'}, ${u.location || 'N/A'})</span></div> <span class="text-pink-400 font-semibold">[${(u.language || 'my').toUpperCase()}]</span>`;
+                        userP.innerHTML = `<div><strong class="text-white">${u.name || 'Unknown'}</strong> <span class="text-[10px] text-gray-400">(${u.age || 'N/A'}, ${u.location || 'N/A'})</span></div> <span class="text-pink-400 font-semibold">[${(u.language || 'falam').toUpperCase()}]</span>`;
                         usersListContainer.appendChild(userP);
                     });
                 } else {
@@ -1169,6 +1186,11 @@
                 }
             });
         }
+
+        // Initialize language dynamically on first page load
+        window.onload = function() {
+            changeLanguage('falam');
+        };
     </script>
 </body>
 </html>
