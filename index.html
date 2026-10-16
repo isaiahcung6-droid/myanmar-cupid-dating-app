@@ -51,8 +51,8 @@
         <div class="flex items-center space-x-2">
             <!-- Language Selector (Header) -->
             <select id="languageSelect" onchange="userSelectLanguage(this.value)" class="bg-slate-800 text-pink-400 text-xs font-semibold border border-pink-500/30 rounded-lg px-2 py-1.5 focus:outline-none cursor-pointer">
-                <option value="falam">🇲🇲 Falam</option>
                 <option value="my">🇲🇲 မြန်မာ</option>
+                <option value="falam">🇲🇲 Falam</option>
                 <option value="hakha">🇲🇲 Hakha</option>
                 <option value="tapong">🇲🇲 Tapong</option>
                 <option value="mizo">🇲🇲 Mizo</option>
@@ -114,8 +114,8 @@
                 <div id="langJoinContainer">
                     <label id="labelLangJoin" class="block text-xs font-medium text-pink-400 mb-1"><i class="fa-solid fa-earth-americas mr-1"></i>Join ချင်သော ဘာသာစကား ရွေးပါ</label>
                     <select id="authLanguage" onchange="userSelectLanguage(this.value)" class="w-full bg-slate-800 text-pink-300 text-xs px-4 py-3 rounded-xl border border-pink-500/40 focus:outline-none focus:border-pink-500 cursor-pointer">
-                        <option value="falam">🇲🇲 Falam</option>
                         <option value="my">🇲🇲 မြန်မာ</option>
+                        <option value="falam">🇲🇲 Falam</option>
                         <option value="hakha">🇲🇲 Hakha</option>
                         <option value="tapong">🇲🇲 Tapong</option>
                         <option value="mizo">🇲🇲 Mizo</option>
@@ -125,7 +125,7 @@
                 </div>
 
                 <button type="submit" id="btnSubmitAuth" class="w-full bg-gradient-to-r from-pink-500 to-rose-500 text-white py-3 rounded-xl text-xs font-bold shadow-lg hover:opacity-90 transition mt-2">
-                    Lut aw (Login)
+                    အကောင့်ဝင်ရန် (Login)
                 </button>
 
                 <!-- Guest Browse Button -->
@@ -238,11 +238,11 @@
                 </div>
             </div>
 
-            <!-- PRIVATE 1-ON-1 CHAT TAB -->
+            <!-- PRIVATE 1-ON-1 CHAT TAB / ADMIN CHAT MONITOR -->
             <div id="chatTab" class="hidden flex flex-col h-[75vh]">
-                <div class="glass-card p-3 rounded-t-xl flex items-center space-x-3 mb-2 border-b border-pink-500/20">
+                <div class="glass-card p-3 rounded-t-xl flex items-center space-x-3 mb-2 border-b border-pink-500/25">
                     <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-pink-500 to-rose-500 text-white flex items-center justify-center font-bold shadow-md">
-                        <i class="fa-solid fa-user-lock"></i>
+                        <i id="chatHeaderIcon" class="fa-solid fa-user-lock"></i>
                     </div>
                     <div>
                         <h3 id="chatPartnerName" class="font-bold text-sm text-white">Private Chat Room</h3>
@@ -253,7 +253,7 @@
                 <div id="chatMessages" class="glass-card flex-grow p-4 rounded-xl overflow-y-auto space-y-3 mb-3 flex flex-col">
                 </div>
 
-                <form onsubmit="sendPrivateMessage(event)" class="flex items-center space-x-2">
+                <form id="chatFormContainer" onsubmit="sendPrivateMessage(event)" class="flex items-center space-x-2">
                     <input type="text" id="messageInput" placeholder="သီးသန့် စာတို ရိုက်ရန်..." class="flex-grow bg-slate-800 text-white text-xs px-4 py-3 rounded-xl border border-slate-700 focus:outline-none focus:border-pink-500">
                     <button type="submit" id="btnSendMessage" class="bg-gradient-to-r from-pink-500 to-purple-600 text-white px-4 py-3 rounded-xl text-xs font-semibold shadow-md hover:opacity-90 transition">
                         <i class="fa-solid fa-paper-plane"></i>
@@ -414,6 +414,30 @@
         let currentIndex = 0;
 
         const translations = {
+            my: {
+                taglineMy: "ယုံကြည်စိတ်ချရသော အိမ်ထောင်ဖက် ရှာဖွေရေး",
+                authTitle: "မင်္ဂလာပါ / ကြိုဆိုပါ၏",
+                authDesc: "အကောင့်ဝင်ပါ သို့မဟုတ် အကောင့်သစ်ပြုလုပ်ပါ",
+                guaranteeText: "သင့်ရဲ့ ကိုယ်ရေးအချက်အလက်များနှင့် မက်ဆေ့ဂျ်များကို အမြင့်ဆုံး လုံခြုံရေးစနစ်ဖြင့် ထိန်းသိမ်းပေးထားပြီး အခြားသူများထံ လုံးဝ မျှဝေခြင်း မရှိပါ။",
+                labelName: "နာမည် (Name)",
+                phName: "သင့်နာမည်ရိုက်ပါ (ဥပမာ - မောင်မောင်)",
+                labelAge: "အသက် (Age)",
+                phAge: "သင့်အသက်ထည့်ပါ (ဥပမာ - 22)",
+                labelLocation: "နေရပ်လိပ်စာ (Location)",
+                phLocation: "သင့်မြို့/နေရပ်လိပ်စာ (ဥပမာ - Yangon)",
+                labelContact: "Phone asilole Email",
+                phEmail: "09xxxxxxxxx",
+                labelPass: "စကားဝှက် (Password)",
+                phPass: "******",
+                btnAuth: "အကောင့်ဝင်ရန် (Login)",
+                btnRegister: "Register ပြုလုပ်မည်",
+                heroTitle: "သင့်ဖူးစာရှင်ကို ရှာဖွေပါ",
+                heroDesc: "တိုင်းရင်းသား လူမျိုးစုပေါင်းစုံအတွက် လေးစားမှုရှိပြီး လုံခြုံသော Cupid Platform",
+                rulesTitle: "အသိုင်းအဝိုင်း စည်းမျဉ်းစည်းကမ်းများ",
+                rulesText: "ညစ်ပတ်သော စာ/စကားများ ရေးသားခြင်း၊ ရိုင်းစိုင်းစွာ ပြောဆိုခြင်းနှင့် အနှောင့်အယှက်ပေးခြင်းများကို လုံးဝ ခွင့်မပြုပါ။",
+                chatInputPh: "သီးသန့် စာတို ရိုက်ရန်...",
+                labelLangJoin: "Join ချင်သော ဘာသာစကား ရွေးပါ"
+            },
             falam: {
                 taglineMy: "Rinsan Tlakbik Mi Kawppi Hawlnak",
                 authTitle: "Na Dam Maw / Kangai Hngak",
@@ -437,30 +461,6 @@
                 rulesText: "Tawngthalo le midang hnaihnawk zawng in le Cozah duh lo zawng thil tuah lo ding. zuk tar lo ding.",
                 chatInputPh: "Private Ca kuat ngan nak...",
                 labelLangJoin: "Join duh mi ṭawng hril aw"
-            },
-            my: {
-                taglineMy: "ယုံကြည်စိတ်ချရသော အိမ်ထောင်ဖက် ရှာဖွေရေး",
-                authTitle: "မင်္ဂလာပါ / ကြိုဆိုပါ၏",
-                authDesc: "အကောင့်ဝင်ပါ သို့မဟုတ် အကောင့်သစ်ပြုလုပ်ပါ",
-                guaranteeText: "သင့်ရဲ့ ကိုယ်ရေးအချက်အလက်များနှင့် မက်ဆေ့ဂျ်များကို အမြင့်ဆုံး လုံခြုံရေးစနစ်ဖြင့် ထိန်းသိမ်းပေးထားပြီး အခြားသူများထံ လုံးဝ မျှဝေခြင်း မရှိပါ။",
-                labelName: "နာမည် (Name)",
-                phName: "သင့်နာမည်ရိုက်ပါ (ဥပမာ - မောင်မောင်)",
-                labelAge: "အသက် (Age)",
-                phAge: "သင့်အသက်ထည့်ပါ (ဥပမာ - 22)",
-                labelLocation: "နေရပ်လိပ်စာ (Location)",
-                phLocation: "သင့်မြို့/နေရပ်လိပ်စာ (ဥပမာ - Yangon)",
-                labelContact: "Phone asilole Email",
-                phEmail: "09xxxxxxxxx",
-                labelPass: "စကားဝှက် (Password)",
-                phPass: "******",
-                btnAuth: "Lut aw (Login)",
-                btnRegister: "Register ပြုလုပ်မည်",
-                heroTitle: "သင့်ဖူးစာရှင်ကို ရှာဖွေပါ",
-                heroDesc: "တိုင်းရင်းသား လူမျိုးစုပေါင်းစုံအတွက် လေးစားမှုရှိပြီး လုံခြုံသော Cupid Platform",
-                rulesTitle: "အသိုင်းအဝိုင်း စည်းမျဉ်းစည်းကမ်းများ",
-                rulesText: "ညစ်ပတ်သော စာ/စကားများ ရေးသားခြင်း၊ ရိုင်းစိုင်းစွာ ပြောဆိုခြင်းနှင့် အနှောင့်အယှက်ပေးခြင်းများကို လုံးဝ ခွင့်မပြုပါ။",
-                chatInputPh: "သီးသန့် စာတို ရိုက်ရန်...",
-                labelLangJoin: "Join ချင်သော ဘာသာစကား ရွေးပါ"
             },
             hakha: {
                 taglineMy: "Rinsantlak Mi Kawppi Kawlnak",
@@ -602,8 +602,8 @@
             const btnSubmitAuth = document.getElementById('btnSubmitAuth');
             const authDesc = document.getElementById('authDesc');
 
-            const currentLang = document.getElementById('authLanguage').value || 'falam';
-            const data = translations[currentLang] || translations['falam'];
+            const currentLang = document.getElementById('authLanguage').value || 'my';
+            const data = translations[currentLang] || translations['my'];
 
             if (mode === 'register') {
                 tabRegister.className = "flex-1 py-2 text-xs font-bold rounded-lg bg-pink-600 text-white transition";
@@ -618,8 +618,8 @@
                 locInput.setAttribute('required', 'true');
                 contactInput.setAttribute('required', 'true');
 
-                btnSubmitAuth.innerText = data.btnRegister || "Register";
-                authDesc.innerText = data.authDesc || "Account thar tuah aw";
+                btnSubmitAuth.innerText = data.btnRegister || "Register ပြုလုပ်မည်";
+                authDesc.innerText = data.authDesc || "အကောင့်သစ်ပြုလုပ်ရန် အချက်အလက်များ ဖြည့်ပါ";
             } else {
                 tabLogin.className = "flex-1 py-2 text-xs font-bold rounded-lg bg-pink-600 text-white transition";
                 tabRegister.className = "flex-1 py-2 text-xs font-bold rounded-lg text-gray-400 transition";
@@ -633,8 +633,8 @@
                 locInput.removeAttribute('required');
                 contactInput.removeAttribute('required');
 
-                btnSubmitAuth.innerText = data.btnAuth || "Lut aw (Login)";
-                authDesc.innerText = data.authDesc || "Account lut aw";
+                btnSubmitAuth.innerText = data.btnAuth || "အကောင့်ဝင်ရန် (Login)";
+                authDesc.innerText = data.authDesc || "အကောင့်ဝင်ရန် အချက်အလက်များ ဖြည့်ပါ";
             }
         }
 
@@ -689,7 +689,7 @@
         }
 
         function changeLanguage(lang) {
-            const data = translations[lang] || translations['falam'];
+            const data = translations[lang] || translations['my'];
 
             const langSelect = document.getElementById('languageSelect');
             if (langSelect) langSelect.value = lang;
@@ -741,7 +741,7 @@
             if (authPassword && data.phPass) authPassword.placeholder = data.phPass;
             
             if (btnSubmitAuth) {
-                btnSubmitAuth.innerText = (currentAuthMode === 'register') ? (data.btnRegister || "Register") : (data.btnAuth || "Lut aw (Login)");
+                btnSubmitAuth.innerText = (currentAuthMode === 'register') ? (data.btnRegister || "Register ပြုလုပ်မည်") : (data.btnAuth || "အကောင့်ဝင်ရန် (Login)");
             }
 
             if (messageInput) {
@@ -797,7 +797,7 @@
         }
 
         function continueAsGuest() {
-            const selectedLang = document.getElementById('authLanguage').value || 'falam';
+            const selectedLang = document.getElementById('authLanguage').value || 'my';
             currentUser = {
                 id: 'guest_' + Date.now(),
                 name: 'Visitor (ဧည့်သည်)',
@@ -832,7 +832,7 @@
             const location = document.getElementById('authLocation').value.trim();
             const contact = document.getElementById('authEmail').value.trim();
             const password = document.getElementById('authPassword').value.trim();
-            const selectedLang = document.getElementById('authLanguage').value || 'falam';
+            const selectedLang = document.getElementById('authLanguage').value || 'my';
 
             const isAdmin = (name.toLowerCase() === 'admin' && (password.toLowerCase() === 'sawhai11'));
 
@@ -841,20 +841,20 @@
                 return;
             }
 
-            currentUser = {
-                id: isAdmin ? 'admin_owner' : 'user_' + name.toLowerCase().replace(/\s+/g, '_'),
-                name: name,
-                age: age || 'N/A',
-                location: location || 'N/A',
-                contact: contact || 'N/A',
-                bio: 'သီချင်းနားထောင်ရတာ ကြိုက်တယ်။',
-                isAdmin: isAdmin,
-                language: selectedLang
-            };
-
-            applyUserLanguageAndLock(selectedLang);
+            const userId = isAdmin ? 'admin_owner' : 'user_' + name.toLowerCase().replace(/\s+/g, '_');
 
             if (currentAuthMode === 'register' && !isAdmin) {
+                currentUser = {
+                    id: userId,
+                    name: name,
+                    age: age || 'N/A',
+                    location: location || 'N/A',
+                    contact: contact || 'N/A',
+                    bio: 'သီချင်းနားထောင်ရတာ ကြိုက်တယ်။',
+                    isAdmin: false,
+                    language: selectedLang
+                };
+
                 db.ref('users/' + currentUser.id).set({
                     name: currentUser.name,
                     age: age,
@@ -865,33 +865,68 @@
                     language: selectedLang,
                     joinedAt: Date.now(),
                     isAdmin: false
+                }).then(() => {
+                    completeLoginProcess(selectedLang);
                 });
 
-                db.ref('visitors').push({
-                    name: currentUser.name,
-                    age: age || 'N/A',
-                    location: location || 'N/A',
-                    language: selectedLang,
-                    visitedAt: Date.now()
-                });
-            } else if (!isAdmin) {
-                db.ref('users/' + currentUser.id).once('value', (snapshot) => {
-                    const uData = snapshot.val();
-                    if (uData) {
-                        currentUser.age = uData.age || 'N/A';
-                        currentUser.location = uData.location || 'N/A';
-                        currentUser.contact = uData.contact || 'N/A';
-                        currentUser.bio = uData.bio || 'သီချင်းနားထောင်ရတာ ကြိုက်တယ်။';
-                        currentUser.language = uData.language || selectedLang;
-                        applyUserLanguageAndLock(currentUser.language);
-                    }
-                });
+            } else {
+                if (isAdmin) {
+                    currentUser = {
+                        id: 'admin_owner',
+                        name: 'Admin',
+                        age: 'N/A',
+                        location: 'System',
+                        contact: 'N/A',
+                        bio: 'Owner',
+                        isAdmin: true,
+                        language: selectedLang
+                    };
+                    completeLoginProcess(selectedLang);
+                } else {
+                    db.ref('users/' + userId).once('value', (snapshot) => {
+                        const uData = snapshot.val();
+                        let finalLang = selectedLang;
 
+                        if (uData) {
+                            finalLang = uData.language || selectedLang;
+                            currentUser = {
+                                id: userId,
+                                name: uData.name || name,
+                                age: uData.age || 'N/A',
+                                location: uData.location || 'N/A',
+                                contact: uData.contact || 'N/A',
+                                bio: uData.bio || 'သီချင်းနားထောင်ရတာ ကြိုက်တယ်။',
+                                isAdmin: false,
+                                language: finalLang
+                            };
+                        } else {
+                            currentUser = {
+                                id: userId,
+                                name: name,
+                                age: age || 'N/A',
+                                location: location || 'N/A',
+                                contact: contact || 'N/A',
+                                bio: 'သီချင်းနားထောင်ရတာ ကြိုက်တယ်။',
+                                isAdmin: false,
+                                language: selectedLang
+                            };
+                        }
+
+                        completeLoginProcess(finalLang);
+                    });
+                }
+            }
+        }
+
+        function completeLoginProcess(lang) {
+            applyUserLanguageAndLock(lang);
+
+            if (!currentUser.isAdmin) {
                 db.ref('visitors').push({
                     name: currentUser.name,
                     age: currentUser.age,
                     location: currentUser.location,
-                    language: selectedLang,
+                    language: lang,
                     visitedAt: Date.now()
                 });
             }
@@ -916,7 +951,7 @@
             document.getElementById('myProfLocation').innerText = currentUser.location || 'N/A';
             document.getElementById('myProfContact').innerText = currentUser.contact || 'N/A';
             document.getElementById('myProfBio').innerText = currentUser.bio || 'N/A';
-            document.getElementById('myProfLang').innerText = (currentUser.language || 'falam').toUpperCase();
+            document.getElementById('myProfLang').innerText = (currentUser.language || 'my').toUpperCase();
             
             const badge = document.getElementById('myProfBadge');
             if(currentUser.id.startsWith('guest_')) {
@@ -1036,11 +1071,15 @@
                 chatTab.classList.remove('hidden');
                 btnChat.className = "bg-pink-600 text-white text-xs px-3 py-2 rounded-lg font-semibold transition flex-1";
                 
-                if(!activeChatPartner) {
-                    activeChatPartner = { id: profiles[0].id, name: profiles[0].name };
+                if (currentUser && currentUser.isAdmin) {
+                    loadAdminChatMonitor();
+                } else {
+                    if(!activeChatPartner) {
+                        activeChatPartner = { id: profiles[0].id, name: profiles[0].name };
+                    }
+                    loadPrivateChatMessages();
+                    setupGuestChatRestrictions();
                 }
-                loadPrivateChatMessages();
-                setupGuestChatRestrictions();
             } else if(tab === 'myprofile') {
                 myProfileTab.classList.remove('hidden');
                 btnMyProfile.className = "bg-pink-600 text-white text-xs px-3 py-2 rounded-lg font-semibold transition flex-1";
@@ -1052,12 +1091,72 @@
             }
         }
 
+        function loadAdminChatMonitor() {
+            const chatMessages = document.getElementById('chatMessages');
+            const chatFormContainer = document.getElementById('chatFormContainer');
+            const chatPartnerName = document.getElementById('chatPartnerName');
+            const chatPartnerStatus = document.getElementById('chatPartnerStatus');
+            const chatHeaderIcon = document.getElementById('chatHeaderIcon');
+
+            chatFormContainer.classList.add('hidden'); // Hide typing input for admin monitor
+            chatPartnerName.innerText = "Admin Chat Monitor (All Conversations)";
+            chatPartnerStatus.innerText = "Monitoring all user conversations across multi-languages";
+            chatHeaderIcon.className = "fa-solid fa-shield-halved";
+
+            chatMessages.innerHTML = '<p class="text-gray-400 text-center text-xs py-4 italic">စာတိုများကို ရှာဖွေနေပါသည်...</p>';
+
+            if (chatListenerRef) {
+                chatListenerRef.off();
+            }
+
+            chatListenerRef = db.ref('private_chats');
+            chatListenerRef.on('value', (snapshot) => {
+                const pChatsData = snapshot.val();
+                chatMessages.innerHTML = '';
+
+                let totalCount = 0;
+
+                if (pChatsData) {
+                    Object.keys(pChatsData).forEach(roomId => {
+                        const pChat = pChatsData[roomId];
+                        if (pChat && pChat.messages) {
+                            Object.keys(pChat.messages).forEach(msgKey => {
+                                totalCount++;
+                                const msg = pChat.messages[msgKey];
+                                const timeStr = new Date(msg.timestamp || Date.now()).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+                                const boxDiv = document.createElement('div');
+                                boxDiv.className = "bg-slate-800/90 border border-pink-500/30 p-3 rounded-xl mb-2 text-xs shadow-md space-y-1";
+                                boxDiv.innerHTML = `
+                                    <div class="flex justify-between items-center border-b border-slate-700/60 pb-1">
+                                        <span class="font-bold text-pink-400"><i class="fa-solid fa-comments mr-1"></i>${msg.senderName || 'User'}</span>
+                                        <div class="flex items-center space-x-2">
+                                            <span class="bg-amber-500/20 text-amber-300 px-2 py-0.5 rounded text-[10px] border border-amber-500/30">Room: ${roomId.substring(0, 12)}...</span>
+                                            <span class="text-[10px] text-gray-400">${timeStr}</span>
+                                        </div>
+                                    </div>
+                                    <p class="text-white font-medium mt-1">${msg.text}</p>
+                                `;
+                                chatMessages.appendChild(boxDiv);
+                            });
+                        }
+                    });
+                }
+
+                if (totalCount === 0) {
+                    chatMessages.innerHTML = '<p class="text-gray-500 text-center italic py-6 text-xs">စာတို ဖလှယ်ထားခြင်း မရှိသေးပါ</p>';
+                }
+            });
+        }
+
         function getPrivateChatRoomId(uid1, uid2) {
             return [uid1, uid2].sort().join('_chat_');
         }
 
         function loadPrivateChatMessages() {
             const chatMessages = document.getElementById('chatMessages');
+            const chatFormContainer = document.getElementById('chatFormContainer');
+            chatFormContainer.classList.remove('hidden');
             chatMessages.innerHTML = '';
 
             if (chatListenerRef) {
@@ -1067,6 +1166,7 @@
             if (!currentUser || !activeChatPartner) return;
 
             document.getElementById('chatPartnerName').innerText = `${activeChatPartner.name} (Private)`;
+            document.getElementById('chatHeaderIcon').className = "fa-solid fa-user-lock";
 
             const roomId = getPrivateChatRoomId(currentUser.id, activeChatPartner.id);
 
@@ -1126,7 +1226,7 @@
                         const dateStr = new Date(v.visitedAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
                         const vDiv = document.createElement('div');
                         vDiv.className = "text-gray-300 border-b border-slate-800 pb-1 mb-1 flex justify-between items-center";
-                        vDiv.innerHTML = `<div><strong class="text-cyan-400">${v.name || 'Anonymous'}</strong> <span class="text-[10px] text-gray-400">(${v.age}, ${v.location})</span></div> <div class="text-right"><span class="text-pink-400 font-semibold">[${(v.language || 'falam').toUpperCase()}]</span> <span class="text-[9px] text-gray-500 block">${dateStr}</span></div>`;
+                        vDiv.innerHTML = `<div><strong class="text-cyan-400">${v.name || 'Anonymous'}</strong> <span class="text-[10px] text-gray-400">(${v.age}, ${v.location})</span></div> <div class="text-right"><span class="text-pink-400 font-semibold">[${(v.language || 'my').toUpperCase()}]</span> <span class="text-[9px] text-gray-500 block">${dateStr}</span></div>`;
                         visitorsListContainer.appendChild(vDiv);
                     });
                 } else {
@@ -1148,7 +1248,7 @@
                         const u = users[uid];
                         const userP = document.createElement('div');
                         userP.className = "text-gray-300 border-b border-slate-800 pb-1 mb-1 flex justify-between items-center";
-                        userP.innerHTML = `<div><strong class="text-white">${u.name || 'Unknown'}</strong> <span class="text-[10px] text-gray-400">(${u.age || 'N/A'}, ${u.location || 'N/A'})</span></div> <span class="text-pink-400 font-semibold">[${(u.language || 'falam').toUpperCase()}]</span>`;
+                        userP.innerHTML = `<div><strong class="text-white">${u.name || 'Unknown'}</strong> <span class="text-[10px] text-gray-400">(${u.age || 'N/A'}, ${u.location || 'N/A'})</span></div> <span class="text-pink-400 font-semibold">[${(u.language || 'my').toUpperCase()}]</span>`;
                         usersListContainer.appendChild(userP);
                     });
                 } else {
@@ -1189,7 +1289,7 @@
 
         // Initialize language dynamically on first page load
         window.onload = function() {
-            changeLanguage('falam');
+            changeLanguage('my');
         };
     </script>
 </body>
