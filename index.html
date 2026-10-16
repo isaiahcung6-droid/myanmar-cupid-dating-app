@@ -28,7 +28,6 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
-        .admin-btn { display: none !important; }
     </style>
 </head>
 <body class="min-h-screen flex flex-col justify-between">
@@ -131,7 +130,7 @@
 
                 <!-- Guest Browse Button (No Register Required) -->
                 <button type="button" onclick="continueAsGuest()" class="w-full bg-slate-800 text-cyan-400 border border-cyan-500/40 py-2.5 rounded-xl text-xs font-bold hover:bg-cyan-950/30 transition mt-2">
-                    <i class="fa-solid fa-eye mr-1"></i> Guest အနဖြင့် ဝင်ရောက်ကြည့်ရှုရန် (Browse as Guest)
+                    <i class="fa-solid fa-eye mr-1"></i> Guest အနေဖြင့် ဝင်ရောက်ကြည့်ရှုရန် (Browse as Guest)
                 </button>
             </form>
         </div>
@@ -167,9 +166,10 @@
             <!-- Navigation Tabs Bar (In-App) -->
             <div id="mainNavButtons" class="glass-card p-2 rounded-xl mb-4 flex justify-between items-center shadow-lg">
                 <div class="flex space-x-1 w-full justify-around">
-                    <button onclick="switchTab('discover')" id="btnDiscover" class="bg-pink-600 text-white text-xs px-4 py-2 rounded-lg font-semibold transition flex-1 mr-1">Discover</button>
-                    <button onclick="switchTab('chat')" id="btnChat" class="bg-slate-800 text-gray-300 text-xs px-4 py-2 rounded-lg font-semibold border border-slate-700 transition flex-1">Chat</button>
-                    <button onclick="switchTab('admin')" id="btnAdmin" class="bg-slate-800 text-amber-400 text-xs px-3 py-2 rounded-lg font-semibold border border-slate-700 transition hidden ml-1"><i class="fa-solid fa-lock mr-1"></i>Admin</button>
+                    <button onclick="switchTab('discover')" id="btnDiscover" class="bg-pink-600 text-white text-xs px-3 py-2 rounded-lg font-semibold transition flex-1">Discover</button>
+                    <button onclick="switchTab('chat')" id="btnChat" class="bg-slate-800 text-gray-300 text-xs px-3 py-2 rounded-lg font-semibold border border-slate-700 transition flex-1">Chat</button>
+                    <button onclick="switchTab('myprofile')" id="btnMyProfile" class="bg-slate-800 text-gray-300 text-xs px-3 py-2 rounded-lg font-semibold border border-slate-700 transition flex-1">Profile</button>
+                    <button onclick="switchTab('admin')" id="btnAdmin" class="bg-slate-800 text-amber-400 text-xs px-2 py-2 rounded-lg font-semibold border border-slate-700 transition hidden"><i class="fa-solid fa-lock mr-1"></i>Admin</button>
                 </div>
             </div>
 
@@ -270,6 +270,40 @@
                         <i class="fa-solid fa-paper-plane"></i>
                     </button>
                 </form>
+            </div>
+
+            <!-- MY PROFILE TAB -->
+            <div id="myProfileTab" class="hidden space-y-4">
+                <div class="glass-card p-6 rounded-2xl shadow-xl text-center">
+                    <div class="w-20 h-20 rounded-full bg-gradient-to-tr from-pink-500 to-purple-600 flex items-center justify-center text-white font-bold text-3xl mx-auto mb-3 shadow-lg border-2 border-pink-400/50">
+                        <i class="fa-solid fa-user"></i>
+                    </div>
+                    <h3 id="myProfName" class="text-xl font-bold text-white mb-1">-</h3>
+                    <span id="myProfBadge" class="bg-pink-500/20 text-pink-300 text-[10px] px-3 py-1 rounded-full border border-pink-500/30 inline-block mb-4"><i class="fa-solid fa-circle-check mr-1"></i>Registered User</span>
+
+                    <div class="space-y-3 text-left border-t border-slate-700/60 pt-4 text-xs">
+                        <div class="flex justify-between items-center bg-slate-800/60 p-3 rounded-xl border border-slate-700/50">
+                            <span class="text-gray-400"><i class="fa-solid fa-cake-candles text-pink-400 mr-2"></i>Age (အသက်)</span>
+                            <span id="myProfAge" class="font-semibold text-white">-</span>
+                        </div>
+                        <div class="flex justify-between items-center bg-slate-800/60 p-3 rounded-xl border border-slate-700/50">
+                            <span class="text-gray-400"><i class="fa-solid fa-location-dot text-pink-400 mr-2"></i>Location (နေရပ်)</span>
+                            <span id="myProfLocation" class="font-semibold text-white">-</span>
+                        </div>
+                        <div class="flex justify-between items-center bg-slate-800/60 p-3 rounded-xl border border-slate-700/50">
+                            <span class="text-gray-400"><i class="fa-solid fa-address-book text-pink-400 mr-2"></i>Contact (အဆက်အသွယ်)</span>
+                            <span id="myProfContact" class="font-semibold text-white">-</span>
+                        </div>
+                        <div class="flex justify-between items-center bg-slate-800/60 p-3 rounded-xl border border-slate-700/50">
+                            <span class="text-gray-400"><i class="fa-solid fa-earth-americas text-pink-400 mr-2"></i>Community Language</span>
+                            <span id="myProfLang" class="font-semibold text-pink-300 uppercase">-</span>
+                        </div>
+                    </div>
+
+                    <button onclick="logoutUser()" class="w-full mt-6 bg-slate-800 text-rose-400 border border-rose-500/30 py-2.5 rounded-xl text-xs font-bold hover:bg-rose-950/30 transition">
+                        <i class="fa-solid fa-right-from-bracket mr-1.5"></i> Logout (အကောင့်ထွက်မည်)
+                    </button>
+                </div>
             </div>
 
             <!-- ADMIN TAB -->
@@ -684,6 +718,7 @@
                 name: 'Visitor (ဧည့်သည်)',
                 age: 'N/A',
                 location: 'Web Guest',
+                contact: 'N/A',
                 isAdmin: false,
                 language: selectedLang
             };
@@ -726,10 +761,12 @@
                 name: name,
                 age: age || 'N/A',
                 location: location || 'N/A',
+                contact: contact || 'N/A',
                 isAdmin: isAdmin,
                 language: selectedLang
             };
 
+            // Sync Header Language Selection Options with Registered Choice
             changeLanguage(selectedLang);
 
             if (currentAuthMode === 'register' && !isAdmin) {
@@ -743,6 +780,16 @@
                     language: selectedLang,
                     joinedAt: Date.now(),
                     isAdmin: false
+                });
+            } else if (!isAdmin) {
+                // Fetch User Details if Logging In
+                db.ref('users/' + currentUser.id).once('value', (snapshot) => {
+                    const uData = snapshot.val();
+                    if (uData) {
+                        currentUser.age = uData.age || 'N/A';
+                        currentUser.location = uData.location || 'N/A';
+                        currentUser.contact = uData.contact || 'N/A';
+                    }
                 });
             }
 
@@ -769,6 +816,32 @@
                 switchTab('discover');
                 loadProfile();
             }
+        }
+
+        function renderMyProfile() {
+            if(!currentUser) return;
+            document.getElementById('myProfName').innerText = currentUser.name || 'Guest User';
+            document.getElementById('myProfAge').innerText = currentUser.age || 'N/A';
+            document.getElementById('myProfLocation').innerText = currentUser.location || 'N/A';
+            document.getElementById('myProfContact').innerText = currentUser.contact || 'N/A';
+            document.getElementById('myProfLang').innerText = (currentUser.language || 'my').toUpperCase();
+            
+            const badge = document.getElementById('myProfBadge');
+            if(currentUser.id.startsWith('guest_')) {
+                badge.className = "bg-amber-500/20 text-amber-300 text-[10px] px-3 py-1 rounded-full border border-amber-500/30 inline-block mb-4";
+                badge.innerHTML = `<i class="fa-solid fa-eye mr-1"></i>Guest Visitor`;
+            } else {
+                badge.className = "bg-pink-500/20 text-pink-300 text-[10px] px-3 py-1 rounded-full border border-pink-500/30 inline-block mb-4";
+                badge.innerHTML = `<i class="fa-solid fa-circle-check mr-1"></i>Registered User`;
+            }
+        }
+
+        function logoutUser() {
+            currentUser = null;
+            document.getElementById('appSection').classList.add('hidden');
+            document.getElementById('authSection').classList.remove('hidden');
+            document.getElementById('btnAdmin').classList.add('hidden');
+            document.getElementById('adminRoomBar').classList.add('hidden');
         }
 
         function adminSwitchRoom(lang) {
@@ -798,28 +871,37 @@
         function switchTab(tab) {
             const discoverTab = document.getElementById('discoverTab');
             const chatTab = document.getElementById('chatTab');
+            const myProfileTab = document.getElementById('myProfileTab');
             const adminTab = document.getElementById('adminTab');
             const btnDiscover = document.getElementById('btnDiscover');
             const btnChat = document.getElementById('btnChat');
+            const btnMyProfile = document.getElementById('btnMyProfile');
             const btnAdmin = document.getElementById('btnAdmin');
 
             discoverTab.classList.add('hidden');
             chatTab.classList.add('hidden');
+            myProfileTab.classList.add('hidden');
             adminTab.classList.add('hidden');
-            btnDiscover.className = "bg-slate-800 text-gray-300 text-xs px-4 py-2 rounded-lg font-semibold border border-slate-700 transition flex-1 mr-1";
-            btnChat.className = "bg-slate-800 text-gray-300 text-xs px-4 py-2 rounded-lg font-semibold border border-slate-700 transition flex-1";
-            if(currentUser && currentUser.isAdmin) btnAdmin.className = "bg-slate-800 text-amber-400 text-xs px-3 py-2 rounded-lg font-semibold border border-slate-700 transition ml-1";
+
+            btnDiscover.className = "bg-slate-800 text-gray-300 text-xs px-3 py-2 rounded-lg font-semibold border border-slate-700 transition flex-1";
+            btnChat.className = "bg-slate-800 text-gray-300 text-xs px-3 py-2 rounded-lg font-semibold border border-slate-700 transition flex-1";
+            btnMyProfile.className = "bg-slate-800 text-gray-300 text-xs px-3 py-2 rounded-lg font-semibold border border-slate-700 transition flex-1";
+            if(currentUser && currentUser.isAdmin) btnAdmin.className = "bg-slate-800 text-amber-400 text-xs px-2 py-2 rounded-lg font-semibold border border-slate-700 transition";
 
             if(tab === 'discover') {
                 discoverTab.classList.remove('hidden');
-                btnDiscover.className = "bg-pink-600 text-white text-xs px-4 py-2 rounded-lg font-semibold transition flex-1 mr-1";
+                btnDiscover.className = "bg-pink-600 text-white text-xs px-3 py-2 rounded-lg font-semibold transition flex-1";
             } else if(tab === 'chat') {
                 chatTab.classList.remove('hidden');
-                btnChat.className = "bg-pink-600 text-white text-xs px-4 py-2 rounded-lg font-semibold transition flex-1";
+                btnChat.className = "bg-pink-600 text-white text-xs px-3 py-2 rounded-lg font-semibold transition flex-1";
                 loadCommunityChatMessages();
+            } else if(tab === 'myprofile') {
+                myProfileTab.classList.remove('hidden');
+                btnMyProfile.className = "bg-pink-600 text-white text-xs px-3 py-2 rounded-lg font-semibold transition flex-1";
+                renderMyProfile();
             } else if(tab === 'admin' && currentUser && currentUser.isAdmin) {
                 adminTab.classList.remove('hidden');
-                btnAdmin.className = "bg-amber-600 text-white text-xs px-3 py-2 rounded-lg font-semibold transition ml-1";
+                btnAdmin.className = "bg-amber-600 text-white text-xs px-2 py-2 rounded-lg font-semibold transition";
                 initAdminDashboard();
             }
         }
