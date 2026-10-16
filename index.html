@@ -766,11 +766,12 @@
                 language: selectedLang
             };
 
-            // Sync Header Language Selection Options with Registered Choice
+            // Sync Header and Global Language Option
+            document.getElementById('languageSelect').value = selectedLang;
             changeLanguage(selectedLang);
 
             if (currentAuthMode === 'register' && !isAdmin) {
-                // Save Registered User Profile
+                // Save Registered User Profile to Firebase
                 db.ref('users/' + currentUser.id).set({
                     name: currentUser.name,
                     age: age,
@@ -781,24 +782,33 @@
                     joinedAt: Date.now(),
                     isAdmin: false
                 });
+
+                // Also log as visitor automatically upon registration
+                db.ref('visitors').push({
+                    name: currentUser.name,
+                    age: age || 'N/A',
+                    location: location || 'N/A',
+                    language: selectedLang,
+                    visitedAt: Date.now()
+                });
             } else if (!isAdmin) {
-                // Fetch User Details if Logging In
+                // Fetch User Details if Logging In & Log Visitor
                 db.ref('users/' + currentUser.id).once('value', (snapshot) => {
                     const uData = snapshot.val();
                     if (uData) {
                         currentUser.age = uData.age || 'N/A';
                         currentUser.location = uData.location || 'N/A';
                         currentUser.contact = uData.contact || 'N/A';
+                        currentUser.language = uData.language || selectedLang;
+                        document.getElementById('languageSelect').value = currentUser.language;
+                        changeLanguage(currentUser.language);
                     }
                 });
-            }
 
-            // Log Page Visitor Activity
-            if (!currentUser.isAdmin) {
                 db.ref('visitors').push({
                     name: currentUser.name,
-                    age: age || 'N/A',
-                    location: location || 'N/A',
+                    age: currentUser.age,
+                    location: currentUser.location,
                     language: selectedLang,
                     visitedAt: Date.now()
                 });
@@ -914,7 +924,7 @@
                 chatListenerRef.off();
             }
 
-            const targetLang = (currentUser && currentUser.isAdmin && activeAdminRoom) ? activeAdminRoom : document.getElementById('authLanguage').value;
+            const targetLang = (currentUser && currentUser.isAdmin && activeAdminRoom) ? activeAdminRoom : document.getElementById('languageSelect').value;
             const currentRoomId = 'community_room_' + targetLang;
 
             chatListenerRef = db.ref('rooms/' + currentRoomId + '/messages');
@@ -941,7 +951,7 @@
             const text = input.value.trim();
             if(!text || !currentUser) return;
 
-            const targetLang = (currentUser && currentUser.isAdmin && activeAdminRoom) ? activeAdminRoom : document.getElementById('authLanguage').value;
+            const targetLang = (currentUser && currentUser.isAdmin && activeAdminRoom) ? activeAdminRoom : document.getElementById('languageSelect').value;
             const currentRoomId = 'community_room_' + targetLang;
 
             db.ref('rooms/' + currentRoomId + '/messages').push({
