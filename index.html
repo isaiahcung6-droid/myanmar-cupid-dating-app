@@ -238,11 +238,11 @@
                 </div>
             </div>
 
-            <!-- PRIVATE 1-ON-1 CHAT TAB / ADMIN CHAT MONITOR -->
+            <!-- PRIVATE 1-ON-1 CHAT TAB -->
             <div id="chatTab" class="hidden flex flex-col h-[75vh]">
-                <div class="glass-card p-3 rounded-t-xl flex items-center space-x-3 mb-2 border-b border-pink-500/25">
+                <div class="glass-card p-3 rounded-t-xl flex items-center space-x-3 mb-2 border-b border-pink-500/20">
                     <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-pink-500 to-rose-500 text-white flex items-center justify-center font-bold shadow-md">
-                        <i id="chatHeaderIcon" class="fa-solid fa-user-lock"></i>
+                        <i class="fa-solid fa-user-lock"></i>
                     </div>
                     <div>
                         <h3 id="chatPartnerName" class="font-bold text-sm text-white">Private Chat Room</h3>
@@ -253,7 +253,7 @@
                 <div id="chatMessages" class="glass-card flex-grow p-4 rounded-xl overflow-y-auto space-y-3 mb-3 flex flex-col">
                 </div>
 
-                <form id="chatFormContainer" onsubmit="sendPrivateMessage(event)" class="flex items-center space-x-2">
+                <form onsubmit="sendPrivateMessage(event)" class="flex items-center space-x-2">
                     <input type="text" id="messageInput" placeholder="သီးသန့် စာတို ရိုက်ရန်..." class="flex-grow bg-slate-800 text-white text-xs px-4 py-3 rounded-xl border border-slate-700 focus:outline-none focus:border-pink-500">
                     <button type="submit" id="btnSendMessage" class="bg-gradient-to-r from-pink-500 to-purple-600 text-white px-4 py-3 rounded-xl text-xs font-semibold shadow-md hover:opacity-90 transition">
                         <i class="fa-solid fa-paper-plane"></i>
@@ -870,6 +870,7 @@
                 });
 
             } else {
+                // LOGIN MODE: Fetch User Data from Firebase First to Get User's Saved Language
                 if (isAdmin) {
                     currentUser = {
                         id: 'admin_owner',
@@ -888,7 +889,7 @@
                         let finalLang = selectedLang;
 
                         if (uData) {
-                            finalLang = uData.language || selectedLang;
+                            finalLang = uData.language || selectedLang; // Strict lock to registered user's language
                             currentUser = {
                                 id: userId,
                                 name: uData.name || name,
@@ -1071,15 +1072,11 @@
                 chatTab.classList.remove('hidden');
                 btnChat.className = "bg-pink-600 text-white text-xs px-3 py-2 rounded-lg font-semibold transition flex-1";
                 
-                if (currentUser && currentUser.isAdmin) {
-                    loadAdminChatMonitor();
-                } else {
-                    if(!activeChatPartner) {
-                        activeChatPartner = { id: profiles[0].id, name: profiles[0].name };
-                    }
-                    loadPrivateChatMessages();
-                    setupGuestChatRestrictions();
+                if(!activeChatPartner) {
+                    activeChatPartner = { id: profiles[0].id, name: profiles[0].name };
                 }
+                loadPrivateChatMessages();
+                setupGuestChatRestrictions();
             } else if(tab === 'myprofile') {
                 myProfileTab.classList.remove('hidden');
                 btnMyProfile.className = "bg-pink-600 text-white text-xs px-3 py-2 rounded-lg font-semibold transition flex-1";
@@ -1091,72 +1088,12 @@
             }
         }
 
-        function loadAdminChatMonitor() {
-            const chatMessages = document.getElementById('chatMessages');
-            const chatFormContainer = document.getElementById('chatFormContainer');
-            const chatPartnerName = document.getElementById('chatPartnerName');
-            const chatPartnerStatus = document.getElementById('chatPartnerStatus');
-            const chatHeaderIcon = document.getElementById('chatHeaderIcon');
-
-            chatFormContainer.classList.add('hidden'); // Hide typing input for admin monitor
-            chatPartnerName.innerText = "Admin Chat Monitor (All Conversations)";
-            chatPartnerStatus.innerText = "Monitoring all user conversations across multi-languages";
-            chatHeaderIcon.className = "fa-solid fa-shield-halved";
-
-            chatMessages.innerHTML = '<p class="text-gray-400 text-center text-xs py-4 italic">စာတိုများကို ရှာဖွေနေပါသည်...</p>';
-
-            if (chatListenerRef) {
-                chatListenerRef.off();
-            }
-
-            chatListenerRef = db.ref('private_chats');
-            chatListenerRef.on('value', (snapshot) => {
-                const pChatsData = snapshot.val();
-                chatMessages.innerHTML = '';
-
-                let totalCount = 0;
-
-                if (pChatsData) {
-                    Object.keys(pChatsData).forEach(roomId => {
-                        const pChat = pChatsData[roomId];
-                        if (pChat && pChat.messages) {
-                            Object.keys(pChat.messages).forEach(msgKey => {
-                                totalCount++;
-                                const msg = pChat.messages[msgKey];
-                                const timeStr = new Date(msg.timestamp || Date.now()).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-
-                                const boxDiv = document.createElement('div');
-                                boxDiv.className = "bg-slate-800/90 border border-pink-500/30 p-3 rounded-xl mb-2 text-xs shadow-md space-y-1";
-                                boxDiv.innerHTML = `
-                                    <div class="flex justify-between items-center border-b border-slate-700/60 pb-1">
-                                        <span class="font-bold text-pink-400"><i class="fa-solid fa-comments mr-1"></i>${msg.senderName || 'User'}</span>
-                                        <div class="flex items-center space-x-2">
-                                            <span class="bg-amber-500/20 text-amber-300 px-2 py-0.5 rounded text-[10px] border border-amber-500/30">Room: ${roomId.substring(0, 12)}...</span>
-                                            <span class="text-[10px] text-gray-400">${timeStr}</span>
-                                        </div>
-                                    </div>
-                                    <p class="text-white font-medium mt-1">${msg.text}</p>
-                                `;
-                                chatMessages.appendChild(boxDiv);
-                            });
-                        }
-                    });
-                }
-
-                if (totalCount === 0) {
-                    chatMessages.innerHTML = '<p class="text-gray-500 text-center italic py-6 text-xs">စာတို ဖလှယ်ထားခြင်း မရှိသေးပါ</p>';
-                }
-            });
-        }
-
         function getPrivateChatRoomId(uid1, uid2) {
             return [uid1, uid2].sort().join('_chat_');
         }
 
         function loadPrivateChatMessages() {
             const chatMessages = document.getElementById('chatMessages');
-            const chatFormContainer = document.getElementById('chatFormContainer');
-            chatFormContainer.classList.remove('hidden');
             chatMessages.innerHTML = '';
 
             if (chatListenerRef) {
@@ -1166,7 +1103,6 @@
             if (!currentUser || !activeChatPartner) return;
 
             document.getElementById('chatPartnerName').innerText = `${activeChatPartner.name} (Private)`;
-            document.getElementById('chatHeaderIcon').className = "fa-solid fa-user-lock";
 
             const roomId = getPrivateChatRoomId(currentUser.id, activeChatPartner.id);
 
