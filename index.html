@@ -192,7 +192,7 @@
                         <input 
                             type="text" 
                             id="searchInput"
-                            oninput="handleSearch(event)"
+                            onkeyup="handleSearch(event)"
                             placeholder="အမည်၊ တိုင်းရင်းသား သို့မဟုတ် မြို့ဖြင့် ရှာဖွေပါ..." 
                             class="w-full py-3 pl-11 pr-24 bg-gray-900 text-white placeholder-gray-400 text-sm border border-gray-800 rounded-full focus:outline-none focus:border-rose-500 focus:ring-1 focus:ring-rose-500 transition-all duration-200"
                         />
@@ -439,12 +439,11 @@
         let chatListenerRef = null;
         let currentAuthMode = 'login'; // 'login' or 'register'
 
-        // Default Sample Profiles
+        // Demo Sample Profiles
         const defaultProfiles = [
             { id: 'profile_1', name: "Lian, 24", location: "Yangon • Falam / Myanmar", bio: "သီချင်းနားထောင်ရတာ ကြိုက်တယ်။ မိတ်ဆွေအသစ်များနဲ့ ခင်မင်ချင်ပါတယ်။", image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=600" },
             { id: 'profile_2', name: "Nuam, 22", location: "Mandalay • Mizo / Myanmar", bio: "ဝါသနာကတော့ ခရီးသွားတာနဲ့ စာဖတ်တာပါ။", image: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&q=80&w=600" },
-            { id: 'profile_3', name: "Hmuaki, 25", location: "Aizawl • Mizo", bio: "တေးဂီတကို ချစ်မြတ်နိုးသူတစ်ဦးဖြစ်ပါတယ်။", image: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&q=80&w=600" },
-            { id: 'profile_4', name: "Moe Moe, 23", location: "Yangon • Myanmar", bio: "မင်္ဂလာပါ Moe Moe ပါ။ မိတ်ဆွေအသစ်များနဲ့ ခင်မင်ချင်ပါတယ်။", image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=600" }
+            { id: 'profile_3', name: "Hmuaki, 25", location: "Aizawl • Mizo", bio: "တေးဂီတကို ချစ်မြတ်နိုးသူတစ်ဦးဖြစ်ပါတယ်။", image: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&q=80&w=600" }
         ];
 
         let registeredProfiles = [];
@@ -452,7 +451,7 @@
         let filteredProfiles = [...allProfiles];
         let currentIndex = 0;
 
-        // Realtime Sync from Firebase with Flexible Parsing
+        // Fetch Realtime Registered Users from Firebase
         function fetchRegisteredUsers() {
             db.ref('users').on('value', (snapshot) => {
                 const data = snapshot.val();
@@ -464,8 +463,7 @@
                         if (user && !user.isAdmin) {
                             registeredProfiles.push({
                                 id: key,
-                                name: `${user.name}${user.age ? ', ' + user.age : ''}`,
-                                rawName: user.name || '',
+                                name: `${user.name}, ${user.age || 'N/A'}`,
                                 location: `${user.location || 'N/A'} • ${user.language ? user.language.toUpperCase() : 'MY'}`,
                                 bio: user.bio || 'သီချင်းနားထောင်ရတာ ကြိုက်တယ်။',
                                 image: user.image || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=600"
@@ -474,6 +472,7 @@
                     });
                 }
 
+                // Combine Default + Registered Users
                 allProfiles = [...registeredProfiles, ...defaultProfiles];
                 handleSearch();
             });
@@ -481,17 +480,15 @@
 
         function handleSearch(event) {
             if (event) event.preventDefault();
-            const searchInput = document.getElementById('searchInput');
-            const query = searchInput ? searchInput.value.trim().toLowerCase() : '';
-
+            const query = document.getElementById('searchInput').value.trim().toLowerCase();
+            
             if (query === "") {
                 filteredProfiles = [...allProfiles];
             } else {
                 filteredProfiles = allProfiles.filter(p => 
-                    (p.name && p.name.toLowerCase().includes(query)) || 
-                    (p.rawName && p.rawName.toLowerCase().includes(query)) ||
-                    (p.location && p.location.toLowerCase().includes(query)) ||
-                    (p.bio && p.bio.toLowerCase().includes(query))
+                    p.name.toLowerCase().includes(query) || 
+                    p.location.toLowerCase().includes(query) ||
+                    p.bio.toLowerCase().includes(query)
                 );
             }
 
@@ -500,12 +497,12 @@
             const noResultsMsg = document.getElementById('noResultsMsg');
 
             if (filteredProfiles.length > 0) {
-                if (profileArea) profileArea.classList.remove('hidden');
-                if (noResultsMsg) noResultsMsg.classList.add('hidden');
+                profileArea.classList.remove('hidden');
+                noResultsMsg.classList.add('hidden');
                 loadProfile();
             } else {
-                if (profileArea) profileArea.classList.add('hidden');
-                if (noResultsMsg) noResultsMsg.classList.remove('hidden');
+                profileArea.classList.add('hidden');
+                noResultsMsg.classList.remove('hidden');
             }
         }
 
@@ -1064,7 +1061,6 @@
                 alert('✅ Profile အချက်အလက်များ အောင်မြင်စွာ ပြင်ဆင်ပြီးပါပြီ!');
                 closeEditProfileModal();
                 renderMyProfile();
-                fetchRegisteredUsers();
             });
         }
 
@@ -1288,7 +1284,6 @@
 
         window.onload = function() {
             changeLanguage('my');
-            fetchRegisteredUsers();
         };
     </script>
 </body>
