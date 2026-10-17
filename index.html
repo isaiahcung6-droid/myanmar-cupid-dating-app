@@ -30,6 +30,73 @@
         }
     </style>
 </head>
+    <!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cupid Platform</title>
+    <!-- Tailwind CSS CDN သုံးပြီး ဒီဇိုင်းဆင်ထားပါသည် -->
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-950 text-white min-h-screen flex flex-col items-center justify-center p-4">
+
+    <!-- Discover Section Header -->
+    <div class="text-center mb-6">
+        <h1 class="text-2xl font-bold mb-1">သင့်ဖူးစာရှင်ကို ရှာဖွေပါ</h1>
+        <p class="text-xs text-gray-400">တိုင်းရင်းသား လူမျိုးပေါင်းစုံအတွက် လေးစားမှုရှိပြီး လုံခြုံသော Cupid Platform</p>
+    </div>
+
+    <!-- Search Box Component -->
+    <form id="searchForm" class="w-full max-w-md mx-auto">
+        <div class="relative flex items-center">
+            <!-- Search Icon -->
+            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-400">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35m1.85-5.65a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                </svg>
+            </div>
+
+            <!-- Input Field -->
+            <input 
+                type="text" 
+                id="searchInput"
+                placeholder="အမည်၊ တိုင်းရင်းသား သို့မဟုတ် မြို့ဖြင့် ရှာဖွေပါ..." 
+                class="w-full py-3 pl-11 pr-24 bg-gray-900 text-white placeholder-gray-400 text-sm border border-gray-800 rounded-full focus:outline-none focus:border-rose-500 focus:ring-1 focus:ring-rose-500 transition-all duration-200"
+            />
+
+            <!-- Search Button -->
+            <button 
+                type="submit" 
+                class="absolute right-1.5 px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white text-xs font-semibold rounded-full transition-all duration-200 shadow-md"
+            >
+                ရှာမယ်
+            </button>
+        </div>
+    </form>
+
+    <!-- JavaScript ဖြင့် ရှာဖွေမှုကို လုပ်ဆောင်ရန် -->
+    <script>
+        const searchForm = document.getElementById('searchForm');
+        const searchInput = document.getElementById('searchInput');
+
+        searchForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const query = searchInput.value.trim();
+            
+            if (query !== "") {
+                console.log("ရှာဖွေနေသော စာသား:", query);
+                alert(`"${query}" ဖြင့် ရှာဖွေနေပါပြီ...`);
+                // ဒီနေရာမှာ Data တွေကို စစ်ဆေးပြီး filter လုပ်မယ့် JavaScript ကုဒ်တွေ ထပ်ထည့်နိုင်ပါတယ်
+            } else {
+                alert("ကျေးဇူးပြု၍ ရှာဖွေလိုသော အချက်အလက်ကို ထည့်ပါ။");
+            }
+        });
+    </script>
+
+</body>
+</html>
+
 <body class="min-h-screen flex flex-col justify-between">
 
     <!-- Navigation / Header Bar -->
