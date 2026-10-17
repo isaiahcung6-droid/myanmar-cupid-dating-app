@@ -184,22 +184,18 @@
                 <!-- Search Box Component -->
                 <div class="w-full max-w-md mx-auto mb-6 px-4">
                     <form id="searchForm" onsubmit="handleSearch(event)" class="relative flex items-center">
-                        <!-- Search Icon -->
                         <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-400">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35m1.85-5.65a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                             </svg>
                         </div>
-
-                        <!-- Input Field -->
                         <input 
                             type="text" 
                             id="searchInput"
+                            onkeyup="handleSearch(event)"
                             placeholder="အမည်၊ တိုင်းရင်းသား သို့မဟုတ် မြို့ဖြင့် ရှာဖွေပါ..." 
                             class="w-full py-3 pl-11 pr-24 bg-gray-900 text-white placeholder-gray-400 text-sm border border-gray-800 rounded-full focus:outline-none focus:border-rose-500 focus:ring-1 focus:ring-rose-500 transition-all duration-200"
                         />
-
-                        <!-- Search Button -->
                         <button 
                             type="submit" 
                             class="absolute right-1.5 px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white text-xs font-semibold rounded-full transition-all duration-200 shadow-md"
@@ -235,35 +231,44 @@
                     </div>
                 </div>
 
-                <!-- Profile Card -->
-                <div class="glass-card rounded-2xl overflow-hidden shadow-2xl relative mb-6">
-                    <div class="relative h-80 bg-slate-700">
-                        <img id="profileImg" src="" alt="Profile" class="w-full h-full object-cover">
-                        <div class="absolute bottom-0 inset-x-0 bg-gradient-to-t from-slate-950 via-slate-950/60 to-transparent p-4">
-                            <div class="flex items-center justify-between">
-                                <div>
-                                    <h3 id="profileName" class="text-xl font-bold text-white"></h3>
-                                    <p id="profileLocation" class="text-xs text-pink-400 font-medium"><i class="fa-solid fa-location-dot mr-1"></i></p>
+                <!-- Profile Card Display Area -->
+                <div id="profileCardArea">
+                    <div class="glass-card rounded-2xl overflow-hidden shadow-2xl relative mb-6">
+                        <div class="relative h-80 bg-slate-700">
+                            <img id="profileImg" src="" alt="Profile" class="w-full h-full object-cover">
+                            <div class="absolute bottom-0 inset-x-0 bg-gradient-to-t from-slate-950 via-slate-950/60 to-transparent p-4">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <h3 id="profileName" class="text-xl font-bold text-white"></h3>
+                                        <p id="profileLocation" class="text-xs text-pink-400 font-medium"><i class="fa-solid fa-location-dot mr-1"></i></p>
+                                    </div>
+                                    <span class="bg-pink-500/20 text-pink-300 text-xs px-2.5 py-1 rounded-full border border-pink-500/30"><i class="fa-solid fa-circle-check mr-1"></i>Verified</span>
                                 </div>
-                                <span class="bg-pink-500/20 text-pink-300 text-xs px-2.5 py-1 rounded-full border border-pink-500/30"><i class="fa-solid fa-circle-check mr-1"></i>Verified</span>
+                                <p id="profileBio" class="text-xs text-gray-300 mt-2"></p>
                             </div>
-                            <p id="profileBio" class="text-xs text-gray-300 mt-2"></p>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="p-4 flex justify-around items-center bg-slate-900/80">
+                            <button onclick="nextProfile('pass')" class="w-12 h-12 rounded-full bg-slate-800 text-gray-400 border border-slate-700 flex items-center justify-center hover:bg-rose-500 hover:text-white transition">
+                                <i class="fa-solid fa-xmark text-xl"></i>
+                            </button>
+                            <button onclick="nextProfile('like')" class="w-14 h-14 rounded-full bg-gradient-to-r from-pink-500 to-rose-500 text-white shadow-lg flex items-center justify-center hover:scale-105 transition">
+                                <i class="fa-solid fa-heart text-2xl"></i>
+                            </button>
+                            <button onclick="nextProfile('star')" class="w-12 h-12 rounded-full bg-slate-800 text-amber-400 border border-slate-700 flex items-center justify-center hover:bg-amber-500 hover:text-white transition">
+                                <i class="fa-solid fa-star text-lg"></i>
+                            </button>
                         </div>
                     </div>
-
-                    <!-- Action Buttons -->
-                    <div class="p-4 flex justify-around items-center bg-slate-900/80">
-                        <button onclick="nextProfile('pass')" class="w-12 h-12 rounded-full bg-slate-800 text-gray-400 border border-slate-700 flex items-center justify-center hover:bg-rose-500 hover:text-white transition">
-                            <i class="fa-solid fa-xmark text-xl"></i>
-                        </button>
-                        <button onclick="nextProfile('like')" class="w-14 h-14 rounded-full bg-gradient-to-r from-pink-500 to-rose-500 text-white shadow-lg flex items-center justify-center hover:scale-105 transition">
-                            <i class="fa-solid fa-heart text-2xl"></i>
-                        </button>
-                        <button onclick="nextProfile('star')" class="w-12 h-12 rounded-full bg-slate-800 text-amber-400 border border-slate-700 flex items-center justify-center hover:bg-amber-500 hover:text-white transition">
-                            <i class="fa-solid fa-star text-lg"></i>
-                        </button>
-                    </div>
                 </div>
+
+                <!-- No Results Message -->
+                <div id="noResultsMsg" class="hidden text-center py-8 glass-card rounded-2xl mb-6">
+                    <i class="fa-solid fa-user-slash text-gray-500 text-3xl mb-2"></i>
+                    <p class="text-sm text-gray-400 font-medium">ရှာဖွေမှုနှင့် ကိုက်ညီသော Profile မတွေ့ပါ</p>
+                </div>
+
             </div>
 
             <!-- PRIVATE 1-ON-1 CHAT TAB -->
@@ -437,9 +442,39 @@
         const profiles = [
             { id: 'profile_1', name: "Lian, 24", location: "Yangon • Falam / Myanmar", bio: "သီချင်းနားထောင်ရတာ ကြိုက်တယ်။ မိတ်ဆွေအသစ်များနဲ့ ခင်မင်ချင်ပါတယ်။", image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=600" },
             { id: 'profile_2', name: "Nuam, 22", location: "Mandalay • Mizo / Myanmar", bio: "ဝါသနာကတော့ ခရီးသွားတာနဲ့ စာဖတ်တာပါ။", image: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&q=80&w=600" },
-            { id: 'profile_3', name: "Hmuaki, 25", location: "Aizawl • Mizo", bio: "တေးဂီတကို ချစ်မြတ်နိုးသူတစ်ဦးဖြစ်ပါတယ်။", image: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&q=80&w=600" }
+            { id: 'profile_3', name: "Hmuaki, 25", location: "Aizawl • Mizo", bio: "တေးဂီတကို ချစ်မြတ်နိုးသူတစ်ဦးဖြစ်ပါတယ်။", image: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&q=80&w=600" },
+            { id: 'profile_4', name: "Moe Moe, 23", location: "Yangon • Myanmar", bio: "မင်္ဂလာပါ Moe Moe ပါ။ ချစ်စရာကောင်းတဲ့ မိတ်ဆွေများနဲ့ ခင်မင်ချင်ပါတယ်ခင်ဗျာ။", image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=600" }
         ];
+        let filteredProfiles = [...profiles];
         let currentIndex = 0;
+
+        function handleSearch(event) {
+            if (event) event.preventDefault();
+            const query = document.getElementById('searchInput').value.trim().toLowerCase();
+            
+            if (query === "") {
+                filteredProfiles = [...profiles];
+            } else {
+                filteredProfiles = profiles.filter(p => 
+                    p.name.toLowerCase().includes(query) || 
+                    p.location.toLowerCase().includes(query) ||
+                    p.bio.toLowerCase().includes(query)
+                );
+            }
+
+            currentIndex = 0;
+            const profileArea = document.getElementById('profileCardArea');
+            const noResultsMsg = document.getElementById('noResultsMsg');
+
+            if (filteredProfiles.length > 0) {
+                profileArea.classList.remove('hidden');
+                noResultsMsg.classList.add('hidden');
+                loadProfile();
+            } else {
+                profileArea.classList.add('hidden');
+                noResultsMsg.classList.remove('hidden');
+            }
+        }
 
         const translations = {
             my: {
@@ -616,17 +651,6 @@
             changeLanguage(lang);
         }
 
-        function handleSearch(event) {
-            event.preventDefault();
-            const query = document.getElementById('searchInput').value.trim();
-            if (query !== "") {
-                alert(`"${query}" ဖြင့် ရှာဖွေနေပါပြီ...`);
-                // ဒီနေရာမှာ Search လုပ်မယ့် လုပ်ဆောင်ချက်များကို ထပ်မံထည့်သွင်းနိုင်ပါသည်
-            } else {
-                alert("ကျေးဇူးပြု၍ ရှာဖွေလိုသော အချက်အလက်ကို ထည့်ပါ။");
-            }
-        }
-
         function toggleAuthMode(mode) {
             currentAuthMode = mode;
             const tabLogin = document.getElementById('tabLogin');
@@ -794,7 +818,6 @@
             if (labelLangJoin && data.labelLangJoin) labelLangJoin.innerHTML = `<i class="fa-solid fa-earth-americas mr-1"></i>${data.labelLangJoin}`;
         }
 
-        // Apply Language & Lock Dropdown for Normal Users
         function applyUserLanguageAndLock(lang) {
             changeLanguage(lang);
             const langSelect = document.getElementById('languageSelect');
@@ -1026,7 +1049,8 @@
         }
 
         function loadProfile() {
-            const p = profiles[currentIndex];
+            if (filteredProfiles.length === 0) return;
+            const p = filteredProfiles[currentIndex];
             document.getElementById('profileImg').src = p.image;
             document.getElementById('profileName').innerText = p.name;
             document.getElementById('profileLocation').innerHTML = `<i class="fa-solid fa-location-dot mr-1"></i> ${p.location}`;
@@ -1034,8 +1058,10 @@
         }
 
         function nextProfile(action) {
+            if (filteredProfiles.length === 0) return;
+
             if(action === 'like' || action === 'star') {
-                const currentP = profiles[currentIndex];
+                const currentP = filteredProfiles[currentIndex];
                 activeChatPartner = {
                     id: currentP.id,
                     name: currentP.name
@@ -1043,7 +1069,7 @@
                 alert(`❤️ Match တွေ့ပါပြီ! ${currentP.name} နှင့် သီးသန့် Private Chat စတင်နိုင်ပါပြီ။`);
                 switchTab('chat');
             } else {
-                currentIndex = (currentIndex + 1) % profiles.length;
+                currentIndex = (currentIndex + 1) % filteredProfiles.length;
                 loadProfile();
             }
         }
@@ -1226,7 +1252,6 @@
             });
         }
 
-        // Initialize language dynamically on first page load
         window.onload = function() {
             changeLanguage('my');
         };
