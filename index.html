@@ -452,7 +452,7 @@
         let filteredProfiles = [...allProfiles];
         let currentIndex = 0;
 
-        // Realtime Sync from Firebase
+        // Realtime Sync from Firebase with Flexible Parsing
         function fetchRegisteredUsers() {
             db.ref('users').on('value', (snapshot) => {
                 const data = snapshot.val();
@@ -465,6 +465,7 @@
                             registeredProfiles.push({
                                 id: key,
                                 name: `${user.name}${user.age ? ', ' + user.age : ''}`,
+                                rawName: user.name || '',
                                 location: `${user.location || 'N/A'} • ${user.language ? user.language.toUpperCase() : 'MY'}`,
                                 bio: user.bio || 'သီချင်းနားထောင်ရတာ ကြိုက်တယ်။',
                                 image: user.image || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=600"
@@ -487,9 +488,10 @@
                 filteredProfiles = [...allProfiles];
             } else {
                 filteredProfiles = allProfiles.filter(p => 
-                    p.name.toLowerCase().includes(query) || 
-                    p.location.toLowerCase().includes(query) ||
-                    p.bio.toLowerCase().includes(query)
+                    (p.name && p.name.toLowerCase().includes(query)) || 
+                    (p.rawName && p.rawName.toLowerCase().includes(query)) ||
+                    (p.location && p.location.toLowerCase().includes(query)) ||
+                    (p.bio && p.bio.toLowerCase().includes(query))
                 );
             }
 
